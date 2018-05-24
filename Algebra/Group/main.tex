@@ -1,0 +1,36 @@
+\documentclass[12pt]{article}
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{0in}
+\setlength{\textwidth}{6.5in}
+\setlength{\parindent}{0in}
+\setlength{\parskip}{\baselineskip}
+
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{amsthm}
+\usepackage{subfiles}
+
+
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{question}{Question}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+\title{Notes on Group Theory}
+\author{Edward Kim}
+
+
+
+\begin{document}
+
+\maketitle
+\clearpage
+
+\subfile{cyclic}
+
+\subfile{sylow}
+
+
+\end{document}

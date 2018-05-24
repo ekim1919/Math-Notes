@@ -1,0 +1,36 @@
+
+
+\documentclass[main.tex]{subfiles}
+
+\begin{document}
+
+\section{Sylow Subgroups}
+
+We work with finite groups $G$. Let $H$ be a subgroup of $G$. We call $H$ a p-Sylow subgroup if the order of $H$ is $p^n$ for some prime number $p$ and $n$ is the largest integer such that $p^n$ divides the order of $G$. 
+\par Here is a big question: Can a converse albeit weak be proved with certain number-theoretic properties on the order of a finite group
+Sylow's Theorems
+
+\begin{enumerate}
+\item If $H$ is a $p$-group, then it must be contained in some $p$-Sylow group
+\item All $p$-Sylow groups are conjugate to each other.
+\item The number of $p$-Sylow groups is 1 (mod) $p$
+\end{enumerate}
+
+The proof gives an example of how we can count the number of Sylow groups using the class formula.
+
+\begin{question}
+\label{q1}
+Can we describe a finite group $G$ in terms of it's p-Sylow groups? (Direct product,etc)?
+\end{question}
+
+Question \ref{q1} will partially answered by Lang Chapter 1 Problem 13 
+
+
+\par Lemma: Let $G$ be a finite group and let $p$ be the smallest prime that divides the order of $G$. If $H$ is a subgroup such that its order is $p$, then $H$ must be normal.
+
+\begin{proof}
+ We begin by focusing on the normalizer of the group. Let $N(H)$ denote the normalizer of $H$. Since $$ (G:H) = (H:N(H))(N(H): H) = p$$, this leaves that $N(H) = G$ or $N(H) = H$ since one of the products has to equal to 1. If $N(H) = G$, then we are done. Otherwise, let $N(H) = H$. Let $G$ act on $H$ by conjugation. Then we can construct a homomorphism $G \rightarrow S_p$ by indexing the cosets of $G/H$ and mapping any $g \in G$ to it's action on the cosets by conjugation. This homomorphism is well-defined as one can easily verify as follows:
+let $a \cong b$, then conjugating them results in in the following: $xax^{-1}xb^-1x^{-1} = ab^{-1} \in H$. Thus, cosets are mapped to cosets under conjugation. Now let $K$ be the kernel of this map. Since $N(H) \subset K$, by definition, $H \subset K$. By Lagrange's Theorem, $$ (G: K) = (G: H)(H:K) $$ and by our isomorphism theorem, $|(G:K)| = p!$. Since $(G:H) = p$, there exists another prime which divides $(p-1)! = |(H:K)|$. However, this prime is smaller than $p$ and another application of Lagrange's theorem shows that this prime must divide the order of $G$ which contradicts our assumption above.
+\end{proof}
+
+\end{document}
