@@ -1,0 +1,535 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage{amsmath,textcomp,amssymb,geometry,graphicx,enumerate,bm,amsthm,mathtools}
+
+\newenvironment{claim}[1]{\par\noindent\underline{Claim:}\space#1}{}
+\newenvironment{definition}[1][Definition]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{corollary}{Corollary}[section]
+
+\setlength\parindent{0pt}
+
+%let%
+\let\phi\varphi
+
+%commands%
+\newcommand*\NN{\mathbb{N}} 
+\newcommand*\map{\rightarrow}
+\newcommand*\n{\newline\par}
+\newcommand*\defeq{\vcentcolon=}
+\newcommand*\betabar{\bar{n^{\beta}}}
+\newcommand*\phibar{\bar{n^{\phi}}}
+\newcommand*\prf{\vdash}
+\newcommand*\mo{\vDash}
+\newcommand*\nn{\newline\newline}
+\newcommand*\biject{\leftrightarrow}
+\newcommand*\np{\neg\phi}
+\newcommand*\notprf{\not\vdash}
+\newcommand*\turred{\leq_T}
+\newcommand*\tureq{\equiv_T}
+\newcommand*\halt{\mathcal{K}}
+\newcommand*\partf{\mathcal{W}}
+\newcommand*\sone{\Sigma_1^0}
+\newcommand*\pone{\Pi_1^0}
+
+\begin{document}
+
+\begin{titlepage}
+   \centering
+    {\huge\bfseries Notes on Computability Theory\par}
+    \space
+    {\huge\bfseries Edward Kim\par}
+\end{titlepage}
+
+\newpage
+\tableofcontents
+
+\newpage
+\section{Undecidibility}
+
+\subsection{Halting Problem}
+Given any register program $P$ consisting of a finite alphabet($\mathbb{A}$), we can assign a code to represent the program through a G\"{o}del numbering scheme. Let $\xi_P$ be the G\"{o}del number of $P$.
+Since we have a finite alphabet and every program can be represented as a finite string of symbols, the number of possible programs must be countable. Thus, the set 
+$\Pi = \{\xi_P \vert \text{$P$ is a valid program over $\mathbb{A}$}\}$ is a countable set. Checking the syntax of programs is computable through a set of rules governing said syntax. Thus, it must be said that
+$\Pi$ is a computable set. We now arrive at on of the cornerstone theorems in Computability Theory:
+
+\begin{theorem}
+ (Halting Problem) \n
+ The set $\Pi_{halt}' = \{\xi_P \vert \text{$P$ is a valid program over $\mathbb{A}$ and $\xi_P \map halt$}\}$ is not computable.
+\end{theorem}
+
+\begin{proof}
+ Suppose that there existed a program $P_0$ which decided this set.  Then for all $P$
+ \begin{gather*}
+  P_0: \xi_P \map\square \text{ if } P: \xi_P \map halt \\
+  P_0: \xi_P  \map \eta \text{ for some $\eta \neq \square $ if } P: \xi_P \map \infty
+ \end{gather*}
+
+ Create any program $P_1$ that does the direct opposite of $P_0$:
+ \begin{gather*}
+  P_0: \xi_P \map\infty \text{ if } P: \xi_P \map halt \\
+  P_0: \xi_P  \map halt \text{ if } P: \xi_P \map \infty
+ \end{gather*}
+ 
+ Now suppose we plugged in $P_1$ into itself, then 
+ $P_1:\xi_P \map\infty $ iff $P_1:\xi_P \map halt$. This is a contradiction.
+ 
+\end{proof}
+
+\begin{lemma}
+The set $\Pi_{halt} = \{\xi_P \vert \text{$P$ is a valid program over $\mathbb{A}$ and $\square \map halt$}\}$ is not computable.
+\end{lemma}
+
+\begin{lemma}
+ $\Pi_{halt}$ is recursively enumerable.
+\end{lemma}
+
+\begin{proof}
+ Enumerate through $n$=1,2,3.... and generate all programs whose G\"{o}del numbers are $\leq n$. Run each one for at most $n$ steps with input $\square$. If a program in the list halts within that time,
+ enumerate the program.
+\end{proof}
+
+ We can think of the halting set through a different lens. Let $\phi_e$ denote the $e^{th}$ program. We can also enumerate the domains of $\phi_0,\phi_1,...$ through a similar tactic as the above lemma.
+ Let $W_0,W_1,...$ denote the domains of these functions. Since not all of these functions are total, we see that $W_e \subseteq \NN$. The halting set can be described as $K = \{x \vert x \in W_x\}$. This is akin to taking all programs which halt on their own G\"{o}del number.
+\subsection{Undecidibility of First-Order Logic}
+
+\begin{theorem}
+ (Church's Theorem)
+ Let $\phi$ be a first-order sentence. Then the set $\{\phi \vert \mo \phi\}$ of valid first-order sentences is not computable.
+\end{theorem}
+
+\subsection{Undecidibility of Arithmetic}
+
+
+\newpage
+\section{Peano Arithmetic and its Models}
+
+
+\subsection{Encoding Proofs into PA}
+
+
+\newpage
+\section{G{\"o}del's Incompleteness Theorems}
+
+\begin{theorem}
+(Fixed Point Theorem) Suppose $\Phi$ is a set of sentences such that $PA \subseteq \Phi$. For every formula $\psi(x)$ with one free variable, there is a sentence $\phi$ such that
+\begin{align*}
+  \Phi \vdash \phi \leftrightarrow \psi(n^{\phi})
+\end{align*}
+
+\end{theorem}
+
+Intuitively, the theorem states that there exists a formula in arithmetic $\phi$ such that $\phi$ proves that it has property $\psi$.
+\begin{proof}
+ Let us define a computable function $F: \NN \times \NN \map \NN$ by the following:
+ \begin{equation*}
+    F(n,m) = 
+    \begin{cases}
+     n^{\psi(\bar{m})} \text{ if $n$ is the code for $\psi$} \\
+     0 \text{ otherwise}
+    \end{cases}  
+ \end{equation*}
+
+ We see that this function gives us the code for the formula where $\bar{m}$ replaces the free variable in $\psi$. Since this is a computable function, it is representable in PA. We wee that PA allows us to encode finite sequences with natural numbers by the $\beta$-function encoding scheme. \n
+ Now suppose that $F$ is represented by the formula $\alpha(x,y,z)$ where $\alpha(x,y,z)$ says that $F(x,y) = z$. Define
+ 
+ \begin{gather*}
+  \beta(x) \defeq \forall z(\alpha(x,x,z) \map \psi(z)) \\
+  \phi \defeq \forall z(\alpha(\bar{n^{\beta}},\bar{n^{\beta}},z) \map \psi(z))  
+ \end{gather*}
+
+ $\phi$ states that $\psi$ holds at $\beta(\bar{n^{\beta}})$. Now let us check if $\phi \map \psi(\bar{n^{\beta}})$. \n
+ Since $PA \vdash \alpha(\bar{n^{\beta}},\bar{n^{\beta}},\bar{n^{\phi}})$, $\Phi \vdash \alpha(\bar{n^{\beta}},\bar{n^{\beta}},z) \map z = \bar{n^{\phi}}$ since $n^{\beta(\bar{n^{\beta}})} = \bar{n^{\phi}}$.\n 
+ Thus, $\Phi \vdash  \forall z (\alpha(\bar{n^{\beta}},\bar{n^{\beta}},z) \map \psi(z)) \map \psi(\bar{n^{\phi}})$ which is exactly $\Phi \vdash \phi \map \psi(\bar{n^{\beta}})$. \n
+  Conversely, since $F$ is representable in $\Phi$, $\Phi \vdash \exists^{=1}\alpha(\betabar,\betabar,z)$. The previous tells us that $\Phi \vdash \alpha(\bar{n^{\beta}},\bar{n^{\beta}},z) \map z = \bar{n^{\phi}}$. \n 
+  Since  $\psi(\bar{n^{\phi}})$ is the hypothesis, we get that
+  $\Phi \vdash \psi(\bar{n^{\phi}}) \map \forall z(\alpha(\bar{n^{\beta}},\bar{n^{\beta}},z) \map \psi(z))$ which is exactly $\Phi \vdash \psi(\bar{n^{\beta}}) \map \phi$.
+ \end{proof}
+
+  We can use the Fixed Point Theorem to show Tarski's Theorem.
+  
+  \begin{theorem}
+   (Tarski's Theorem) $Th(\NN)$ is not definable within $Th(\NN)$.
+  \end{theorem}
+  
+  \begin{proof}
+   Suppose there existed a formula in arithmetic $\theta$ such that $\NN \mo \theta(\phibar)$ iff $\NN \mo \phi$. Consider the sentence for $\neg\theta(x)$. By Fixed Point Theorem, there exists a formula $\phi$ such that
+   \begin{equation*}
+    PA \prf \phi \biject \neg\theta(\phibar) 
+   \end{equation*}
+
+   But then, by definition,
+   \begin{equation*}
+    \NN \mo \phi \biject \neg\theta(\phibar) 
+   \end{equation*}
+    
+   Thus, $\NN \mo \phi$ iff $\NN \mo \theta(\phibar)$ iff $\NN \mo \neg\phi$ which contradicts the consistency of $Th(\NN)$. Thus, $\{\phibar : \NN \mo \phi\}$ is not definable.
+  \end{proof}
+
+  \newpage
+  \subsection{G\"{o}del's First Incompleteness Theorem}
+
+  Suppose that we had a computable theory $PA \subseteq \Phi$. Since this theory extends $PA$, we can encode finite sequences as numbers within $\NN$. This even includes finite proofs which are just
+  sequences of formuala which themselves can be encoded as sequences. Let $(\theta_1,\theta_2, ... , \theta_k)$ be a sequence of proofs. Then to tell whether $(\theta_1,\theta_2, ... , \theta_k)$  is a proof from $\Phi$ is computable (check if each steps comes from the previous ones or from $\Phi$ inductively). Thus, to tell whether a number is the code of a proof from $\Phi$ is computable.
+  We illustrate this by the following function:
+  \begin{equation*}
+   P(n,m) \biject \text{ $n$ is the code of a proof of $\phi$ and $m = n^{\phi}$}
+  \end{equation*}
+
+  By the observations above $P$ is a computable function and thus representable in $PA$. Let $\xi(n,m)$ be the formula representing $P$ in $\Phi$\n
+  Observe that the set $n^{\phi} : \Phi \prf \phi$ is exactly described by a $\Sigma^0_1$ statement of the form: 
+  \begin{equation*}
+   \exists x \xi(x,n^{\phi})
+  \end{equation*}
+ 
+  
+  Now let us use Fixed Point Theorem to create a formula which states that the property: I am not provable.
+  
+  \begin{equation*}
+   \Phi \prf \phi \biject \neg\exists x \xi(x,n^{\phi})
+  \end{equation*}
+  
+  \begin{theorem}
+  (G\"{o}del's First Incompleteness Theorem)
+  Suppose $PA \subseteq \Phi$ is a computable and consistent theory. Then there exists a sentence in arithmetic $\phi$ such that $\Phi \not\prf \phi$ and $\Phi \not\prf \neg\phi$. Thus, $PA$ is incomplete.
+  \end{theorem}
+
+
+  \begin{proof}
+   Suppose that $\Phi \prf \phi$. Then $PA \prf \exists x\xi(x,\phibar)$. So $\Phi \prf \neg\phi$. This contradicts the consistency of $\Phi$. A similar argument can be made for $\Phi \prf \neg\phi$.
+  \end{proof} 
+  
+  Hence, if $\Phi$ is consistent, then $\Phi \not\prf \phi$ and so $PA \prf \neg\exists\xi(x,\phibar)$ so the $\Sigma_1^0$ sentence holds in $\NN$. \n
+
+  G\"{o}del's Second Incompleteness Theorem is derived by noticing the following claim: \n
+  
+  \begin{claim}
+    The theorem ``If $PA \subseteq \Phi$ and $\Phi$ is consistent, then $\Phi \not\prf \phi$ and $\Phi \prf \phi \biject \text{$\phibar$ is not provable in $\Phi$}$'' is provable in $PA$. 
+  \end{claim} \n
+  
+  In other words, G\"{o}del's First Incompleteness Theorem can be proved within $PA$.
+  
+  \begin{theorem}
+   (G\"{o}del's Second Incompleteness Theorem)
+   Suppose $PA \subseteq \Phi$, $\Phi$ is consistent and computable then $\Phi \not\prf CON(\Phi)$.
+  \end{theorem}
+
+  \begin{proof}
+   Suppose that we encode $CON(\Phi)$ be a formula that states that there exists no code for a program which provides a proof that $0=1$.
+   From the previous result, we see that 
+   \begin{equation*}
+    \Phi \prf \text{``If $\Phi$ is consistent, then $\Phi \not\prf \phi$''}
+   \end{equation*}
+   but this is precisely,
+   \begin{equation*}
+    \Phi \prf \text{``If $\Phi$ is consistent, then $\phi$''}
+   \end{equation*}
+   from our G\"{o}del sentence.
+   Hence, if $\Phi$ is consistent, then (since $\Phi \not\prf \phi$), 
+      \begin{equation*}
+    \Phi \not\prf \text{``$\Phi$ is consistent''}
+   \end{equation*}
+  \end{proof}
+  
+  In particular, $PA \not\prf CON(PA)$. However, then $PA \cup \neg CON(PA)$ is a consistent theory. Since $PA \cup \neg CON(PA)$ is consistent, by G\"{o}del's Completeness Theorem, there exists a model $\mathcal{M}$ such that
+  $\mathcal{M} \mo PA \cup \neg CON(PA)$. It follows that $\mathcal{M}$ is also a non-standard model of $PA$ since $\mathcal{M} \mo PA$. In addition, there must be a proof from $PA$ that leads to the conclusion of $PA$'s inconsistency. If $PA$ were consistent, then every number
+  $n \in \mathbb{N}$ would encode a valid well-founded finite proof in $PA$. Since $PA$ is consistent, no proofs in the initial segment of $\mathcal{M}$ would code the proof of a statement $\psi$ and its negation $\neg\psi$. Thus, it must be said that the proof must exist in the non-standard portion of $\mathcal{M}$. Thus, a non-standard elements
+  $a$ must encode the proof of $\neg CON(PA)$.
+
+  \subsection{Rosser's Trick and Self-Referential Statements}
+  
+  Let $PA \subseteq \Phi$ be a computable and consistent theory. Define the Rosser Sentence to be represented by the following computable function:
+  
+  
+  \begin{equation*}
+   R(x,y) = \text{ ``$x$ codes for a proof of $y$ and for any code $z < x$, $z$ does not encode a proof of $\neg y$''} 
+  \end{equation*}
+  
+  Let $\phi$ be a formula such that, by the Fixed Point Theorem,
+  \begin{equation*}
+   \Phi \prf \phi \biject \neg\exists x R(x,\phibar)
+  \end{equation*}
+
+  $\phi$ states that if there exists a $\Phi$-proof of me then there exists an even smaller $\Phi$-proof of my negation.
+  
+  \begin{theorem}
+   (G\"{o}del-Rosser Theorem) Let $PA \subseteq \Phi$ be a computable and consistent theory and let $\phi$ be defined as above. Then $\Phi \not\prf \phi$ and $\Phi \not\prf \neg\phi$.
+  \end{theorem}
+  
+  \begin{proof}
+   Suppose that $\Phi \prf \phi$. Then let $n$ be the smallest code encoding a proof of $\phi$. Since $\Phi$ is consistent, we see that $\Phi \not\prf \neg\phi$. However, by PA axioms,
+   \begin{equation*}
+    PA \prf \forall z (z < \bar{m} \map z = \bar{0} \lor z = \bar{1} \lor ... \lor z = \bar{m-1})
+   \end{equation*}
+
+   Thus, through PA, we can verify computably that every code less than $n$ does not match a proof of $\neg\phi$. Thus, there exist no smaller proofs of $\neg\phi$. However, this is exactly $\Phi \prf \neg\phi$. \n
+   Now suppose that $\Phi \prf \np$. Then, by a similar argument, let $n$ be the smallest code representing the proof of $\np$. By consistency of $\Phi$, no smaller code $z < n$ can encode a proof for $\phi$. This can be systematically checked through $PA$. 
+   Thus,
+   \begin{equation*}
+      PA \prf \text{$z$ does not code a proof of $\phi$ if $z < n$}
+   \end{equation*}
+
+   Suppose that $z \geq n$ then:
+   
+   \begin{equation*}
+    PA \prf (\exists n \leq z) \text{ $n$ codes a proof of $\neg \phi$}
+   \end{equation*}
+
+   Thus,
+   \begin{gather*}
+    PA \prf (\forall z)\text{$z$ does not code a proof of $\phi$}  \lor (\exists n \leq z) \text{ $n$ codes a proof of $\neg \phi$} \\
+    PA \prf (\forall z) \neg(\text{$n$ codes a proof of $\phi$}  \land (\exists z < y) \text{ $n$ does not code a proof of $\neg \phi$})
+   \end{gather*}
+   However, this forces $PA$ to prove that:
+   \begin{equation*}
+    PA \prf \text{If $x$ is a proof of $\phi$ from $\Phi$, then $x$ has a smaller proof of $\np$ from $\Phi$}
+   \end{equation*}
+   
+   Therefore, $\Phi \prf \phi$. These results both contradict the consistency of $\Phi$.
+  \end{proof}
+
+  \begin{theorem}
+   (Rosser)
+   If $PA \subseteq \Phi$ is a computable and consistent, there are formulas $\phi_1$ and $\phi_2$ such that $\Phi \cup \{\phi_1\} \notprf \phi_2$ and $\Phi \cup \{\phi_2\} \notprf \phi_1$.
+  \end{theorem}
+  
+  \begin{proof}
+    Let $\phi_1$ be the formula which states that for any $\Phi$-proof of $\phi_1$, there is a smaller $\Phi$-proof of $\neg\phi_1$. Also, let $\phi_2$ be a formula which states that for any $(\Phi\pm\phi_1)$-proof of $\phi_2$, there exists a 
+    smaller $(\Phi\pm\phi_1)$-proof of $\neg\phi_2$. We know from Rosser's Trick that $\Phi \not\prf \phi_1$ and $\Phi \not\prf \neg\phi_1$. For the sake of contradiction, suppose that 
+    $\Phi\pm\phi_1\prf\phi_2$. We deduce that $\Phi\prf\pm\phi_1\map\phi_2$. Thus, $PA$ can encode the proof of $\pm\phi_1\map\phi_2$ through a natural number since there exists a valid finite proof of $\Phi$. Thus,
+    \begin{equation*}
+      PA \prf \text{" There is a proof of $\pm\phi_1\map\phi_2$"}
+    \end{equation*}
+
+    $PA$ can computably check through all smaller numbers (proofs). \n
+    
+    \underline{Case 1:} There exists a smaller $\Phi$-proof of $\pm\phi_1\map\neg\phi_2$. \n
+    
+    Then there exists two possibilities: \n 
+    
+    \underline{Possibility 1}: Same boolean version of $\phi_1$ appears twice.
+    Then we have $\phi_1\map\phi_2$ and $\phi_1\map\neg\phi_2$. Then $\Phi \prf (\phi_1\map\neg\phi_2) \land (\phi_1\map\phi_2)$. This is a contradiction. thus, $\Phi \prf \neg\phi_1$. This is impossible by our previous analysis (Rosser's Trick). \n
+    
+    \underline{Possibility 2}: Otherwise: $\phi_1\map\phi_2$ and $\neg\phi_1\map\neg\phi_2$. Thus $\Phi \prf \phi_1 \biject \phi_2$. By our Case 1 assumption, $PA \prf \phi_2$. Thus, $PA \prf \phi_1$. This is again impossible by our previous analysis. \n
+    
+    \underline{Case 2:} There does not exist a smaller proof of $\pm\phi_1\map\phi_2$.
+    
+    Then by inspection of the smaller numbers less than our smaller proof, we conclude that 
+    \begin{equation*}
+     PA \prf \text{ `` There is a $\Phi$-proof of $\pm\phi_1 \map \phi_2$ with no smaller proof of $\pm\phi_1 \map \neg\phi_2$''}
+    \end{equation*}
+
+    However, this is exactly $PA \prf \neg\phi_2$. Thus, $\Phi \pm \phi_1 \prf \neg\phi_2$. From our original assumption that $\Phi\pm\phi_1\prf\phi_2$, we have that $\Phi \pm \phi_1$ is inconsistent. Thus, $\Phi \prf \phi_1$ or $\Phi \prf \neg\phi_1$.
+    This contradicts our previous analysis once again.
+  \end{proof}
+
+  \begin{theorem}
+   (Rosser)
+   There exist sentences $\phi_1$ and $\phi_2$ such that 
+   \begin{gather*}
+    PA + CON(PA + \phi_1) \not\prf CON(PA + \phi_2) \\ 
+    PA + CON(PA + \phi_2) \not\prf CON(PA + \phi_1)
+   \end{gather*}
+  \end{theorem}
+
+   \newpage
+   \section{Some Recursion Theory}
+   
+   \begin{theorem}
+   ($S_n^m$-Theorem)
+    Given m,n, there is a primitive recursive, one-to-one function $S_n^m(e,x_1,...,x_n)$ such that
+    \begin{equation*}
+      \phi_{S_n^m(e,x_1,...,x_n)}(y_1,...,y_m) = \phi_e(x_1,...,x_n,y_1,...,y_m)
+    \end{equation*}
+   \end{theorem}
+
+   The $S_n^m$-Theorem intuitively states that data can be incorporated into a program. However, data can encode programs themselves, and thus incorporating them into a program could be seen as incorporating subroutines.
+    
+   \begin{theorem}
+    
+   \end{theorem}
+ 
+    
+    
+    
+   \newpage
+   \section{Arithmetic Hierarchy}
+   
+    \begin{definition}
+    Let $\phi$ be a formula in first-order arithmetic. $\phi$ is called $\Delta_0$ if it contains only bounded quantifiers. In other words, $\phi$ is of the form $\exists(x \leq t)\theta(x,y)$ or $\forall(x \leq t)\theta(x,y)$. These are shorthand forall
+    $\exists x (x \leq t \land \theta(x,y))$ and $\forall x (x \leq t \map \theta(x,y))$ respectively.
+    \end{definition}
+
+    \begin{definition}
+      We classify a first-order arithmetic formula $\psi$ as $\Sigma_n^0$ if it is of the form $\exists x \theta$ where $\theta$ is a $\Pi_{n-1}^0$ formula. Likewise, we classify $\psi$ as $\Pi_{n}^0$
+      if it is of the form $\forall x \theta$ where $\theta$ is a $\Sigma_{n-1}^0$ formula.
+    \end{definition}
+    
+    \begin{definition}
+     We classify a formula as $\Delta_n^0$ if there exists a $\Sigma_n^0$-formula $\psi_1$ and a $\Pi_n^0$-formula $\psi_2$ that are both equivalent to the formula.
+    \end{definition}
+
+    
+    Because we can add redundant quantifiers, $\Sigma_n^0$ formulas can be classified as $\Sigma_m^0$ formulas and $\Pi_n^0$  formulas can be classified as $\Pi_m^0$ where $m > n$. \n
+    
+    
+    In other words, a $\Sigma_1^0$ formula is equivalent to a formula that begins with an existential quantifer and alternates between $\exists$ and $\forall$ $n-1$ times. $\Pi_1^0$ is defined similarly. 
+    Also, we notice that a formula $\rho$ is $\Pi_n^0$ if $\neg\rho$ is $\Sigma_n^0$.  \n
+    
+    \subsection{Definability of sets in $\NN$}
+    
+    Suppose we had a set $X$ that is defined by some formula in first-order arithmetic $\phi$. Then, by defintion of definability,  we would have the following result:
+    
+    \begin{equation*}
+     a \in X \biject \NN \mo \phi(\bar{a})
+    \end{equation*}
+
+    Let $\phi$ be a $\Delta_0$ formula, the subset of natural numbers $\{n:\phi(n)\}$ is computable. This follows from the defintion of $\phi$ being bounded. This allows us to test a finite number of natural numbers to conclude whether the formula holds for any $n$. Thus,
+    it follows that: \n
+    
+    
+    \begin{claim}
+    For any $\Sigma_1^0$ formula $\psi$, the set $\{n:\psi(n)\}$ is recursively enumerable. The converse holds as well.
+    \end{claim}
+    
+    \begin{proof}
+     Suppose that $\phi$ is a $\Sigma_1^0$ formula of the form:
+	
+	\begin{equation*}
+	 \phi \defeq \exists x_1 ... \exists x_k \theta(x_1,...,x_k)
+	\end{equation*}
+
+	where $\theta$ is a $\Delta_0$ formula. To enumerate through all witnesses, enumerate through all tuples $(x_1,...,x_k)$ and output any that satisfy $\theta$. Conversely, suppose that a set is recursively enumerable. We will prove that 
+	this set can be described by a $\Sigma_1^0$-formula. Since the set is r.e, there exists a program which enumerates through all elements of this set. However, we know that the steps of these computations can be captured by $PA$ through the 
+	$\beta$-function. However, the formula representing the graph of the function is bounded and we can formulate a formula that says that there exists a parameters to the function that encode such a computation of a program. This is precisely a $\Sigma_1^0$-formula.
+    \end{proof}
+
+    From the above result, it follows that a $\Pi_1^0$ formula defines a co-recursively enumerable set.
+    
+    \subsection{Turing Reducibility and Degrees}
+    
+    \begin{definition}
+     A relation or function on $\NN$ is computable relative to $X \subseteq \NN$ if there exists an algorithm to compute the relation/function in a register machine augmented by the operation which
+     returns membership information about $X$.
+    \end{definition}
+    
+    
+    \begin{definition}
+     If set $Y$ is computable relative to $X$, then $Y$ is Turing reducible to $X$ or $Y \turred X$.
+    \end{definition}
+    This is synonymous to an {\bf Oracle Turing Machine}. \n
+      
+    
+    We also see that Turing reducibility gives us a partial order since 
+    
+    \begin{gather*}
+     X \turred X \\
+     (X \turred Y) \land (Y \turred Z) \map X \turred Z
+    \end{gather*}
+
+    \begin{definition}
+     Two sets $X,Y$ are Turing equivalent if $X \turred Y$ and $Y \turred X$. This is denoted by $X \tureq Y$. The equivalence classes are deemed Turing degrees (or degrees of unsolvability).
+    \end{definition}
+    
+     \begin{claim}
+     If $X$ is computable from $R$ and $R$ is computable, then $X$ is computable 
+    \end{claim} 
+    
+    \begin{proof}
+     If the program $X$ is guarenteed to halt when consulting $R$ and $R$ will always give an answer, then $X$ is guarenteed to be compuatable.
+    \end{proof}
+ 
+    \begin{definition}
+     Let $\halt^X = \{x \vert x \in W_x^X\}$ be the jump of $X$ or $X'$. This set is equivalent to the halting set of the oracle machine assigned to $X$. Let $X^{(n)}$ denote the $n^{th}$ jump of $X$ where $X^{(0)} = X$ and $X^{(n+1)} = (X^{(n)})'$
+    \end{definition}
+
+    \begin{theorem} \label{enumerhalt}
+     (Post) If $A$ is any r.e set then $A \leq_T \mathcal{K}$ 
+    \end{theorem}
+    
+    \begin{proof}
+     Let prove that there exists a recursive function $f$ such that 
+     \begin{gather*}
+      x \in A \biject f(x) \in \halt \biject f(x) \in \partf_{f(x)}
+     \end{gather*}
+
+     By $S_m^n$ theorem, let $f$ be a recursive function such that
+     
+     
+     $$ \partf_{f(x)} = \begin{cases} \omega \text{ if $x \in A$} \\ \emptyset \text{ otherwise } \end{cases} $$
+    
+      Then we see that:
+      \begin{itemize}
+       \item $x \in A \map \partf_{f(x)} = \omega \map f(x) \in \partf_{f(x)} \map \partf_{f(x)} \in \halt$ 
+       \item $f(x) \in \halt \map f(x) \in \partf_{f(x)} \map \partf_{f(x)} \neq \emptyset \map x \in A$
+      \end{itemize}
+    \end{proof}
+
+    \begin{definition}
+     A set $A$ is $\Sigma_n^0$-complete if it is $\Sigma_n^0$ and for every $\Sigma_n^0$ set $B$, $B \leq_T A$. $\Pi_n^0$-complete sets are defined similarly.
+    \end{definition}
+
+
+    
+
+    \begin{theorem}
+      for $n > 1$ the following are equivalent
+      \begin{enumerate}
+       \item S is $\Sigma_n^0$
+       \item S is recursively enumerable relative to some $\Pi_{n-1}^0$ set.
+       \item S is recursively enumerable relative to some $\Delta_n^0$ set.
+      \end{enumerate}
+     \end{theorem}
+     
+     \begin{proof}
+      $1 \map 2$: This follows from the fact that a $\Sigma_n^0$ formula can be written as $\exists x_1 \theta(\bar{y},x_1)$ where $\theta(x_1,\bar{y})$  is a $\Pi_{n-1}^0$ formula. Thus, we can test for each potential witness $(\bar{y},a)$, if
+      $\theta(\bar{y},a)$ is satisfiable by asking the if $\bar{y} \in R$ where $R$ is the set defined by $\theta$. \n
+      $2 \map 3$: This follows since any $\Pi_{n-1}^0$ set is a $\Delta_n^0$ (add redundent quantifiers) and any tuple of relations each $\Pi_{n-1}^0$ or $\Sigma_{n-1}^0$ can be replaced by a single $\Delta_n^0$ set(?). \n
+      $3 \map 1$: Suppose that $S$ is computably enumerable relative to $A$ where $A$ is a $\Delta_n^0$ set. Let $\Phi(x,y )$ be a partial function using an oracle machine attached to $A$. We can computably enumerate $S$ by testing values on $\Phi$. In other words, $S = W_e^A$. If we can enumerate $a \in \NN$, then there exists a halting computation $c$ (according to the oracle machine) such that at certain points $q_1,...q_k$ when queried to $A$ give values $v_1,..,v_k$ when given then input $a$. We see that
+      the statement $q_i \in A$ can be described by a $\Sigma_n^0$ formula. Also, $q_i \not\in A \biject q_i \in \neg A$ is also a $\Sigma_n^0$ statement.
+     \end{proof}
+
+
+     \begin{theorem}
+      (Post's Theorem)
+      \begin{enumerate}[i.]
+       \item $B \in \Sigma_{n+1}^0$ if and only if it is recursively enumerable in some $\Sigma_{n}^0$ or some $\Pi_{n}^0$;
+       \item $\emptyset^{(n)}$ is a complete $\Sigma_n^0$ set;
+       \item $B \in \Sigma_{n+1}^0 \biject B$ is recursively enumerable in $\emptyset^{(n)}$; 
+       \item $B \in \Delta_{n+1}^0 \biject B \leq_T \emptyset^{(n)}$.
+      \end{enumerate}
+      
+      \begin{proof}
+       \begin{enumerate}[i.]
+        \item The proof is similar to one given in Theorem 5.2
+        \item We proceed by induction. We know that by \ref{enumerhalt} that the case for $n=1$ is true. Assume that the assumption holds for some $n$. Now suppose we have a $\Sigma_{n+1}^0$ set $P$.
+        We know that we can transform this set can be expressed by $P(\vec{x}) = \exists y R(\vec{x},y)$ where $R \in \Pi_{n}^0$. Thus, $R$ is recursively enumerable relative to a $\Pi_{n}^0$ statement. We can easy use $\neg R$ as an oracle to achieve the same results (simply ask if the elements you seek is not in $\neg R$).
+        By that token, $R$ is recursively enumerable to a $\Sigma_{n}^0$ statement $B$. However, by our induction hypothesis, we know that $B \leq_T \emptyset^{(n)}$. Thus, $P$ is recursively enumerable to $\emptyset^{(n)}$. By a relativized verison of \ref{enumerhalt}, we see that $P \leq_T \emptyset^{(n+1)}$.
+        Now $\emptyset^{(n+1)}$ is also a $\Sigma_{n+1}^0$ set as well since $\emptyset^{(n+1)}$ is recursively enumerable to $\emptyset^{(n)}$ (by Turing jump). However, by induction, $\emptyset^{(n)}$ is a $\Sigma_{n}^0$ set. By part (i), it must be said that $\emptyset^{(n+1)}$ is a $\Sigma_{n+1}^0$ set.
+        \item If $B \in \Sigma_{n+1}^0$ then $B$ is recursively enumerable in some $\Pi_{n}^0$ set. However, if we take the negation of this set, we can compute $B$ by using a $\Sigma_n^0$ set which , by part (ii), is computable by $\emptyset^{(n)}$.
+        \item If $B \in \Delta_{n+1}^0$ then $B, \bar{B} \in \Sigma_{n+1}^0$. Thus, $B, \bar{B}$ is recursively enumerable $\emptyset^{(n)}$ and so $B \leq_T \emptyset^{(n)}$.
+       \end{enumerate}
+      \end{proof}
+     \end{theorem}
+     
+     \begin{theorem}
+      If $A$ is recursively approximatable iff $\Delta_2^0$ iff $R \leq_T \halt$
+     \end{theorem}
+
+ 
+    
+    
+  
+
+
+
+    
+%     
+      
+\end{document}
