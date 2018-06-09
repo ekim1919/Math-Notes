@@ -1,0 +1,160 @@
+\documentclass[12pt]{article}
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{0in}
+\setlength{\textwidth}{6.5in}
+\setlength{\parindent}{0in}
+\setlength{\parskip}{\baselineskip}
+
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{amsthm}
+\usepackage{subfiles}
+
+
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{question}{Question}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}{Definition}[section]
+
+
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+\title{Notes on Measure Theory}
+\author{Edward Kim}
+
+
+
+\begin{document}
+
+\maketitle
+\clearpage
+
+\section{Preliminaries}
+\begin{definition}
+A class of subsets $\mathcal{A}$ of subsets of a set $X$ is deemed an algebra if
+	\begin{enumerate}
+	\item $X \in \mathcal{A}$
+	\item $A,B \in \mathcal{A} \implies A \backslash B \in \mathcal{A}$  
+	\end{enumerate}
+\end{definition}
+
+\begin{remark}
+By the following definition, we note that $X\backslash X = \emptyset \in \mathcal{A}$, For any $B \in \mathcal{A}, X \backslash B = \bar{B} \in \mathcal{A}$. Hence, it easily follows that finite unions and intersections of sets in are $\mathcal{A}$.  
+\end{remark}
+
+\begin{definition}
+An algebra is called a $\sigma$-algebra if for any countable set of subsets $\{\mathcal{A}_n\} \subset \mathcal{A}$, $\bigcup_{\infty} \{\mathcal{A}_n\} \in \mathcal{A}$
+\end{definition}
+
+We shall prove that any family $\mathcal{F}$ of subsets of an arbitrary set $X$ generates a unique $\sigma$-algebra.
+
+\begin{theorem}
+For any family of subsets $\mathcal{F}$ on a set $X$, there exists a unique minimal m$\sigma$-algebra on $X$.
+\end{theorem}
+
+\begin{proof}
+
+Let $$ I = \bigcap_{ \mathcal{F} \subset X} \mathcal{A}_{\mathcal{F}} $$
+over all $\sigma$-algebras over $\mathcal{F}$
+It immediaately follows that $X \in I$ and $\mathcal{F} \in I$. If $\{A_n\}_{\infty} \subset I$, then $\cup_{n=1}^{\infty} \in I$ as the union is taken over $\sigma$-algebras. IF $A,B \in I$, then $A/B \in I$ as every member contains its difference. Thus, $I$ is a $\sigma$-algebra over $\mathcal{F}$
+To show uniqueness, suppose $\mathcal{B}$ is another minimal $\sigma$-algebra over $\mathcal{F}$, then $I \subset \mathcal{B}$. However, this equates to $I = \mathcal{B}$ as $I \cap \mathcal{B}$ is a $\sigma$-algebra and $I \cap \mathcal{B} \subseteq \mathcal{B}$. 
+  
+\end{proof}
+
+
+
+
+\begin{definition}
+	Let $\mathcal{A}$ be a $\sigma$-algebra on a set $X$ and let $\mu: \mathcal{A} \rightarrow [0,\infty]$ be a 	function that satisfies that following properties:
+	\begin{enumerate}
+	\item $\mu(\emptyset) = 0$
+	\item $\mu(\cup_{n = 1}^{\infty} \mathcal{A}_n) = \sum_{n = 1}^{\infty} \mu(\mathcal{A}_n)$
+\end{enumerate}
+\end{definition} 
+\newpage
+
+\begin{definition}
+Let  $\mu:2^X \rightarrow [0,\infty]$ be a function such that 
+\begin{enumerate}
+	\item $\mu(\emptyset) = 0$
+	\item $\mu(A) \subseteq \mu(B) \text{ if } A \subset B$ (Monoticity)
+	\item $\mu(\cup_{n=1}^{\infty} A_n \leq \sum_{n=1}^{\infty} \mu(A_n) \text{ for } \{A_n\}_{\infty}$(Countable Subadditivity)
+\end{enumerate}	
+
+Such a function is called an outer measure on $X$
+\end{definition}
+
+\begin{definition}
+Let $\mu$ be an outer measure on $X$. A set $A$ is $\mu$-measureble if for all $E \subset X$
+$$ \mu(E) = \mu(E \cap A) + \mu(E\backslash A) $$
+\end{definition}
+
+\begin{theorem}(Catheodory's Theorem)
+\label{cath}
+The set of $\mu$-measurable sets on $X$ form a $\sigma$-algebra. Hence $\mu$ defines a measure on the set of $\mu$-measurable sets as described.
+\end{theorem}
+
+\begin{proof}
+Denote the $\mu$-measurable sets as $\mathcal{M}$. We immediately observe that $X \in \mathcal{M}$. Let $A,B \in \mathcal{M}$ and let $E$ be a subset of $X$, then the following holds:
+$$ \mu(E) =  \mu(E \cap A) + \mu(E\backslash A) =  \mu(E \cap A) + \mu((E \backslash A) \cap B) + \mu((E \backslash A) \backslash B) =$$
+$$ \mu((E\backslash (B \backslash A) \cap A) + \mu((E \backslash (B \backslash A)) \backslash A) + \mu(E \cap B \backslash A) = \mu(E \backslash (B \backslash A)) + \mu(E \cap B \backslash A)$$
+
+
+Thus, $A \backslash B \in \mathcal{M}$
+
+To show that $\mathcal{M}$ is closed under countable union, we first note that for $A = \cup_{n =1}^{\infty} A_n, A_n \in \mathcal{M}$
+
+$$\mu(E) \leq \mu(E \cap A) + \mu(E \backslash A)$$
+by countable subadditivity. To show the converse,
+
+let $B_n = A_n \backslash (\cup_{i=1}^{i-1} A_i)$. As above $B_i \in \mathcal{M}$ and
+
+$$ \mu(E \cap \bigcup_{i \in \mathbb{N}} B_i) \leq \sum_{i \in \mathbb{N}} \mu(E \cap B_i) \leq \sum_{i \in \mathbb{N}} \mu(E \cap A_i)   $$
+
+follows by countable subadditivity and monoticity.
+
+Thus, for any $A_n$,
+
+$$\mu(E) = \mu(E \cap A_n) + \mu(E \backslash A_n) \geq \mu(E \cap A) + \mu(E/A) $$
+
+The inequality $\mu(E\backslash A_n) \geq \mu(E \backslash A)$ follows from monoticity.
+Hence, $A \in \mathcal{A}$ as desired.
+
+\end{proof}
+
+\begin{theorem} Let $\mathcal{A}$ be a $\sigma$-algebra on a set X. Define $\mu^*: 2^X \rightarrow [0,\infty]$ as
+$$ \mu^*(E) = \inf\{\sum_{n \in I} \mu(A_i)  : \{{A_i}\}_{I} \subset \mathcal{A}, B \subset \bigcup_{i \in I} A_i, I \subset \mathbb{N} \}$$ 
+
+then $\mu^*$ is an outer measure.
+
+\end{theorem}
+
+\begin{proof}
+From our definition, it is clear that $\mu(\emptyset) = 0$
+\newline
+Now let $E_1 \subset E_2 \subset X$.
+then $\cup_i\{A_{1,i}\}_{I_1,E_1} \subseteq \cup_i\{A_{2,i}\}_{I_2,E_2}$ when taken over index sets $I_1$ and $I_2$
+such that $$\sum_{n \in I_1} \mu(A_{1,n}) - \mu^*(E_1) < \epsilon$$
+$$\sum_{n \in I_2} \mu(A_{2,n}) - \mu^*(E_2) < \epsilon$$
+
+(We wish to show the inequality for monoticity in general. We must force the index sets to sufficinently cover the subsets without extraneous members to render the inequality false for some cases. Find a way to prove this rigorously)
+
+Finally, countable subadditivity can be shown by noticing that for $\mu$:
+
+$$ \mu(\bigcup_{i = 1}^{\infty} A_i) \leq \sum_{i=1}^{\infty} \mu(A_i), A_i \in \mathcal{A} $$
+Taking the infimum on both sides yields the desired result:
+
+$$  \mu^*(\bigcup_{i = 1}^{\infty} A_i) \leq \sum_{i=1}^{\infty} \mu^*(A_i), A_i \in \mathcal{A} $$
+\end{proof}
+
+Thus, $\mu^*$ is indeed an outer measure.
+
+\section{Borel and Baire spaces}
+
+\begin{definition}(Borel space)
+Let $X$ be a set endowed with a topology $\mathcal{T}$. The Borel space $\mathcal{B}$(X) is the $\sigma$-algebra generated by the open sets of $X$.
+\end{definition}
+
+
+\end{document}
