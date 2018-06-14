@@ -1,0 +1,27 @@
+\documentclass[main.tex]{subfiles}
+
+\begin{document}
+\section{Group Actions}
+
+\begin{definition}
+A set $X$ is a G-set if the group $G$ acts on $X$ in the following manner:
+\begin{enumerate}
+\item $ex = x, x \in X$
+\item $(g_1g_2)x = g_1(g_2x), x \in X$
+\end{enumerate}
+\end{definition}
+
+If the set $X$ is finite with cardinality $n$, then there exists a homomorphism $\phi: G \rightarrow \Sigma_n$
+where $\Sigma_n$ is the permutation group of $n$ elements. The homomorphism is defined by the action of $g$ on all $n$ elements in the set $X$. This observation leads us to the following theorem:
+
+\begin{theorem} 
+(Cayley's Theorem)
+Let $G$ be a finite group of order $n$, then $G$ is isomorphic to a subgroup of $\Sigma_n$.
+\end{theorem}
+
+\begin{proof}
+We begin by indexing the elements of $G$ by the index set of $\{1...n\}$ and each $g \in G$ maps to the permuatation element in $\Sigma_n$ based on its action on each element in $G$. The image of $\phi$ as defined above is a subgroup by definition. 
+\end{proof}
+
+
+\end{document}
