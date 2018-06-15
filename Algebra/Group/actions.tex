@@ -23,5 +23,39 @@ Let $G$ be a finite group of order $n$, then $G$ is isomorphic to a subgroup of 
 We begin by indexing the elements of $G$ by the index set of $\{1...n\}$ and each $g \in G$ maps to the permuatation element in $\Sigma_n$ based on its action on each element in $G$. The image of $\phi$ as defined above is a subgroup by definition. 
 \end{proof}
 
+Given an element $x \in X$ where $X$ is a $G$-set, we define the stabilizer as $ G_x = \{gx = x | g \in G\}$
+We see that $G_x$ is a subgroup of $G$
+
+\begin{lemma}
+If $X$ is a $G$-set, then $G_{gx} = gG_xg^{-1}$ for any $g \in G$
+\end{lemma}
+
+\begin{proof}
+It is simple to see that $gG_xg^{-1} \subseteq G_{gx}$ as for any $g_x \in G_{x}$, $(gg_xg^{-1})gx = gx$. Conversely, let $u \in G_{gx}$, then $u(gx) = gx$ and,thus $(g^{-1}ug)x = x$.  
+\end{proof}
+
+\begin{proposition}
+\label{orbit}
+Suppose $X$ is a transitive $G$-set, i.e there exists a homomorphism $\theta: G \rightarrow \Sigma_{|X|}$ based on actions of $G$, then $X \cong G/G_x$ as $G$-sets for any $x \in X$.
+\end{proposition}
+
+\begin{proof}
+The map $gG_x \mapsto gx$ is an isomorphism of $G$-sets.
+\end{proof}
+
+More generally, we can state the "oribit-stabilizer" theorem:
+
+\begin{theorem}
+Let $X$ be a transitive  $G$-set. Then $X$ is the union of disjoint orbits $Gx \cong G/G_x$. Furthermore, if $G$ is finite, then $|Gx| = |G : G_x|$ for any $x \in X$
+\end{theorem}
+
+\begin{proof}
+This immediately follows from \ref{orbit} and fact that orbits induce equivalence classes via the relation:
+$x \sim y$ iff there exists a $g \in G$ such that $y = gx$.  
+\end{proof}
+
+\begin{definition}
+Let $G$ be a group and  $X$ be a $G$-set. $X$ is doubly transitive on $G$ if for every pairs $(x_1,x_2), (y_1,y_2)$ such that $x_1 \neq x_2$ and $y_1 \neq y_2$, then there exists $g \in G$ such that $gx_1 = y_1$ and $gx_2 = y_2$
+\end{definition}
 
 \end{document}
