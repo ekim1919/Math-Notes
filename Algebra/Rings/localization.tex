@@ -1,0 +1,31 @@
+\documentclass[main.tex]{subfiles}
+
+\begin{document}
+ 
+\section{Localization of Rings}
+
+Given a commutative ring $R$, we wish to construct a quotient ring $Q$ be a multiplicative set $S$. The multiplicative set will be viewed as a submonoid.
+We consider pairs $(a,s)$ where $a \in R$ and $s \in S$ and define an equivalence relation as follows: 
+$(a,s) \sim (a's') $ if there exists an $s_1 \in S$ such that $$s_1(s'a - sa') = 0$$
+We can view this as the classes of equivalant fractions in respect to $S$ and will henceforth denote the pair $(a,s)$ as $a/s$
+We define multiplcation $(a/s)(a'/s') = aa'/ss'$ and addition as $$\frac{(s'a + sa')}{(ss')}$$
+(Add proofs of well-definedness later)
+
+We note that $a/s = s'a/ss'$. Thus, many familiar properties of fractions are present in our ring. Let this ring be denoted as $S^{-1}R$
+
+
+Finally we can create a map $\phi: R \rightarrow S^{-1}R$, by $\phi(r) = r/1$, giving us a homomorphism of rings. 
+
+Let $\mathcal{C}$ be a category whose objects are ring homomorphisms $f:R \rightarrow B$ such that for every $s \in S$, $f(s)$ is invertible in $B$.If $f_1: R \rightarrow B$ and $f_2:R \rightarrow B'$ are two morphisms in this category, then a morphism from $f_1$ to $f_2$ is a ring homomorphism $g: B \rightarrow B'$ such that the following diagram commutes:
+
+%\begin{tikzpicture}
+%\node (R) {$R$};
+%\node (B) [belowof=R]{$B$};
+%\node (B')[rightof=B]{$b'$};
+%\draw[->](R) to node {$f_1$}(B);
+%\draw[->] (R) to node {$f_2$} (B');
+%\draw[->,dashed] (B) to node {$g$}(B');
+%\end{tikzpicture}
+
+
+\end{document}

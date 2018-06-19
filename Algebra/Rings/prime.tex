@@ -1,0 +1,67 @@
+
+\documentclass[main.tex]{subfiles}
+
+\begin{document}
+ 
+\section{Prime Ideals}
+
+\begin{definition}
+ Let $R$ be a commutative ring. An ideal $P$ is prime if given $xy \in P$ for $x,y \in R$, $x \in P$ or $y \in P$
+\end{definition}
+
+\begin{definition}
+ An ideal $I$ is called maximal for any ideal $I_m \neq R$ such that $I \subseteq I_m$, then $I_m = R$.
+\end{definition}
+
+From these definitions, we can see that maximal ideals are automatically prime ideals
+
+\begin{theorem}
+ Every maxmial ideal is prime.
+\end{theorem}
+
+\begin{proof}
+Let $M$ be a maximal ideal and $x,y$ be elements such that $xy \in M $ but $x \not\in M$. Generate the ideal $M + Ax$ which is an ideal properly contained in $R$. Hence, there exists $c \in R, m \in M$ such that $1 = m + cx$. Mutliplying both sides by $y$ resutlts in the following equality $y = ym + cxy$. Thus, $y \in M$.
+\end{proof}
+
+\begin{remark}
+ The ideal $\{0\}$ is a prime ideal of $A$ if and only if $A$ is an integral domain
+\end{remark}
+
+\begin{theorem}
+ If $M$ is a maximal ideal, A/M is a field
+\end{theorem}
+
+\begin{proof}
+ Let $\bar{x}$ be the residual class for the quotient ring $A/M$. As above, we can write the following equality: $1 = m + rx$ so $rx \in \bar{1}$ class and thus has an inverse. 
+\end{proof}
+
+\begin{theorem} (Chinese Remainder Theorem)
+Let $R$ be a commutative ring. Let  $a_1,...,a_n$ be ideals such that $(a_i) + (a_j) = (1)$ for $i \neq j$. Given elements $x_1,..,x_n \in R$, there exists $x \in R$ such that $x \equiv x_i \text{ (mod $a_i$) }$ for all $i$
+\end{theorem}
+
+\begin{proof}
+ For $n=2$, $1 = a_1 + a_2$ and multiplying by $x$ gives us $x = x_1a_1 + x_2a_2$.
+ For $i \geq 2$, we can find $a_i \in a_1$ and $b_i \in a_i$ such that $a_i + b_i = 1$. The product $\Pi(a_i+b_i) = 1$ and lies in 
+ 
+ $$ a_1 + \prod_{j \geq 2} a_j = R$$
+ 
+ By the $n = 2$ case, we can find a $y_1$ such that 
+ $y_1 = 1 \mod (a_1)$ and $y_1 = 0 \mod \prod a_j$ 
+ We can continue this procedure for every $a_i$ to find a corresponding $y_i$ and our $x = y_1x_1 + ... + y_nx_n$.
+
+\end{proof}
+
+We can express the theorem through a succient map as below
+$$ R / (\cap_{i=1}^n a_i) \rightarrow R /a_1 \times ... \times R / a_n$$
+for pairwise disjoint ideals $a_1...a_n$ in $R$. By the Chinese Remainder Theorem, this map is surjective and hence an isomorphism of rings.
+
+The classical version of the Chinese remainder theorem used ideals generated relatively prime numbers. 
+
+Let $m = \prod_i p_i^{r_i}$ be the factorization of $m$ into primes with exponents $r_i \geq 1$. Then we get the ring isomorphism:
+
+$$\mathbb{Z}/m\mathbb{Z} \cong \prod_i \mathbb{Z}/(p_i^{r_i})\mathbb{Z}$$
+
+Let $R^*$ denote the multiplicative group of units of $R$.
+
+ 
+\end{document}
