@@ -72,7 +72,6 @@ We deem the pair $(X,\mathcal{A})$ of a set $X$ and a $\sigma$-algebra $\mathcal
 	\item $\mu(\cup_{n = 1}^{\infty} \mathcal{A}_n) = \sum_{n = 1}^{\infty} \mu(\mathcal{A}_n)$
 \end{enumerate}
 \end{definition} 
-\newpage
 
 \begin{definition}
 Let  $\mu:2^X \rightarrow [0,\infty]$ be a function such that 
@@ -116,7 +115,7 @@ follows by countable subadditivity and monoticity.
 
 Thus, for any $A_n$,
 
-$$\mu(E) = \mu(E \cap A_n) + \mu(E \backslash A_n) \geq \mu(E \cap A) + \mu(E/A) $$
+$$\mu(E) = \mu(E \cap A_n) + \mu(E \backslash A_n) \geq \mu(E \cap A) + \mu(E \backslash A) $$
 
 The inequality $\mu(E\backslash A_n) \geq \mu(E \backslash A)$ follows from monoticity.
 Hence, $A \in \mathcal{A}$ as desired.
@@ -135,8 +134,8 @@ From our definition, it is clear that $\mu(\emptyset) = 0$
 \newline
 Now let $E_1 \subset E_2 \subset X$.
 then $\cup_i\{A_{1,i}\}_{I_1,E_1} \subseteq \cup_i\{A_{2,i}\}_{I_2,E_2}$ when taken over index sets $I_1$ and $I_2$
-such that $$\sum_{n \in I_1} \mu(A_{1,n}) - \mu^*(E_1) < \epsilon$$
-$$\sum_{n \in I_2} \mu(A_{2,n}) - \mu^*(E_2) < \epsilon$$
+such that $$\sum_{n \in I_1} \mu(A_{1,n})  < \mu^*(E_1) + \epsilon$$
+$$\sum_{n \in I_2} \mu(A_{2,n})  < \mu^*(E_2) +  \epsilon$$
 
 (We wish to show the inequality for monoticity in general. We must force the index sets to sufficinently cover the subsets without extraneous members to render the inequality false for some cases. Find a way to prove this rigorously)
 
@@ -149,6 +148,10 @@ $$  \mu^*(\bigcup_{i = 1}^{\infty} A_i) \leq \sum_{i=1}^{\infty} \mu^*(A_i), A_i
 \end{proof}
 
 Thus, $\mu^*$ is indeed an outer measure.
+
+\begin{definition}
+
+\end{definition}
 
 \section{Borel and Baire spaces}
 
