@@ -1,7 +1,7 @@
 \documentclass[a4paper,10pt]{article}
 \usepackage[utf8]{inputenc}
 
-\usepackage{amsmath,textcomp,amssymb,geometry,graphicx,enumerate,bm,amsthm,mathtools}
+\usepackage{amsmath,textcomp,amssymb,geometry,graphicx,enumerate,bm,amsthm,mathtools,subfiles}
 
 \newenvironment{claim}[1]{\par\noindent\underline{Claim:}\space#1}{}
 \newenvironment{definition}[1][Definition]{\begin{trivlist}
@@ -76,45 +76,9 @@ $\Pi$ is a computable set. We now arrive at on of the cornerstone theorems in Co
   P_0: \xi_P \map\infty \text{ if } P: \xi_P \map halt \\
   P_0: \xi_P  \map halt \text{ if } P: \xi_P \map \infty
  \end{gather*}
+
+\subfile{undecidibility}
  
- Now suppose we plugged in $P_1$ into itself, then 
- $P_1:\xi_P \map\infty $ iff $P_1:\xi_P \map halt$. This is a contradiction.
- 
-\end{proof}
-
-\begin{lemma}
-The set $\Pi_{halt} = \{\xi_P \vert \text{$P$ is a valid program over $\mathbb{A}$ and $\square \map halt$}\}$ is not computable.
-\end{lemma}
-
-\begin{lemma}
- $\Pi_{halt}$ is recursively enumerable.
-\end{lemma}
-
-\begin{proof}
- Enumerate through $n$=1,2,3.... and generate all programs whose G\"{o}del numbers are $\leq n$. Run each one for at most $n$ steps with input $\square$. If a program in the list halts within that time,
- enumerate the program.
-\end{proof}
-
- We can think of the halting set through a different lens. Let $\phi_e$ denote the $e^{th}$ program. We can also enumerate the domains of $\phi_0,\phi_1,...$ through a similar tactic as the above lemma.
- Let $W_0,W_1,...$ denote the domains of these functions. Since not all of these functions are total, we see that $W_e \subseteq \NN$. The halting set can be described as $K = \{x \vert x \in W_x\}$. This is akin to taking all programs which halt on their own G\"{o}del number.
-\subsection{Undecidibility of First-Order Logic}
-
-\begin{theorem}
- (Church's Theorem)
- Let $\phi$ be a first-order sentence. Then the set $\{\phi \vert \mo \phi\}$ of valid first-order sentences is not computable.
-\end{theorem}
-
-\subsection{Undecidibility of Arithmetic}
-
-
-\newpage
-\section{Peano Arithmetic and its Models}
-
-
-\subsection{Encoding Proofs into PA}
-
-
-\newpage
 \section{G{\"o}del's Incompleteness Theorems}
 
 \begin{theorem}
@@ -127,6 +91,7 @@ The set $\Pi_{halt} = \{\xi_P \vert \text{$P$ is a valid program over $\mathbb{A
 
 Intuitively, the theorem states that there exists a formula in arithmetic $\phi$ such that $\phi$ proves that it has property $\psi$.
 \begin{proof}
+
  Let us define a computable function $F: \NN \times \NN \map \NN$ by the following:
  \begin{equation*}
     F(n,m) = 
@@ -150,7 +115,7 @@ Intuitively, the theorem states that there exists a formula in arithmetic $\phi$
   Conversely, since $F$ is representable in $\Phi$, $\Phi \vdash \exists^{=1}\alpha(\betabar,\betabar,z)$. The previous tells us that $\Phi \vdash \alpha(\bar{n^{\beta}},\bar{n^{\beta}},z) \map z = \bar{n^{\phi}}$. \n 
   Since  $\psi(\bar{n^{\phi}})$ is the hypothesis, we get that
   $\Phi \vdash \psi(\bar{n^{\phi}}) \map \forall z(\alpha(\bar{n^{\beta}},\bar{n^{\beta}},z) \map \psi(z))$ which is exactly $\Phi \vdash \psi(\bar{n^{\beta}}) \map \phi$.
- \end{proof}
+\end{proof}
 
   We can use the Fixed Point Theorem to show Tarski's Theorem.
   
@@ -524,12 +489,5 @@ Intuitively, the theorem states that there exists a formula in arithmetic $\phi$
 
  
     
-    
-  
 
-
-
-    
-%     
-      
 \end{document}

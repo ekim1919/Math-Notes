@@ -1,0 +1,66 @@
+\documentclass[main.tex]{subfiles}
+
+\begin{document}
+\section{Undecidibility}
+
+\subsection{Halting Problem}
+Given any register program $P$ consisting of a finite alphabet($\mathbb{A}$), we can assign a code to represent the program through a G\"{o}del numbering scheme. Let $\xi_P$ be the G\"{o}del number of $P$.
+Since we have a finite alphabet and every program can be represented as a finite string of symbols, the number of possible programs must be countable. Thus, the set 
+$\Pi = \{\xi_P \vert \text{$P$ is a valid program over $\mathbb{A}$}\}$ is a countable set. Checking the syntax of programs is computable through a set of rules governing said syntax. Thus, it must be said that
+$\Pi$ is a computable set. We now arrive at on of the cornerstone theorems in Computability Theory:
+
+\begin{theorem}
+ (Halting Problem) \n
+ The set $\Pi_{halt}' = \{\xi_P \vert \text{$P$ is a valid program over $\mathbb{A}$ and $\xi_P \map halt$}\}$ is not computable.
+\end{theorem}
+
+\begin{proof}
+ Suppose that there existed a program $P_0$ which decided this set.  Then for all $P$
+ \begin{gather*}
+  P_0: \xi_P \map\square \text{ if } P: \xi_P \map halt \\
+  P_0: \xi_P  \map \eta \text{ for some $\eta \neq \square $ if } P: \xi_P \map \infty
+ \end{gather*}
+
+ Create any program $P_1$ that does the direct opposite of $P_0$:
+ \begin{gather*}
+  P_0: \xi_P \map\infty \text{ if } P: \xi_P \map halt \\
+P_0: \xi_P \map halt \text{ if } P: \xi_P \map \infty
+\end{gather*}
+
+ Now suppose we plugged in $P_1$ into itself, then 
+ $P_1:\xi_P \map\infty $ iff $P_1:\xi_P \map halt$. This is a contradiction.
+\end{proof}
+
+\begin{lemma}
+The set $\Pi_{halt} = \{\xi_P \vert \text{$P$ is a valid program over $\mathbb{A}$ and $\square \map halt$}\}$ is not computable.
+\end{lemma}
+
+\begin{lemma}
+ $\Pi_{halt}$ is recursively enumerable.
+\end{lemma}
+
+\begin{proof}
+ Enumerate through $n$=1,2,3.... and generate all programs whose G\"{o}del numbers are $\leq n$. Run each one for at most $n$ steps with input $\square$. If a program in the list halts within that time,
+ enumerate the program.
+\end{proof}
+
+ We can think of the halting set through a different lens. Let $\phi_e$ denote the $e^{th}$ program. We can also enumerate the domains of $\phi_0,\phi_1,...$ through a similar tactic as the above lemma.
+ Let $W_0,W_1,...$ denote the domains of these functions. Since not all of these functions are total, we see that $W_e \subseteq \NN$. The halting set can be described as $K = \{x \vert x \in W_x\}$. This is akin to taking all programs which halt on their own G\"{o}del number.
+\subsection{Undecidibility of First-Order Logic}
+
+\begin{theorem}
+ (Church's Theorem)
+ Let $\phi$ be a first-order sentence. Then the set $\{\phi \vert \mo \phi\}$ of valid first-order sentences is not computable.
+\end{theorem}
+
+\subsection{Undecidibility of Arithmetic}
+
+
+\newpage
+\section{Peano Arithmetic and its Models}
+
+
+\subsection{Encoding Proofs into PA}
+
+
+\end{document}
