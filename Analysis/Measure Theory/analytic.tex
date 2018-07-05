@@ -1,0 +1,70 @@
+\documentclass[main.tex]{subfiles}
+
+\begin{document}
+ \section{Polish Spaces and Souslin Sets}
+
+\begin{definition}
+ A topological space $X$ is deemed a Polish space if it is homeomorphic to a complete separable metric space.
+\end{definition}
+
+\begin{definition}
+ A subset of  a Hausdorff space $X$ is Souslin if it is the image of a Polish space under a continuous mapping. $\mathcal{S}(X)$ is the set of all Souslin sets in $X$. A Hausdorff space is Souslin if itself is a Souslin set.
+\end{definition}
+
+\begin{definition}
+ Define the space $\mathbb{N}^{\infty}$ as the space of all countably infinite sequences of natural numbers. We can define a metric on this space by the following function: for any two sequences $(x_i),(y_i)$, the function $\rho: \mathbb{N}^{\infty} \rightarrow [0,\infty), \rho((x_i),(y_i)) = 2^{-\inf \{j : x_j = y_j\}}$ defines a metric on $\mathbb{N}^{\infty}$.
+\end{definition}
+
+\begin{theorem}
+ $\mathbb{N}^{\infty}$ is a Polish space.
+\end{theorem}
+
+\begin{proof}
+ From the metric above, we can construct a countable dense set as follows:
+ $$\mathcal{D} = \{ (a_i) \vert a_i = 0, i \geq n, n \in \mathbb{N} \} $$
+ To see that $\mathbb{N}^{\infty}$ is complete, let $\{(a_i)\}$ be a Cauchy sequence in $\mathbb{N}^{\infty}$. Thus, for every $2^{-m}$, there exists a $n \in \mathbb{N}$ such that for any $i,j \geq n$, $\rho((a)_i,(a)_j) \leq 2^{-m}$. By our definition, above, this implies that all $(a)_i,(a)_j$ for $i,j \geq n$ $(a)_j, (a)_i$ must share the first $m$ elements of their sequences. Formally, denote position $j$ in a sequence $(a_i) \in \mathbb{N}^{\infty}$ by $(a_i^j)$.
+ Then $(a^r)_i = (a^r)_j$ for all $1\leq r \leq m$. Now define $(a)_c$ as follows:
+ $$(a)_c^n = (a^n)_i \text{ for $i \geq n$ as above}$$
+ 
+ We see that $\rho((a)_i,(a)_c) \rightarrow 0$ as $i \rightarrow 0$. Thus, $\mathbb{N}^{\infty}$ is complete.
+\end{proof}
+
+\begin{proposition}
+ $\mathbb{N}^{\infty}$ is homeomorphic to the irrational numbers in $(0,1)$ equipped with the usual topology on $\mathbb{R}$.
+\end{proposition}
+
+\begin{proof}
+ It will suffice to create a homeomorpism from $\mathbb{Z}^{\infty}$ to $(0,1) \backslash \mathbb{Q}$. We first enumerate the rationals $q_n$ between $(0,1)$ and construct a family of intervals $I_{(a_j)}, (a_j) \in \mathbb{Z}^{\infty}$ as follows:
+ \begin{enumerate}
+  \item $(0,1) \backslash \mathbb{Q} \subset \bigcup_{s_1,...,s_i \in \mathbb{Z}} I_{(s_1,...,s_i)}$ for all $i \in \mathbb{N}$
+  \item The right endpoint of $I_{s_1,...,s_i}$ is the left endpoint of $I_{s_1,...,s_i+1}$ for all $i \in \mathbb{N}$
+  \item Let $m$ be the Lebesgue measure on $\mathbb{R}$. Force $m(I_{s_1,...,s_i}) < \frac{1}{i}$ for all $i \in \mathbb{N}$.
+  \item $ \bigcup_{s_{i+1} \in \mathbb{Z}} I_{s_1,...,s_{i+1}} \subset I_{s_1,...,s_i}$ for all $i \in \mathbb{N}$.
+  \item $q_i$ is the endpoint of some interval $I_{s_1,...,s_i}, i \in \mathbb{N}$
+ \end{enumerate}
+ 
+  Now constuct $\phi: \mathbb{Z}^{\infty} \rightarrow (0,1) \backslash \mathbb{Q}$
+  as follows:
+  $$h((a_n)_n) = \bigcap_{n \in \mathbb{N}} I_{s_1,...,s_n} $$
+
+Note that the intersection is nonempty by the fourth criterion. By the third criterion, the inductively-constructed intersections must be singletons since the length of the intervals go to zero.By the fifth criterion, it the singletons must exclude the rationals. The second criterion ensures the injectivity of $\phi$. Also. for every irrational $r \in (0,1) \backslash \mathbb{Q}$, there exists a $(a_n) \in \mathbb{Z}^{\infty}$ such that $h(a_n) = z$, proving surjectivity. Hence $\phi$ is a bijection that takes $h(\{s_1\} \times ... \times \{s_i\} \times \mathbb{Z}^{\infty}) = I_{s_1,...,s_i} \cap (0,1) \backslash \mathbb{Q}$ and both form basis' in their respective topologies by the first criterion and by the definition of $\phi$.
+\end{proof}
+
+\begin{proposition}
+Every Polish space is the continous image of $\mathbb{N}^{\infty}$.
+\end{proposition}
+
+\begin{proof}
+Let $X$ be a Polish space endowed with the metric $\rho$. Construct the following closed balls inductively as follows:
+Let $\mathcal{D}$ be the countable dense set in $X$ and let $C_i$ be the closed ball $\bar{B}(x_i,1)$ around $x_i \in \mathcal{D}$ for some enumeration of $\mathcal{D}$. Let $\{x_{i_1,...,i_n,r}\}_{r \in \mathbb{N}}$ be dense in $C_{i_1,...,i_n}$ and define nonempty closed sets $\bar{B}(x_{i_1,...,i_n,r},2^{-n}) \cap C_{i_1,...,i_n}$. Thus, we have the following descending chain of inclusions: $$ ... \subset C_{i_1,...,i_n} \subset ... \subset C_{i_1,i_2}\subset C_{i_1}$$.
+Define the map $f:\mathbb{N}^{\infty} \rightarrow X$:
+$$f((a)) = \bigcap_{(a) \in \mathbb{N}^{\infty}} C_{(a)} $$
+Since $X$ is complete and $(a)$ idenitifies with a unique Cauchy sequence, $f$ is injective and well-defined. Let $(a)_j,(a)_k \in \mathbb{N}^{\infty}$ such that $d((a)_j,(a)_k) \leq 2^{-m}$ and $m > 1$. However, by definition, $f((a)_j),f((a)_k) \in C_{i_1,...,i_{m-1}} \subset \bar{B}(x_{i_1,...,i_{m}},2^{-m+1})$. Thus, $\rho(f((a)_j),f((a)_k)) \leq 2^{-m+1} = 2 \cdot d((a)_j,(a)_k)$. We see that by bounding the metric by $d$, we force the continuity of $f$. By density and our construction above, $f(\mathbb{N}^{\infty}$. To see this, let $x \in X$ and $U_x$ a neighborhood of $x$. By the density, there exists $d \in \mathcal{D}$ such that $d \in U_x$. In particular, there exists a $\bar{B}(d,2^{-m}) \subset U_x$ for a sufficiently small $m$. Hence, there must exist $(a) \in \mathbb{N}^{\infty}$ by following this argument for all neighborhoods $U_x$.
+\end{proof}
+
+We will now visit a technique using Souslin sets to manipulate Borel sets from their source Polish space. 
+
+\begin{theorem}
+Let $Y$ be a Hasdorff space and let $\{C_i\} \subset \mathcal{S}(Y)$ be disjoint Souslin sets. Then there exists two disjoint Borel sets $B_i \subset \mathcal{B}(Y)$ such that $C_i \subset B_i$.
+\end{theorem}
+\end{document}
