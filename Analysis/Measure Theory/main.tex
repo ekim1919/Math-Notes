@@ -255,16 +255,25 @@ Thus, the Baire $\sigma$-algebra is the smallest $\sigma$-algebra such that ever
   $$h((a_n)_n) = \bigcap_{n \in \mathbb{N}} I_{s_1,...,s_n} $$
 
 Note that the intersection is nonempty by the fourth criterion. By the third criterion, the inductively-constructed intersections must be singletons since the length of the intervals go to zero.By the fifth criterion, it the singletons must exclude the rationals. The second criterion ensures the injectivity of $\phi$. Also. for every irrational $r \in (0,1) \backslash \mathbb{Q}$, there exists a $(a_n) \in \mathbb{Z}^{\infty}$ such that $h(a_n) = z$, proving surjectivity. Hence $\phi$ is a bijection that takes $h(\{s_1\} \times ... \times \{s_i\} \times \mathbb{Z}^{\infty}) = I_{s_1,...,s_i} \cap (0,1) \backslash \mathbb{Q}$ and both form basis' in their respective topologies by the first criterion and by the definition of $\phi$.
+\end{proof}
 
 \begin{proposition}
 Every Polish space is the continous image of $\mathbb{N}^{\infty}$.
 \end{proposition}
 
+\begin{proof}
+Let $X$ be a Polish space endowed with the metric $\rho$. Construct the following closed balls inductively as follows:
+Let $\mathcal{D}$ be the countable dense set in $X$ and let $C_i$ be the closed ball $\bar{B}(x_i,1)$ around $x_i \in \mathcal{D}$ for some enumeration of $\mathcal{D}$. Let $\{x_{i_1,...,i_n,r}\}_{r \in \mathbb{N}}$ be dense in $C_{i_1,...,i_n}$ and define nonempty closed sets $\bar{B}(x_{i_1,...,i_n,r},2^{-n}) \cap C_{i_1,...,i_n}$. Thus, we have the following descending chain of inclusions: $$ ... \subset C_{i_1,...,i_n} \subset ... \subset C_{i_1,i_2}\subset C_{i_1}$$.
+Define the map $f:\mathbb{N}^{\infty} \rightarrow X$:
+$$f((a)) = \bigcap_{(a) \in \mathbb{N}^{\infty}} C_{(a)} $$
+Since $X$ is complete and $(a)$ idenitifies with a unique Cauchy sequence, $f$ is injective and well-defined. Let $(a)_j,(a)_k \in \mathbb{N}^{\infty}$ such that $d((a)_j,(a)_k) \leq 2^{-m}$ and $m > 1$. However, by definition, $f((a)_j),f((a)_k) \in C_{i_1,...,i_{m-1}} \subset \bar{B}(x_{i_1,...,i_{m}},2^{-m+1})$. Thus, $\rho(f((a)_j),f((a)_k)) \leq 2^{-m+1} = 2 \cdot d((a)_j,(a)_k)$. We see that by bounding the metric by $d$, we force the continuity of $f$. By density and our construction above, $f(\mathbb{N}^{\infty}$. To see this, let $x \in X$ and $U_x$ a neighborhood of $x$. By the density, there exists $d \in \mathcal{D}$ such that $d \in U_x$. In particular, there exists a $\bar{B}(d,2^{-m}) \subset U_x$ for a sufficiently small $m$. Hence, there must exist $(a) \in \mathbb{N}^{\infty}$ by following this argument for all neighborhoods $U_x$.
 \end{proof}
 
+We will now visit a technique using Souslin sets to manipulate Borel sets from their source Polish space. 
 
-
-
+\begin{theorem}
+Let $Y$ be a Hasdorff space and let $\{C_i\} \subset \mathcal{S}(Y)$ be disjoint Souslin sets. Then there exists two disjoint Borel sets $B_i \subset \mathcal{B}(Y)$ such that $C_i \subset B_i$.2  
+\end{theorem}
 
 
 
