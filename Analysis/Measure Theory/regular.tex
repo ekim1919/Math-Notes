@@ -26,6 +26,7 @@ Given a set $X$ and a $\sigma$-algebra $\mathcal{A}$, then we could complete the
 We must check that this construction does not depend on the choice of $E,F$ as above and thus the completion measure will be well-defined. We see that, by definition, $\mu(E) = \mu(F)$. Also, we see that $\mu(F) = \sup \{ \mu(B) \vert B \in \mathcal{A}, B \subseteq A \}$. By symmetry, $\mu(E) = \inf\{\mu(B) \vert B \in \mathcal{A}, A \subseteq B\}$. Thus, we see that the choice of sets above does not affect the completion construction and we can attempt to extend the measure $\bar{\mu}: \mathcal{A}_{\mu} \rightarrow [0,\infty]$ such that $\bar{\mu}(A) = \mu(F) = \mu(E)$. It now suffices to prove that this indeed is a measure on $\mathcal{A}_{\mu}$.
 
 \begin{theorem}
+\label{completiontheorem}
  Let $(X,\mathcal{A})$ be a measurable set and let $\mu$ be a measure on the space. Using Definition \ref{completedef}, the extended measure $\bar{\mu}:\mathcal{A}_{_mu} \rightarrow [0,\infty]$ is indeed a complete measure on $\mathcal{A}_{\mu}$ which is a $\sigma$-algebra containing $\mathcal{A}$. Furthermore, $\bar{\mu} \restriction_{\mathcal{A}} = \mu$.
 \end{theorem}
 
@@ -55,6 +56,18 @@ Similar to our definition of an outer measure on a measurable space $(X,\mathcal
  $$ \mu_*(A) = \sup \{ \sum_I \mu(B_i) \vert \{B_i\}_I \subseteq \mathcal{A}, \bigcup_{i \in I}^{\infty} B_i \subseteq A, I \subseteq \mathbb{N} \}$$
 \end{definition}
 
+In light of the set $\mathcal{A}_{\mu}$, we can find conditions in which the inner and outer measures coincide:
+
+\begin{theorem}
+ Let $(X,\mathcal{A},\mu)$ be a measure space and let $A \subset X$ such that $\mu^*(A) < \infty$. Then $A \in \mathcal{A}_{\mu}$ if and only if $\mu^*(A) = \mu_*(A)$. 
+\end{theorem}
+
+\begin{proof}
+If $A \in \mathcal{A}_{\mu}$, by our remark above and \ref{completiontheorem} , it immediately follows that $\mu^*(A) = \mu_*(A)$. Conversely, if $\mu^*(A) = \mu_*(A)$ there exists a countable families $\{E_i\}_{I_1},\{F_i\}_{I_2}$ such that
+$$\sum_{I_1} \mu(E_i) < \mu_*(A) + \epsilon $$
+$$\sum_{I_2} \mu(F_i) < \mu^*(A) + \epsilon  $$ 
+Thus, $\mu(\cup_{I_2} F_i \backslash \cup_{I_1} E_i) < 2\epsilon$ for any $\epsilon \geq 0$. Hence, taking countable unions of such families for every $\epsilon < \frac{1}{n}$, there exists $E \subseteq A \subseteq F$ such that $\mu(F\backslash E) = 0$. 
+\end{proof}
 
 \begin{definition}
 An outer measure $\mu$ on $X$ is called regular if for any $A \subset X$, there exists a $\mu$-measurable set $B \subset X$ such that $\mu(A) = \mu(B)$. 
