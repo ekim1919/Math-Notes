@@ -1,0 +1,68 @@
+\documentclass[main.tex]{subfiles}
+
+\begin{document}
+\section{Regularity and Completeness of Measures}
+
+\begin{definition}
+Given a measure space $(X,\mathcal{A},\mu)$, we say that the measure $\mu$ (or the measure space itself) is complete if for any $B \subseteq A$ such that $\mu(A) = 0$, then $B \in \mathcal{A}$ and $\mu(B) = 0$.
+\end{definition}
+
+\begin{example}
+The measure space $(X,M_{\mu^*},\mu^*)$ mentioned in \ref{outermspace}. is complete.
+\end{example}
+
+Given a set $X$ and a $\sigma$-algebra $\mathcal{A}$, then we could complete the space through a completion process.
+
+\begin{definition}
+\label{completedef}
+ Let $(X,\mathcal{A})$ be a measurable space with $\mu$ a measure on the pair, the completion of $\mu$ is the collection of subsets $A$ of the form:
+ $$ E \subseteq A \subseteq F $$ for $E,F \in \mathcal{A}$ and $\mu(F\backslash E) = 0$. Denote this collection as $\mathcal{A}_{\mu}$.
+\end{definition}
+
+\begin{remark}
+ Note that any subset $A \subseteq E$ where $\mu(E) = 0$ immediately implies that $E \in \mathcal{A}_{\mu}$.
+\end{remark}
+
+We must check that this construction does not depend on the choice of $E,F$ as above and thus the completion measure will be well-defined. We see that, by definition, $\mu(E) = \mu(F)$. Also, we see that $\mu(F) = \sup \{ \mu(B) \vert B \in \mathcal{A}, B \subseteq A \}$. By symmetry, $\mu(E) = \inf\{\mu(B) \vert B \in \mathcal{A}, A \subseteq B\}$. Thus, we see that the choice of sets above does not affect the completion construction and we can attempt to extend the measure $\bar{\mu}: \mathcal{A}_{\mu} \rightarrow [0,\infty]$ such that $\bar{\mu}(A) = \mu(F) = \mu(E)$. It now suffices to prove that this indeed is a measure on $\mathcal{A}_{\mu}$.
+
+\begin{theorem}
+ Let $(X,\mathcal{A})$ be a measurable set and let $\mu$ be a measure on the space. Using Definition \ref{completedef}, the extended measure $\bar{\mu}:\mathcal{A}_{_mu} \rightarrow [0,\infty]$ is indeed a complete measure on $\mathcal{A}_{\mu}$ which is a $\sigma$-algebra containing $\mathcal{A}$. Furthermore, $\bar{\mu} \restriction_{\mathcal{A}} = \mu$.
+\end{theorem}
+
+\begin{proof}
+We first proof that $\mathcal{A}_{\mu}$ is indeed a $\sigma$-algebra. Since $\mathcal{A} \subseteq \mathcal{A}_{\mu}$, $X \in \mathcal{A}_{\mu}$. Given two $A,B \in \mathcal{A}_{\mu}$, there exist $E_A,E_B \in \mathcal{A}$ and $F_A,F_B \in \mathcal{A}$ following the definition given in \ref{completedef} respectively. Since $A\backslash B \subseteq (F_A \backslash E_A) \backslash (F_B \backslash E_B) \in \mathcal{A}$ and $\mu((F_A \backslash E_A) \backslash (F_B \backslash E_B)) = 0$. Next, suppose we had a countable family $\{A_i\} \subseteq  \mathcal{A}_{\mu}$.
+Let $\{F_i\},\{E_i\}$ be the sets mentioned in \ref{completedef} respective by index. Then it follows that: 
+$$ \bigcup_{i = 1}^{\infty} E_i \subseteq \bigcup_{i = 1}^{\infty} A_i\subseteq \bigcup_{i = 1}^{\infty} F_i$$ and 
+$$\bigcup_{i = 1}^{\infty} F_i \backslash  \bigcup_{i = 1}^{\infty} E_i \subseteq \bigcup_{i = 1}^{\infty} (F_i \backslash E_i) $$ 
+Thus,
+$$ \mu(\cup_{i = 1}^{\infty} F_i \backslash  \cup_{i = 1}^{\infty} E_i ) \leq \sum \mu(F_i\backslash E_i) = 0 $$
+and it follows that $\mathcal{A}_{\mu}$ is a $\sigma$-algebra and $\bar{\mu}$ is measure by the properties endowed by $\mu$. 
+
+\begin{enumerate}
+ \item $\bar{\mu}(\emptyset) = 0$
+ \item Given a countable disjoint family $\{A_i\} \subset \mathcal{A}_{\mu}$,
+ $\bar{\mu}(\cup_i A_i) = \mu(\cup_i E_i) = \sum_i \mu(E_i)$ since $E_i \subseteq A_i$ by our notation in Definition \ref{completedef}.
+\end{enumerate}
+
+Completeness immediately follows from the construction of $\mathcal{A}_{\mu}$.
+\end{proof}
+
+Similar to our definition of an outer measure on a measurable space $(X,\mathcal{A},\mu)$, we can define an inner measure as follows:
+
+\begin{definition}
+ Let $(X,\mathcal{A},\mu)$ be a measure space. Define the inner measure 
+ $\mu_*: 2^X \rightarrow [0,\infty]$ as follows:
+ $$ \mu_*(A) = \sup \{ \sum_I \mu(B_i) \vert \{B_i\}_I \subseteq \mathcal{A}, \bigcup_{i \in I}^{\infty} B_i \subseteq A, I \subseteq \mathbb{N} \}$$
+\end{definition}
+
+
+\begin{definition}
+An outer measure $\mu$ on $X$ is called regular if for any $A \subset X$, there exists a $\mu$-measurable set $B \subset X$ such that $\mu(A) = \mu(B)$. 
+\end{definition} 
+
+\begin{theorem}
+Given an finite regular outer measure $\mu$ on $X$, for all $A \subset X$, $A$ is $\mu$-measurable if and only if $\mu(A) = \mu(A) + \mu(X \backslash A)$. 
+\end{theorem}
+
+
+\end{document}

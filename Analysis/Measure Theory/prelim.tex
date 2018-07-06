@@ -34,16 +34,18 @@ To show uniqueness, suppose $\mathcal{B}$ is another minimal $\sigma$-algebra ov
   
 \end{proof}
 
-We deem the pair $(X,\mathcal{A})$ of a set $X$ and a $\sigma$-algebra $\mathcal{A}$ on it as a measure space.
+
 
 
 \begin{definition}
-	Let $\mathcal{A}$ be a $\sigma$-algebra on a set $X$ and let $\mu: \mathcal{A} \rightarrow [0,\infty]$ be a 	function that satisfies that following properties:
+	Let $\mathcal{A}$ be a $\sigma$-algebra on a set $X$ and let $\mu: \mathcal{A} \rightarrow [0,\infty]$ be a function that satisfies that following properties:
 	\begin{enumerate}
 	\item $\mu(\emptyset) = 0$
-	\item $\mu(\cup_{n = 1}^{\infty} \mathcal{A}_n) = \sum_{n = 1}^{\infty} \mu(\mathcal{A}_n)$
+	\item $\mu(\cup_{n = 1}^{\infty} \mathcal{A}_n) = \sum_{n = 1}^{\infty} \mu(\mathcal{A}_n)$ for any family of disjoint sets $\{A_n\} \subset \mathcal{A}$
 \end{enumerate}
-\end{definition} 
+\end{definition}
+
+We deem the tuple $(X,\mathcal{A},\mu)$ of a set $X$ and a $\sigma$-algebra $\mathcal{A}$ on it endowed with the function above as a measure space.
 
 \begin{definition}
 Let  $\mu:2^X \rightarrow [0,\infty]$ be a function such that 
@@ -95,7 +97,7 @@ Hence, $A \in \mathcal{A}$ as desired.
 \end{proof}
 
 \begin{theorem} Let $\mathcal{A}$ be a $\sigma$-algebra on a set X. Define $\mu^*: 2^X \rightarrow [0,\infty]$ as
-$$ \mu^*(E) = \inf\{\sum_{n \in I} \mu(A_i)  : \{{A_i}\}_{I} \subset \mathcal{A}, B \subset \bigcup_{i \in I} A_i, I \subset \mathbb{N} \}$$ 
+$$ \mu^*(E) = \inf\{\sum_{n \in I} \mu(A_i)  : \{{A_i}\}_{I} \subseteq \mathcal{A}, B \subseteq \bigcup_{i \in I} A_i, I \subseteq \mathbb{N} \}$$ 
 
 then $\mu^*$ is an outer measure.
 
@@ -120,7 +122,13 @@ $$  \mu^*(\bigcup_{i = 1}^{\infty} A_i) \leq \sum_{i=1}^{\infty} \mu^*(A_i), A_i
 
 Thus, $\mu^*$ is indeed an outer measure.
 
-\begin{definition}
-An outer measure $\mu^*$ is called regular if for any $A \subset X$, there exists a $\mu^*$-measureable set $B \subset X$ such that $\mu^*(A) = \mu^*(B)$. 
-\end{definition} 
+\begin{theorem}
+\label{outermspace}
+ Let $\mu^*$ be an outer measure on $X$, and let $\mathcal{M}_{\mu^*}$ be the set of all $\mu^*$-measurable sets. Then, $\mu^*$ is a measure on $\mathcal{M}_{\mu^*}$.
+\end{theorem}
+\begin{proof}
+The proof follows from directly from Theorem $\ref{cath}$.
+\end{proof}
+
+
 \end{document}
