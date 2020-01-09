@@ -1,0 +1,18 @@
+\documentclass{../quantum.tex}
+
+\begin{document}
+\section{Quantum Mechanics}
+
+\subsection{Density Matrices}
+
+Suppose we have an ensemble of states\{\ket{\psi_1},...,\ket{\psi_k}\} in a statisitcal mixture in the sense that we know the distribution of the states. Let $p_i$ denote the probability of selecting state $\ket{\psi_i}$ for $1 \leq i \leq k$ where $\sum_i p_i = 1$.
+
+We wish to find a way to calculate the expected value of any observable $A$ on this ensemble. Note that the linear superposition of these states in the form $\sum_{i=1}^k p_i \ket{\psi_i}$ is generally not the same as a statistical mixture of the individual states $\ket{\psi_i}$.
+
+From Postulate three, we can calculate the probability that measuring with $A = \sum_i a_iP_i$ will yield outcome $a_j$:
+
+$$ p(j) = \sum_{i=1}^k p_i \bra{\psi_i}P_j\ket{\psi_i} $$
+
+Note that the $\bra{\psi_i}P_j\ket{\psi_i}$ represent the probability of obtaining outcome $a_j$ given the state vector is $\ket{\psi_i}$ as per postulate three.
+
+\end{document}
