@@ -1,11 +1,11 @@
 # Fdb version 3
-["pdflatex"] 1578413226 "algorithms.tex" "algorithms.pdf" "algorithms" 1578413226
+["pdflatex"] 1578413226 "algorithms.tex" "algorithms.pdf" "algorithms" 1578697501
   "../quantum.tex.cls" 0 -1 0 ""
   "/usr/local/texlive/2019basic/texmf-dist/web2c/texmf.cnf" 1570742662 39452 758acee3f2beaeeedff570c5f5d76d98 ""
   "/usr/local/texlive/2019basic/texmf-var/web2c/pdftex/pdflatex.fmt" 1571522870 2708373 636b575a08d15d78eab8dd050104f1f5 ""
   "/usr/local/texlive/2019basic/texmf.cnf" 1570846878 628 6cfff46d1fd9ae1d47a88551035aa162 ""
   "algorithms.aux" 1578413190 8 a94a2480d3289e625eea47cd1b285758 ""
-  "algorithms.tex" 1578413226 97 57cb8854fca72a76f81576cb4a581fb4 ""
+  "algorithms.tex" 1578697501 97 57cb8854fca72a76f81576cb4a581fb4 ""
   (generated)
-  "algorithms.log"
   "algorithms.pdf"
+  "algorithms.log"

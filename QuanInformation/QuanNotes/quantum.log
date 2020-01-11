@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2019.10.19)  8 JAN 2020 03:28
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2019.10.19)  10 JAN 2020 18:42
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -282,29 +282,170 @@ Package: xparse 2019-05-28 L3 Experimental document command parser
 (/usr/local/texlive/2019basic/texmf-dist/tex/latex/qcircuit/qcircuit.sty
 Package: qcircuit 2018/08/14
 
+(/usr/local/texlive/2019basic/texmf-dist/tex/generic/xypic/xy.sty
+(/usr/local/texlive/2019basic/texmf-dist/tex/generic/xypic/xy.tex
+Bootstrap'ing: catcodes, docmode,
+(/usr/local/texlive/2019basic/texmf-dist/tex/generic/xypic/xyrecat.tex)
+(/usr/local/texlive/2019basic/texmf-dist/tex/generic/xypic/xyidioms.tex)
 
-! LaTeX Error: File `xy.sty' not found.
+ Xy-pic version 3.8.9 <2013/10/06>
+ Copyright (c) 1991-2013 by Kristoffer H. Rose <krisrose@tug.org> and others
+ Xy-pic is free software: see the User's Guide for details.
 
-Type X to quit or <RETURN> to proceed,
-or enter new name. (Default extension: sty)
+Loading kernel: messages; fonts; allocations: state,
+\X@c=\dimen144
+\Y@c=\dimen145
+\U@c=\dimen146
+\D@c=\dimen147
+\L@c=\dimen148
+\R@c=\dimen149
+\Edge@c=\toks25
+\X@p=\dimen150
+\Y@p=\dimen151
+\U@p=\dimen152
+\D@p=\dimen153
+\L@p=\dimen154
+\R@p=\dimen155
+\Edge@p=\toks26
+\X@origin=\dimen156
+\Y@origin=\dimen157
+\X@xbase=\dimen158
+\Y@xbase=\dimen159
+\X@ybase=\dimen160
+\Y@ybase=\dimen161
+\X@min=\dimen162
+\Y@min=\dimen163
+\X@max=\dimen164
+\Y@max=\dimen165
+\lastobjectbox@=\box48
+\zerodotbox@=\box49
+\almostz@=\dimen166
+ direction,
+\d@X=\dimen167
+\d@Y=\dimen168
+\K@=\count192
+\KK@=\count193
+\Direction=\count194
+\K@dXdY=\dimen169
+\K@dYdX=\dimen170
+\xyread@=\read2
+\xywrite@=\write3
+\csp@=\count195
+\quotPTK@=\dimen171
 
-Enter file name: 
-/usr/local/texlive/2019basic/texmf-dist/tex/latex/qcircuit/qcircuit.sty:24: Eme
-rgency stop.
-<read *> 
-         
-l.24 ^^M
-        
-*** (cannot \read from terminal in nonstop modes)
+utility macros; pictures: \xy, positions,
+\swaptoks@@=\toks27
+\connectobjectbox@@=\box50
+ objects,
+\styletoks@=\toks28
+ decorations;
+kernel objects: directionals, circles, text; options; algorithms: directions,
+edges, connections;  Xy-pic loaded)
+(/usr/local/texlive/2019basic/texmf-dist/tex/generic/oberdiek/ifpdf.sty
+Package: ifpdf 2018/09/07 v3.3 Provides the ifpdf switch
+)
+Package: xy 2013/10/06 Xy-pic version 3.8.9
 
- 
+(/usr/local/texlive/2019basic/texmf-dist/tex/generic/xypic/xypdf.tex
+ Xy-pic option: PDF driver v.1.7 loaded))
+(/usr/local/texlive/2019basic/texmf-dist/tex/generic/xypic/xymatrix.tex
+ Xy-pic option: Matrix feature v.3.14
+\Row=\count196
+\Col=\count197
+\queue@=\toks29
+\queue@@=\toks30
+\qcount@=\count198
+\qcount@@=\count199
+\matrixsize@=\count266
+ loaded)
+(/usr/local/texlive/2019basic/texmf-dist/tex/generic/xypic/xyframe.tex
+ Xy-pic option: Frame and Bracket extension v.3.14 loaded)
+Xy-pic pdf driver: `frame' extension support
+(/usr/local/texlive/2019basic/texmf-dist/tex/generic/xypic/xypdf-fr.tex
+(/usr/local/texlive/2019basic/texmf-dist/tex/generic/xypic/xycurve.tex
+ Xy-pic option: Curve and Spline extension v.3.12 curve,
+\crv@cnt@=\count267
+\crvpts@=\toks31
+\splinebox@=\box51
+\splineval@=\dimen172
+\splinedepth@=\dimen173
+\splinetol@=\dimen174
+\splinelength@=\dimen175
+ circles,
+\L@=\dimen176
+ loaded)
+Xy-pic pdf driver: `curve' extension support
+(/usr/local/texlive/2019basic/texmf-dist/tex/generic/xypic/xypdf-cu.tex loaded)
+loaded) (/usr/local/texlive/2019basic/texmf-dist/tex/generic/xypic/xyarrow.tex
+ Xy-pic option: Arrow and Path feature v.3.9 path, \ar, loaded)
+(/usr/local/texlive/2019basic/texmf-dist/tex/generic/xypic/xyarc.tex
+ Xy-pic option: Circle, Ellipse, Arc feature v.3.8 circles, ellipses,
+elliptical arcs, loaded))
+(/usr/local/texlive/2019basic/texmf-dist/tex/latex/subfiles/subfiles.sty
+Package: subfiles 2019/10/30 v1.5 Multi-file projects (package)
+
+(/usr/local/texlive/2019basic/texmf-dist/tex/latex/import/import.sty
+Package: import 2009/03/23  v 5.1
+))
+(./quantum.aux)
+\openout1 = `quantum.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 16.
+
+
+(/usr/local/texlive/2019basic/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 16.
+
+
+(/usr/local/texlive/2019basic/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+Package xypdf Info: Line width: 0.47998pt on input line 16.
+
+(./sections/quantmech.tex [1
+
+{/usr/local/texlive/2019basic/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2
+]) (./sections/qubit.tex [3]) (./sections/gates.tex [4] [5]) (./sections/algori
+thms.tex) [6] (./quantum.aux) ) 
 Here is how much of TeX's memory you used:
- 12009 strings out of 493610
- 220845 string characters out of 6159292
- 253751 words of memory out of 5000000
- 16198 multiletter control sequences out of 15000+600000
- 532636 words of font info for 25 fonts, out of 8000000 for 9000
+ 14606 strings out of 493610
+ 252392 string characters out of 6159292
+ 337789 words of memory out of 5000000
+ 18707 multiletter control sequences out of 15000+600000
+ 542321 words of font info for 64 fonts, out of 8000000 for 9000
  319 hyphenation exceptions out of 8191
- 52i,0n,71p,334b,317s stack positions out of 5000i,500n,10000p,200000b,80000s
-/usr/local/texlive/2019basic/texmf-dist/tex/latex/qcircuit/qcircuit.sty:24:  ==
-> Fatal error occurred, no output PDF file produced!
+ 52i,9n,71p,1430b,317s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/local/texlive/2019basic/texmf-dist/fonts/t
+ype1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2019basic/texmf-dist/fon
+ts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2019basic/texmf-dist
+/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2019basic/texmf-
+dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texlive/2019basic/tex
+mf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2019basic/
+texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2019bas
+ic/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2019
+basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/20
+19basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texliv
+e/2019basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/tex
+live/2019basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local
+/texlive/2019basic/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on quantum.pdf (6 pages, 133124 bytes).
+PDF statistics:
+ 71 PDF objects out of 1000 (max. 8388607)
+ 50 compressed objects within 1 object stream
+ 0 named destinations out of 1000 (max. 500000)
+ 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+
