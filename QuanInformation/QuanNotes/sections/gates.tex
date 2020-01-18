@@ -37,12 +37,18 @@ Define the CNOT (Controlled-Not Gate) as the operator which takes a 2-qubit syst
   \ket{1}\ket{1} \mapsto \ket{1}\ket{0}
 \end{gather*}
 The qubit on the bottom (target qubit) flips in respect to the value of the top qubit (control qubit). The corresponding matrix representation of $CNOT: \mathbb{C}^2 \rightarrow \mathbb{C}^2$ is:
-  $$CNOT = \begin{bmatrix}1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & 0 & 1 \\ 0 & 0 & 1 & 0 \end{bmatrix} $$
 
-%  \Qcircuit @C=1em @R=.7em {
-%    \qw & \ctrl{1} & \qw \\
-%    \qw & \targ & \qw
-%  }
+\begin{figure}[h]
+  \centering
+  \begin{equation}
+    CNOT = \begin{bmatrix}1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & 0 & 1 \\ 0 & 0 & 1 & 0 \end{bmatrix}
+  \end{equation}
+  \Qcircuit {
+       & \ctrl{1} & \qw \\
+       & \targ & \qw
+    }
+    \caption{Matrix representaion of CNOT and its corresponding gate}
+\end{figure}
 
 We can extend this idea to create a set of \textit{generalized} CNOT gates with the following matrices:
 

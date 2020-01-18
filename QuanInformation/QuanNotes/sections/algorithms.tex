@@ -5,9 +5,76 @@
 
 \subsection{Deutsch-Jozsa Algorithm}
 
-Let $f: \{0,1\} \rightarrow \{0,1\}$ be a boolean function with one-bit input. We would like to ascertain if $f$ is either constant (both inputs have the same value) or balanced (inputs have different values). Through the classical perspective, one would have to query the function twice to determine the state of $f$ as constant or balanced. However, we can leverage quantum mechanics so that $f$ will only have to the queried once.
+Let $f: \{0,1\} \rightarrow \{0,1\}$ be a boolean function with one-bit input. We would like to ascertain if $f$ is either constant (both inputs have the same value) or balanced (inputs have different values). Through the classical perspective, one would have to query the function twice to determine the state of $f$ as constant or balanced. However, we can leverage quantum mechanics so that $f$ will only have to be queried once.
 
-We will 
+The following circuit accomplishes this:
 
+\begin{figure}[h]
+    \Qcircuit {
+      & \ket{0} & \gate{H} & \multigate{1}{U_f} & \gate{H} & \qw \\
+      & \ket{1} & \gate{H} & \ghost{U_f} & \qw & \qw
+    }
+    \centering
+\end{figure}
+
+where $U_f$ is the map with the action: $\ket{x}\ket{y} \mapsto \ket{x}\ket{y \oplus f(x)}$. We calculate the action of the first two steps of the circuit above as follows:
+
+\begin{gather}
+  \ket{0}\ket{1} \rightarrow \frac{1}{2}(\ket{0} + \ket{1})(\ket{0} - \ket{1}) = \frac{1}{2}(\ket{0}(\ket{f(0)} - \ket{1 \oplus f(0)}) + \ket{1}(\ket{f(1)} - \ket{1 \oplus f(1)})) = \\
+  \frac{1}{2}\sum_{x \in \{0,1\}} \ket{x}(\ket{f(x)} - \ket{1 \oplus f(x)}) = \\
+  \frac{1}{\sqrt{2}} \sum_{x \in \{0,1\}} (-1)^{f(x)}\ket{x} \frac{1}{\sqrt{2}}(\ket{0} -
+  \ket{1})
+\end{gather}
+By ignoring the second register, we apply the hadamard gate to the first register to get $\ket{0}$ up to a global phase if $f$ is constant and $\ket{1}$ if $f$ is balanced. Thus, if we measure the first register, we get the respective results with certainty.
+
+In this algorithm, we only query the $f$-oracle once instead of twice as dictated by classical intuition. In fact, we can generalize this to a $n$-bit boolean function $f:\{0,1\}^n \rightarrow \{0,1\}$ where $f$ is guaranteed to be either constant (all $n$-bit input strings map to the same value) or balanced (there are an equal number of bit strings mapping to both $0,1$).
+
+We apply $H^{\otimes (n+1)}$ to the first register of $n$-qubits and the second result register and another iteration of $H^{\otimes n}$ after applying the $U_f$ gate accepting $n$-qubits:
+
+\begin{gather}
+\ket{0...0}\ket{1} \xrightarrow{H^{\otimes (n+1)}} \frac{1}{\sqrt{2^n}} \sum_{x = 0}^{2^n -1} \ket{x}\frac{1}{\sqrt{2}}(\ket{0}-\ket{1}) \xrightarrow{U_f} \frac{1}{\sqrt{2^n}} \sum_{x = 0}^{2^n -1} (-1)^{f(x)}\ket{x}\frac{1}{\sqrt{2}}(\ket{0}-\ket{1})
+\end{gather}
+
+If we now discard the second result register and apply $H^{\otimes n}$ again to the first register, we yield:
+$$\sum_{x = 0}^{2^n -1} (-1)^{f(x)}\ket{x}\frac{1}{\sqrt{2}}(\ket{0}-\ket{1}) \xrightarrow{H^{\otimes n}} \begin{cases} e^{i\pi
+f(x)}\ket{0...0} \text{ if $f$ is constant} \\
+\ket{y}, y \neq 0 \text{ if $f$ is balanced}
+\end{cases}$$
+Thus, if we measure the first register, we measure with certainty $\ket{0}$ if $f$ is constant and some other value if $f$ is balanced as desired. Once again, this scheme only queries the $f$-oracle once.
+
+\subsection{Bernstein-Vazirani Algorithm}
+We can use the Deutsch-Jozsa circuit to reveal hidden traits for another special class of boolean functions. Let $f\{0,1\}^n \rightarrow \{0,1\}$ be of the following form:
+$$f(x) = a\cdot x \oplus b \mod 2$$ where $\oplus$ refers to bitwise binary addition and $\cdot$ refers to the dot product i.e $x \cdot y = \sum_{i=1}^n x_iy_i \mod 2$. $a \in \{0,1\}^n$ and $b \in \{0,1\}$ are hidden, and we wish to find these constants. In the classical world, we would have to query the oracle $\mathcal{O}(n)$ times to find both constants $a,b$. By using the Deutsch-Jozsa circuit, we can drop this to $\mathcal{O}(1)$ queries. We use the exact circuit above and calculate the effect of the circuit:
+
+\begin{gather}
+  \ket{0...0}\ket{1}\xrightarrow{H^{\otimes (n+1)}} \frac{1}{\sqrt{2^n}} \sum_{x=0}^{2^n-1}\ket{x}\frac{1}{\sqrt{2}}(\ket{0} - \ket{1}) \xrightarrow{U_f} \\
+  \frac{1}{\sqrt{2^n}} \sum_{x=0}^{2^n-1}\ket{x}\frac{1}{\sqrt{2}}(\ket{f(x)} - \ket{1\oplus f(x)}) = \frac{1}{\sqrt{2^n}} \sum_{x=0}^{2^n-1}\ket{x}\frac{1}{\sqrt{2}}(\ket{a\cdot x \oplus b} - \ket{1 \oplus (a \cdot x \oplus b)}) = \\
+  \frac{1}{\sqrt{2^n}} \sum_{x=0}^{2^n-1}(-1)^b \ket{x}\frac{1}{\sqrt{2}}(\ket{a\cdot x} - \ket{1 \oplus (a \cdot x)}) = \frac{(-1)^b}{\sqrt{2^n}} \sum_{x=0}^{2^n-1}(-1)^{a\cdot x}\ket{x}\frac{1}{\sqrt{2}}(\ket{0} - \ket{1})
+\end{gather}
+
+We prove a lemma showing destructive interference for certain terms:
+
+\begin{lemma} \label{dotprod}
+  Let $z \in \{0,1\}^n$. Then
+  $$\sum_{i=0}^{2^n-1} (-1)^{z \cdot x} = 0$$ iff $z \neq 0$
+\end{lemma}
+\begin{proof}
+   We begin expanding the form above:
+   $$\sum_{x=0}^{2^n-1} (-1)^{z \cdot x} = \sum_{x=0}^{2^n -1}\prod_{j=1}^n (-1)^{z_jx_j} = \sum_{x_n = 0}^1...\sum_{x_2 = 0}^1\sum_{x_1 = 0}^1 \prod_{j=1}^n (-1)^{z_jx_j}   $$
+   The last equality easily follows from the fact that we can rearrange the sum in the specific order imposed by the summation on the right.
+
+   Now suppose there exists $1 \leq r \leq n$ such that $z_r = 1$. From the form above, we derive that:
+   $$\sum_{x_n = 0}^1...\sum_{x_2 = 0}^1\sum_{x_1 = 0}^1 \prod_{j=1}^n (-1)^{z_jx_j} = \sum_{x_n = 0}^1...\sum_{x_{r+1} = 0}^1\sum_{x_{r-1} = 0}^1... \sum_{x_2 = 0}^1\sum_{x_1 = 0}^1 \prod_{j=1,j \neq r}^n (-1)^{z_jx_j} ((-1)^0 + (-1)^1) = 0 $$
+
+   Note that from $\sum_{x=0}^{2^n-1} (-1)^{z \cdot x} \ket{x} = 2^n\delta_{z,0}$, we have the converse as well.
+\end{proof}
+Before we apply the lemma, we apply $H^{\otimes n}$ on the first register:
+\begin{gather}
+  \frac{(-1)^b}{\sqrt{2^n}} \sum_{x=0}^{2^n-1}(-1)^{a\cdot x}\ket{x} \xrightarrow{H^{\otimes n}} \frac{(-1)^b}{2^n}\sum_{x=0}^{2^n -1}  (-1)^{a\cdot x} \sum_{y=0}^{2^n -1} (-1)^{y \cdot x} \ket{y} = \\
+  \frac{(-1)^b}{2^n}\sum_{y=0}^{2^n -1}\sum_{x=0}^{2^n -1}(-1)^{(a+y)\cdot x} \ket{y}
+\end{gather}
+
+We now apply Lemma \ref{dotprod} to the first register above to find that it equals:
+$$(-1)^b \ket{a} $$. Thus, by measuing the first register, we get the value of $a$ as desired.
 
 \end{document}

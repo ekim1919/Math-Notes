@@ -42,6 +42,12 @@ The density matrix has the following properties: Let $\{\ket{i}\}$ denote an ort
   \item {\bf $\rho$ is non-negative}: Let $\ket{\phi} \in \mathcal{H}$. It suffices to prove that $\bra{\phi}\rho\ket{\phi} \geq 0$.
 \end{enumerate}
 
+Fromm property one above, we derive the following criteria for determining if a given density matrix $\rho$ represents a mixed state or a pure state:
+
+\begin{theorem}
+  Given density matrix $\rho$, $Tr(\rho^2) = 1$ iff $\rho$ represents a pure state. On the other hand, $Tr(\rho^2) < 1$ iff $\rho$ represents a mixed state.
+\end{theorem}
+
 \subsection{Composite Systems}
 
 We can use the density matrix formalism to express statistical measurements in subsystems in the following sense:
@@ -52,13 +58,25 @@ if we let $\{\ket{i}\},\{\ket{\alpha}\}$ be sets of orthogonal basis vectors in 
 
 By our definiton in the previous section, the density matrix for our pure state $\ket{\psi}$ will be:
 
-$$ \rho = \ket{\psi}\bra{\psi} = \sum_{i,\alpha}\sum_{j,\beta} c_{i,\alpha}(c_{j,\beta})^*\ket{i}\ket{\alpha}\bra{j}\bra{\beta}$$
+$$ \rho = \ket{\psi}\bra{\psi} = \sum_{i,\alpha}\sum_{j,\beta} c_{i,\alpha}(c_{j,\beta})^*\ket{i}\ket{\alpha}\bra{j}\bra{\beta} = \sum_{(i,j),(\alpha,\beta)} \lambda_{(i,j),(\alpha,\beta)} \ket{i}\bra{j}\otimes \ket{\alpha}\bra{\beta}$$
 
 Suppose we have an observable $A_1$ for subsystem $\mathcal{H}_1$, and we wish to find $\langle A_1 \rangle$ given $\mathcal{H}$. Let $A_1 \otimes I_B: \mathcal{H} \rightarrow \mathcal{H}$ be the unique linear map induced by $A_1:\mathcal{H}_1 \rightarrow \mathcal{H}_1$ and $I_B: \mathcal{H}_2 \rightarrow \mathcal{H}_2$.
 
 \begin{gather}
-  \langle A_1 \otimes I_B \rangle = Tr(\rho(A_1 \otimes I_B))
+  \langle A_1 \otimes I_B \rangle = Tr(\rho(A_1 \otimes I_B)) = \sum_{i,\alpha} \bra{i}\bra{\alpha}\rho(A_1 \otimes I_B) \ket{i}\ket{\alpha} = \\
+  \sum_{i,\alpha} \bra{i}\bra{\alpha}[
+  \sum_{(k,l),(\beta,\gamma)} \lambda_{(k,l),(\beta,\gamma)} \ket{k}\bra{l}\otimes \ket{\beta}\bra{\gamma}]
+  )(A_1 \otimes I_B)\ket{i}\ket{\alpha} = \\
+  \sum_{i} \bra{i} \sum_{\alpha} \bra{\alpha}(\sum_{(k,l),(\beta,\gamma)}
+   \lambda_{(k,l),(\beta,\gamma)} \ket{k}\bra{l}\otimes \ket{\beta}\bra{\gamma})\ket{\alpha} A_i \ket{i} = \sum_{i} \bra{i} = \\ Tr_B(\rho)A_i \ket{i} = Tr(A_iTr_b(\rho))
 \end{gather}
+
+where $$ \rho_A = Tr_B(\rho) = \sum_{\alpha} \bra{\alpha} \rho \ket{\alpha} $$ is the \textit{partial trace} of density operator $\rho$. Note that these equalties follow directly from the bilinear property of the tensor product on Hilbert spaces $\mathcal{H}_1,\mathcal{H}_2$.
+
+Similarly, for $\mathcal{H}_1$
+
+It can be directly checked that $\rho_A$ is indeed a density operator in that it is a Hermitian semi-definite operator with unit trace.
+
 
 
 \end{document}
