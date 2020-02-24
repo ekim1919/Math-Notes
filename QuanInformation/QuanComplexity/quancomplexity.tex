@@ -1,0 +1,38 @@
+\documentclass[12pt]{article}
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{0in}
+\setlength{\textwidth}{6.5in}
+\setlength{\parindent}{0cm}
+\setlength{\parskip}{\baselineskip}
+
+\usepackage{amsmath,amsfonts,amssymb,amsthm}
+\usepackage{physics}
+\usepackage{qcircuit}
+\usepackage{subfiles,import}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\author{Edward Kim}
+
+\newcommand{\papertitle}{Quantum Complexity Theory}
+
+\begin{document}
+\title{Notes on \papertitle}
+\maketitle
+
+\subsection*{Complexity Classes}
+
+\begin{enumerate}
+  \item ${\bf BQP}$ (Bounded Quantum Polynomial Time) is the complexity classes characterizing the languages which are decidable in quantum polynomial time. Formally speaking,
+  \begin{gather*}
+    L \in {\bf BQP} \text{ iff } \\
+    \exists \{Q_n\}_{n \in \mathbb{N}} \text{ a polynomial-time generated circuit family s.t} \\
+    x \in L \text{ then } {\bf Pr}[Q_{|x|}(x) \text{ accepts } x] \geq \frac{2}{3} \\
+    x \not\in L \text{ then } {\bf Pr}[Q_{|x|}(x) \text{ accepts } x] \leq \frac{1}{3}
+  \end{gather*}
+  \item ${\bf BPP} \subseteq {\bf BQP}$
+\end{enumerate}
+
+
+
+\end{document}
