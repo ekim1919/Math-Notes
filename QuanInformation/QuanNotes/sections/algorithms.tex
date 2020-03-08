@@ -52,14 +52,14 @@ $$f(x) = a\cdot x \oplus b \mod 2$$ where $\oplus$ refers to bitwise binary addi
   \frac{1}{\sqrt{2^n}} \sum_{x=0}^{2^n-1}(-1)^b \ket{x}\frac{1}{\sqrt{2}}(\ket{a\cdot x} - \ket{1 \oplus (a \cdot x)}) = \frac{(-1)^b}{\sqrt{2^n}} \sum_{x=0}^{2^n-1}(-1)^{a\cdot x}\ket{x}\frac{1}{\sqrt{2}}(\ket{0} - \ket{1})
 \end{gather}
 
-We prove a lemma showing destructive interference for certain terms:
+We prove a lemma showing destructive interference for certain terms: \newline
 
 \begin{lemma} \label{dotprod}
   Let $z \in \{0,1\}^n$. Then
-  $$\sum_{i=0}^{2^n-1} (-1)^{z \cdot x} = 0$$ iff $z \neq 0$
+  $$\sum_{x=0}^{2^n-1} (-1)^{z \cdot x} = 0$$ iff $z \neq 0$
 \end{lemma}
 \begin{proof}
-   We begin expanding the form above:
+   We begin by expanding the form above:
    $$\sum_{x=0}^{2^n-1} (-1)^{z \cdot x} = \sum_{x=0}^{2^n -1}\prod_{j=1}^n (-1)^{z_jx_j} = \sum_{x_n = 0}^1...\sum_{x_2 = 0}^1\sum_{x_1 = 0}^1 \prod_{j=1}^n (-1)^{z_jx_j}   $$
    The last equality easily follows from the fact that we can rearrange the sum in the specific order imposed by the summation on the right.
 
@@ -68,13 +68,86 @@ We prove a lemma showing destructive interference for certain terms:
 
    Note that from $\sum_{x=0}^{2^n-1} (-1)^{z \cdot x} \ket{x} = 2^n\delta_{z,0}$, we have the converse as well.
 \end{proof}
-Before we apply the lemma, we apply $H^{\otimes n}$ on the first register:
+
+We cannot use this lemma directly on the form representing the first $n$-qubit register above as the sum involves constituent states $\ket{x}$ tied to the $(-1)^{z\cdot x}$. To fix this, we first apply $H^{\otimes n}$ on the first register:
+
 \begin{gather}
   \frac{(-1)^b}{\sqrt{2^n}} \sum_{x=0}^{2^n-1}(-1)^{a\cdot x}\ket{x} \xrightarrow{H^{\otimes n}} \frac{(-1)^b}{2^n}\sum_{x=0}^{2^n -1}  (-1)^{a\cdot x} \sum_{y=0}^{2^n -1} (-1)^{y \cdot x} \ket{y} = \\
-  \frac{(-1)^b}{2^n}\sum_{y=0}^{2^n -1}\sum_{x=0}^{2^n -1}(-1)^{(a+y)\cdot x} \ket{y}
+  \frac{(-1)^b}{2^n}\sum_{y=0}^{2^n -1} \sum_{x=0}^{2^n -1} (-1)^{(a+y)\cdot x} \ket{y}
 \end{gather}
 
 We now apply Lemma \ref{dotprod} to the first register above to find that it equals:
-$$(-1)^b \ket{a} $$. Thus, by measuing the first register, we get the value of $a$ as desired.
+$$(-1)^b \ket{a} $$ Thus, by measuring the first register, we get the value of $a$ off by some phase factor.
+
+The main argument for the correctness of the algorithm stems from the destructive interference resulting from the operation of running an equal superposition of all $2^n$ possible bit-strings which can $x$ take, then ``merging" them together and letting destructive interference take its course.
+
+
+\subsection{Grover's Algorithm}
+
+Let $X$ be an unstructured database of size $N$. We can simply think of $X$ as an array with elements $\{1,...,N\}$ not necessarily in sorted order. Classically, we would have to query the database $\mathcal{O}(N)$ times. However, Grover's algorithm shows that it is possible to leverage quantum phenomena to bring this down to $\mathcal{O}(\sqrt{N})$ queries.
+
+For the sake of a simpler analysis, let $f:\{0,1\}^n \rightarrow \{0,1\}^n$ be a boolean function representing an unstructured database of size $2^n$ with a single marked element $w \in \{0,n\}^n$.
+$$ f(x) = \begin{cases}
+            1 \text{ if } x = w \\
+            0 \text{ otherwise}
+          \end{cases} $$
+The crux of the algorithm comes from iterating a specially constructed unitary transformation $G$ composed with the oracle query gate $U_f$.
+$$ G = H^{\otimes n}(-I + 2\ket{0}\bra{0})H^{\otimes n} $$
+Let us compute the action of $G$ on $\ket{x} \in (\mathbb{C}^2)^{\otimes n}$ as follows: We first compute the below expression:
+\begin{gather}
+(-I + 2\ket{0}\bra{0})H^{\otimes n} \ket{x} = (-I + 2\ket{0}\bra{0}))\frac{1}{\sqrt{2^n}}\sum_{y=0}^{2^n-1} (-1)^{y\cdot x}\ket{y} = \\
+-\frac{1}{\sqrt{2^n}}(\sum_{y=0}^{2^n-1}(-1)^{y\cdot x}\ket{y} + 2\ket{0})
+\end{gather}
+Now we apply the last $n$-qubit Hadamard transform to yield the following:
+\begin{gather}
+  \frac{1}{\sqrt{2^n}}H^{\otimes n}(-\sum_{y=0}^{2^n-1}(-1)^{y\cdot x}\ket{y} - 2\ket{0}) = \frac{1}{2^n}(\sum_{z = 0}^{2^n-1} \sum_{y=0}^{2^n-1}(-1)^{y\cdot(x+z)} \ket{z} + 2 \sum_{z = 0}^{2^n-1} \ket{z}) = \\
+  \frac{1}{2^n}(-2^n\ket{x} + 2 \ket{S})
+\end{gather}
+where $\ket{S} = \sum_{z = 0}^{2^n-1} \ket{z}$ refers to the equally-weighted superposition state of $n$-qubits.
+Thus, we get that:
+$$G\ket{x} = -\ket{x} + \frac{2}{2^n}\ket{S} $$
+and we deduce the following $n\times n$ matrix representation:
+$$G = \left[ \begin{matrix}
+        -1 + \frac{2}{2^n} & \frac{2}{2^n} & ... & \frac{2}{2^n} \\
+        \frac{2}{2^n} & -1 + \frac{2}{2^n} & ... & \frac{2}{2^n} \\
+        . & . &  ... & . \\
+        . & . &  ... & . \\
+        . & . &  ... & . \\
+        \frac{2}{2^n} & \frac{2}{2^n} & ... & -1 + \frac{2}{2^n}
+      \end{matrix} \right]
+ $$
+
+The iteration of $GU_f$ has a geometric interpretation which we will now consider. Let $\ket{S}$ be the equally-weighted superposition and let $\ket{x_0}$ be the marked item:
+$$ \ket{S} = \frac{1}{\sqrt{N}} \sum_{x=0}^{2^n-1} \ket{x}  $$
+
+Let $\theta$ be the angle between $S$ and $x_0^{\perp} = \frac{1}{\sqrt{N-1}}\sum_{x\neq x_0} \ket{x}$. This gives us the following representation:
+$$ \ket{S} =  \sin{\theta}x_0 + \cos{\theta}{x_0^{\perp}}$$
+Note that
+$$ \ket{S} = \frac{1}{\sqrt{N}}\sum_{x \neq x_0} \ket{x} + \frac{1}{\sqrt{N}}\ket{x_0} = \sqrt{\frac{N-1}{N}}\ket{x_0^{\perp}} + \frac{1}{\sqrt{N}}\ket{x_0}$$
+Thus,
+$$\sin{\theta} = \bra{x_0}\ket{S} = \frac{1}{\sqrt{N}}$$
+implying that
+$$ \theta \approx \frac{1}{\sqrt{N}} $$ for sufficiently large $N$.
+We claim the following:
+\begin{enumerate}
+  \item $U_f$ corresponds to a reflection across hyperplane orthogonal to $\ket{x_0}$.
+  \item $G$ corresponds to a reflection across hyperplane orthogonal to $\ket{S}$.
+\end{enumerate}
+
+These two operations rotate generic unit vector $\ket{\Psi}$ by $2\theta$. To see this, imagine a generic unit vector $\ket{\Psi}$ some angle $\theta_0$ from $x_0^{\perp}$ on the two-dimensional plane spanned by $\ket{x_0}$ and $\ket{x_0^{\perp}}$. Assume that we orient our plane such that we visualize $\ket{x_0^{\perp}}$ as our horizontal axis and $\ket{x_0}$ as our vertical axis. Reflecting across the axis $\ket{x_0^{\perp}}$ rotates our $\ket{\Psi}$ $2\theta_0$ clockwise, giving position $-\theta_0$. Then reflecting it across axis $\ket{S}$ rotates it by $2(\theta_0 + \theta)$, giving the angle $2(\theta_0 + \theta) - \theta_0 = \theta_0 + 2\theta$.
+
+Since $\theta \approx \frac{1}{\sqrt{N}}$ is close to zero for sufficiently large $N$, it suffices to rotate our equally-weighted superposition $\ket{S}$ around $\frac{\pi}{2}$ to become close to $\ket{x_0}$ as $\ket{x_0^{\perp}},\ket{x_0}$ are orthogonal to each other. We thus solve the following:
+$$2k\theta \approx \frac{\pi}{2} \implies k = \frac{\sqrt{N}\pi}{4} $$
+
+This gives us that we need about $\mathcal{O}(\sqrt{N})$ iterations to give us a state when measured gives us the desired index with high probability. As each iteration queries the oracle a constant number of times, it follows that we need $\mathcal{O}(\sqrt{N})$ queries.
+
+\subsection{Quantum Fourier Transform}
+
+We now investigate the quantum analogue of the discrete Fourier transform.
+
+
+
+
+\subsection{Phase Estimation}
 
 \end{document}
