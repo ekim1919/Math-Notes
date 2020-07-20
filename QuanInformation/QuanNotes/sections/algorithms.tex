@@ -6,19 +6,19 @@
 \subsection{Deutsch-Jozsa Algorithm}
 
 Let $f: \{0,1\} \rightarrow \{0,1\}$ be a boolean function with one-bit input. We would like to ascertain if $f$ is either constant (both inputs have the same value) or balanced (inputs have different values). Through the classical perspective, one would have to query the function twice to determine the state of $f$ as constant or balanced. However, we can leverage quantum mechanics so that $f$ will only have to be queried once.
-
+%
 The following circuit accomplishes this:
 
 \begin{figure}[ht]
     \centering
     \leavevmode
     \Qcircuit {
-      & \ket{0} & \gate{H} & \multigate{1}{U_f} & \gate{H} & \qw \\
-      & \ket{1} & \gate{H} & \ghost{U_f} & \qw & \qw
+       \ket{0} & \gate{H} & \multigate{1}{U_f} & \gate{H} & \meter \\
+       \ket{1} & \gate{H} & \ghost{U_f} & \qw & \qw
     }
     \caption{Deutsch-Jozsa circuit}
 \end{figure}
-
+%
 where $U_f$ is the map with the action: $\ket{x}\ket{y} \mapsto \ket{x}\ket{y \oplus f(x)}$. We calculate the action of the first two steps of the circuit above as follows:
 %
 \begin{gather}
@@ -163,17 +163,41 @@ $$ F = \frac{1}{\sqrt{2^n}} \sum_{x,y = 0}^{2^n-1} \zeta^{xy} \ket{y}\bra{x} $$
  where $\zeta = e^{2\pi i /2^n} $. We can explictly express the action of $F$ on a basis vector $x \in (\mathbb{C}^2)^{\otimes n}$
 
 \begin{gather*}
-  F\ket{n} = \frac{1}{\sqrt{2^n}} \sum_{y=0}^{2^n-1} \zeta^{xy} \ket{y} = \frac{1}{\sqrt{2^n}} \sum_{y_0=0}^{1}\sum_{y_2=0}^{1}...\sum_{y_{n-1}=0}^{1} \zeta^{x(\sum_{j=1}^n y_j2^j)} \ket{y_{n-1}} ...\ket{y_0} = \\
+  F\ket{x} = \frac{1}{\sqrt{2^n}} \sum_{y=0}^{2^n-1} \zeta^{xy} \ket{y} = \frac{1}{\sqrt{2^n}} \sum_{y_0=0}^{1}\sum_{y_2=0}^{1}...\sum_{y_{n-1}=0}^{1} \zeta^{x(\sum_{j=1}^n y_j2^j)} \ket{y_{n-1}} ...\ket{y_0} = \\
   \frac{1}{\sqrt{2^n}} \sum_{y_0=0}^{1}\sum_{y_1=0}^{1}...\sum_{y_{n-1}=0}^{1} \prod_{j=0}^{n-1} \zeta^{xy_j2^j} \ket{y_{n-1}} \ldots \ket{y_0} = \\
   \frac{1}{\sqrt{2^n}} \bigotimes_{i=0}^{n-1}\sum_{y_i=0}^1 \zeta^{xy_i2^i} \ket{y_i} = \frac{1}{\sqrt{2^n}} \bigotimes_{i=0}^{n-1}(\ket{0} + \zeta^{x2^i}\ket{1}) = \\
   \frac{1}{\sqrt{2^n}} \bigotimes_{i=1}^{n-1}(\ket{0} + \zeta^{\sum_{k=0}^{n-1} x_k2^{k+i}}\ket{1}) = \frac{1}{\sqrt{2^n}} \bigotimes_{i=0}^{n-1} (\ket{0} + e^{2\pi i(x_{n-1}2^{i-1} +x_{n-2}2^{i-2} + \ldots + x_{0} 2^{i-n}))}\ket{1}) = \\
-  \bigotimes_{i=0}^{n-1} (\ket{0} + e^{2\pi i(x_{n- 1- k}2^{-1} +x_{n-2}2^{i-2} + \ldots + x_{0} 2^{i-n})})\ket{1})
+  \bigotimes_{i=0}^{n-1} (\ket{0} + e^{2\pi i(x_{n- i - 1}2^{-1} +x_{n- i - 2}2^{-2} + \ldots + x_{0} 2^{i-n})})\ket{1})
 \end{gather*}
 %
-The last equality follows from the fact that any bit shift past $n-1-k$ times will result in an even power of $e^{2\pi i}$ which will always be equal one.
+The last equality follows from the fact that any bit shift past $n-1-k$ times will result in an even power of $e^{2\pi i}$ which will always be equal to one.
+where $P_i = \left[\begin{matrix} 1 & 0 \\ 0 & \zeta^{2^i} \end{matrix}\right]$ is the phase shift gate for $\zeta^{2^i}$. Note that
 %
-From this expression, we can construct the quantum circuit implementing the Quantum Fourier Transform:
-
+$$ e^{2\pi i(x_{n-1-i}{2^{-1})}} = e^{\pi i x_{n-1 - i}} =
+\begin{cases}
+0 \text{ if } x_{n - 1 - i} = 0 \\
+1 \text{ if } x_{n - 1 - i} = 1
+\end{cases}
+$$
+%
+Thus, $\ket{0} + e^{2\pi i(x_{n-1-i}{2^{-1})}}\ket{1}$ can be realized through a Hadamard transform on each $\ket{x_{n_ 1- i}}, \newline \; 0 \leq i \leq n-1$.
+%
+Now from this expression, we can construct the quantum circuit implementing the Quantum Fourier Transform for a basis vector $x$ in Figure \ref{fig:QFT}.
+\begin{figure}[h]
+  \Qcircuit @C=0.6em @R=1.2em{
+  \lstick{\ket{x_0}} & \qw & \qw & \qw & \qw & \ldots & & & \qw & \ctrl{8} & \qw  & \qw & \qw & \qw & \cdots & & & \ctrl{7} & & \qw & \cdots & & \ctrl{1} & \qw & \qw & \push{\ket{z_{n-1}}} \\
+  \lstick{\ket{x_1}} & \qw & \qw & \qw & \qw & \ldots & & &  \ctrl{7} & \qw & \qw & \qw & \qw & \qw & \cdots & & \ctrl{6} & \qw & \qw & \cdots & & & \gate{H} & \gate{P_2} & & \qw & \ket{z_{n-2}} \\
+  . \\
+  . \\
+  . \\
+  \lstick{\ket{x_{n-4}}} & \qw & \qw & \qw & \ctrl{3} & \cdots & & & \qw & \qw & \qw & \qw & \ctrl{2} & \cdots & & &\qw & \qw & \qw  & \cdots & & &\qw & \qw & \qw & \qw & \ket{z_{3}} \\
+  \lstick{\ket{x_{n-3}}} & \qw & \qw & \ctrl{2} &\qw  &\ldots & &  & \qw & \qw & \qw & \ctrl{1} & \qw & \cdots & & &\qw & \qw & \qw  & \cdots & & &\qw & \qw & \qw & \qw & \ket{z_2} \\
+  \lstick{\ket{x_{n-2}}} & \qw & \ctrl{1} & \qw & \qw &\cdots & & & \qw  & \qw & \gate{H} & \gate{P_2} & \gate{P_3} & \cdots & & &\gate{P_{n-2}} & \gate{P_{n-1}} & \qw & \cdots & & & \qw & \qw & \qw & \qw & \ket{z_1} \\
+  \lstick{\ket{x_{n-1}}} & \gate{H} & \gate{P_2} & \gate{P_3} & \gate{P_4} &\cdots & & & \gate{P_{n-1}} & \gate{P_n} & \qw & \qw & \qw & \cdots & & & \qw & \qw & \qw & \cdots & & & \qw & \qw & \qw & \qw & \ket{z_0}
+  }
+  \caption{Quantum circuit realizing the QFT}
+  \label{fig:QFT}
+\end{figure}
 
 \subsection{Phase Estimation}
 
