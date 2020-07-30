@@ -74,7 +74,7 @@ $$ \frac{1}{\sqrt{N}} \sum_{\sigma} \zeta_N^{\delta\theta} \ket{\theta\log_g{x},
 By measuring this state, we will receive one of the $(\theta\log_g{x}, \theta)$ with uniform probability. If $\theta$ has a multiplicative inverse, i.e is relatively prime to $N$, we can simply multiply $\theta\log_g{x}$ on the left to reveal the discrete logarithm. If not, we repeat the experiment until we find such a $\theta$ as it turns out that $\phi(N) / N = \Omega(1/\log\log{N})$.
 %
 \begin{remark}
-  The QFT transform above roughly transfers the information encoded into the states to the phases. By the identity above, certain phases will engage in destructive interference, leaving the useful information to be measured.
+  The QFT transform above roughly transfers the information encoded into the states to the phases. By the identity above, certain phases will engage in destructive interference, leaving the useful information to be measured. This technique is known as {\bf Fourier Sampling}. We will touch Fourier Sampling in an upcoming section.
 \end{remark}
 
 \subsection{Shor's Algorithm: Period Finding}
@@ -91,6 +91,35 @@ We can define a general form for the QFT over an arbitrary \textit{abelian} grou
 
 where we recall that a character is a group homomorphism $\chi_y: G \rightarrow \mathbb{C}$ such that
 $$ \chi_y(x) = {\text Tr}(\rho_y(x)) $$ where $\rho_y : G \rightarrow GL(V_y)$ is the irreducible representation indiced by $y$.
+%
+Recall that the HSP involves a function $f: G \rightarrow S$ to some finite set such that
+%
+$$ f(x) = f(y) \text{ iff } x^{-1}y \in H \quad \forall x,y \in G$$ for some hidden subgroup $H$. We use a similar idea found in Shor's algorithm to ascertain generators of $H$ with high probability.
+%
+
+Take a uniform superposition over $G$ and apply the action of our function on the state
+%
+\begin{equation}
+  \frac{1}{\sqrt{G}}\sum_{x \in G} \ket{x} \xrightarrow{f} \frac{1}{\sqrt{G}}\sum_{x \in G} \ket{x, f(x)}
+\end{equation}
+By measuring on the second register, we collapse the state to a uniform superposition over elements of a left coset $x + H$:
+%
+\begin{equation}
+  \ket{x + H} = \frac{1}{\sqrt{H}} \sum_{h \in G} \ket{x + h}
+\end{equation}
+%
+for some $x \in G$. This is deemed as a \textit{coset state of $H$}. Now apply the QFT transform over $G$ to this state
+\begin{equation}
+  \begin{split}
+    \hat{\ket{x + H}}
+    & = F_G\ket{x + H} \\
+    & = \frac{1}{\sqrt{|G||H|}} \sum_{y \in \hat{G}} \sum_{h \in H} \chi_y(x + h) \ket{y} \\
+    & = \sqrt{\frac{H}{G}}\sum_{y \in \hat{G}}\chi_y(x)\big[ \frac{1}{|H|} \sum_{h \in H} \chi_y(h)\big] \\
+    & = \sqrt{\frac{H}{G}}\sum_{y \in \hat{G}}\chi_y(x)\chi_y(H)
+  \end{split}
+\end{equation}
+where
+$\chi_y(H) = \frac{1}{|H|} \sum_{h \in H} \chi_y(h)$
 
 
 \end{document}
