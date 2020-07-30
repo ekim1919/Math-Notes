@@ -3,8 +3,9 @@
 \begin{document}
 \section{Quantum Algorithms}
 
-\subsection{Deutsch-Jozsa Algorithm}
+This section will simply be a catalogue of ``classical" quantum algorithms and some of their properties. Many of these subsections will be based on the presentation given in \cite{childs17}.
 
+\subsection{Deutsch-Jozsa Algorithm}
 Let $f: \{0,1\} \rightarrow \{0,1\}$ be a boolean function with one-bit input. We would like to ascertain if $f$ is either constant (both inputs have the same value) or balanced (inputs have different values). Through the classical perspective, one would have to query the function twice to determine the state of $f$ as constant or balanced. However, we can leverage quantum mechanics so that $f$ will only have to be queried once.
 %
 The following circuit accomplishes this:
@@ -160,8 +161,12 @@ We now investigate the quantum analogue of the discrete Fourier transform as fol
 For an $n$-qubit system, we define the \textit{Quantum Fourier Transform}:
 %
 $$ F = \frac{1}{\sqrt{2^n}} \sum_{x,y = 0}^{2^n-1} \zeta^{xy} \ket{y}\bra{x} $$
- where $\zeta = e^{2\pi i /2^n} $. We can explictly express the action of $F$ on a basis vector $x \in (\mathbb{C}^2)^{\otimes n}$
-
+ where $\zeta = e^{2\pi i /2^n} $.
+%
+ This operation is unitary as we can directly check:
+ $$ F^{\dagger}F = \frac{1}{2^n} \sum_{y = 0}^{2^n-1} \sum_{x = 0}^{2^n-1} \zeta^{xy - xy} \ket{x}\bra{x} = \sum_{x = 0}^{2^n -1} \ket{x}\bra{x} = I $$
+%
+ We can explictly express the action of $F$ on a basis vector $x \in (\mathbb{C}^2)^{\otimes n}$
 \begin{gather*}
   F\ket{x} = \frac{1}{\sqrt{2^n}} \sum_{y=0}^{2^n-1} \zeta^{xy} \ket{y} = \frac{1}{\sqrt{2^n}} \sum_{y_0=0}^{1}\sum_{y_2=0}^{1}...\sum_{y_{n-1}=0}^{1} \zeta^{x(\sum_{j=1}^n y_j2^j)} \ket{y_{n-1}} ...\ket{y_0} = \\
   \frac{1}{\sqrt{2^n}} \sum_{y_0=0}^{1}\sum_{y_1=0}^{1}...\sum_{y_{n-1}=0}^{1} \prod_{j=0}^{n-1} \zeta^{xy_j2^j} \ket{y_{n-1}} \ldots \ket{y_0} = \\
@@ -171,12 +176,13 @@ $$ F = \frac{1}{\sqrt{2^n}} \sum_{x,y = 0}^{2^n-1} \zeta^{xy} \ket{y}\bra{x} $$
 \end{gather*}
 %
 The last equality follows from the fact that any bit shift past $n-1-k$ times will result in an even power of $e^{2\pi i}$ which will always be equal to one.
-where $P_i = \left[\begin{matrix} 1 & 0 \\ 0 & \zeta^{2^i} \end{matrix}\right]$ is the phase shift gate for $\zeta^{2^i}$. Note that
+where
+$$P_i = \left[\begin{matrix} 1 & 0 \\ 0 & \zeta^{2^i} \end{matrix}\right]$$ is the phase shift gate rotating $\zeta^{2^i}$ Note that
 %
 $$ e^{2\pi i(x_{n-1-i}{2^{-1})}} = e^{\pi i x_{n-1 - i}} =
 \begin{cases}
 0 \text{ if } x_{n - 1 - i} = 0 \\
-1 \text{ if } x_{n - 1 - i} = 1
+-1 \text{ if } x_{n - 1 - i} = 1
 \end{cases}
 $$
 %
@@ -190,8 +196,8 @@ Now from this expression, we can construct the quantum circuit implementing the 
   . \\
   . \\
   . \\
-  \lstick{\ket{x_{n-4}}} & \qw & \qw & \qw & \ctrl{3} & \cdots & & & \qw & \qw & \qw & \qw & \ctrl{2} & \cdots & & &\qw & \qw & \qw  & \cdots & & &\qw & \qw & \qw & \qw & \ket{z_{3}} \\
-  \lstick{\ket{x_{n-3}}} & \qw & \qw & \ctrl{2} &\qw  &\ldots & &  & \qw & \qw & \qw & \ctrl{1} & \qw & \cdots & & &\qw & \qw & \qw  & \cdots & & &\qw & \qw & \qw & \qw & \ket{z_2} \\
+  \lstick{\ket{x_{n-4}}} & \qw & \qw & \qw & \ctrl{3} & \cdots & & & \qw & \qw & \qw & \qw & \ctrl{2} & \cdots & & &\qw & \qw & \qw  & \cdots & & &\qw & \qw & \qw & \qw & \qw & \ket{z_{3}} \\
+  \lstick{\ket{x_{n-3}}} & \qw & \qw & \ctrl{2} &\qw  &\ldots & &  & \qw & \qw & \qw & \ctrl{1} & \qw & \cdots & & &\qw & \qw & \qw  & \cdots & & & & \qw & \qw & \qw & \qw & \ket{z_2} \\
   \lstick{\ket{x_{n-2}}} & \qw & \ctrl{1} & \qw & \qw &\cdots & & & \qw  & \qw & \gate{H} & \gate{P_2} & \gate{P_3} & \cdots & & &\gate{P_{n-2}} & \gate{P_{n-1}} & \qw & \cdots & & & \qw & \qw & \qw & \qw & \ket{z_1} \\
   \lstick{\ket{x_{n-1}}} & \gate{H} & \gate{P_2} & \gate{P_3} & \gate{P_4} &\cdots & & & \gate{P_{n-1}} & \gate{P_n} & \qw & \qw & \qw & \cdots & & & \qw & \qw & \qw & \cdots & & & \qw & \qw & \qw & \qw & \ket{z_0}
   }
@@ -201,4 +207,5 @@ Now from this expression, we can construct the quantum circuit implementing the 
 
 \subsection{Phase Estimation}
 
+\biblio
 \end{document}
