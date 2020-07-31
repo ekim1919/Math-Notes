@@ -168,11 +168,17 @@ $$ F = \frac{1}{\sqrt{2^n}} \sum_{x,y = 0}^{2^n-1} \zeta^{xy} \ket{y}\bra{x} $$
 %
  We can explictly express the action of $F$ on a basis vector $x \in (\mathbb{C}^2)^{\otimes n}$
 \begin{gather*}
-  F\ket{x} = \frac{1}{\sqrt{2^n}} \sum_{y=0}^{2^n-1} \zeta^{xy} \ket{y} = \frac{1}{\sqrt{2^n}} \sum_{y_0=0}^{1}\sum_{y_2=0}^{1}...\sum_{y_{n-1}=0}^{1} \zeta^{x(\sum_{j=1}^n y_j2^j)} \ket{y_{n-1}} ...\ket{y_0} = \\
-  \frac{1}{\sqrt{2^n}} \sum_{y_0=0}^{1}\sum_{y_1=0}^{1}...\sum_{y_{n-1}=0}^{1} \prod_{j=0}^{n-1} \zeta^{xy_j2^j} \ket{y_{n-1}} \ldots \ket{y_0} = \\
-  \frac{1}{\sqrt{2^n}} \bigotimes_{i=0}^{n-1}\sum_{y_i=0}^1 \zeta^{xy_i2^i} \ket{y_i} = \frac{1}{\sqrt{2^n}} \bigotimes_{i=0}^{n-1}(\ket{0} + \zeta^{x2^i}\ket{1}) = \\
-  \frac{1}{\sqrt{2^n}} \bigotimes_{i=1}^{n-1}(\ket{0} + \zeta^{\sum_{k=0}^{n-1} x_k2^{k+i}}\ket{1}) = \frac{1}{\sqrt{2^n}} \bigotimes_{i=0}^{n-1} (\ket{0} + e^{2\pi i(x_{n-1}2^{i-1} +x_{n-2}2^{i-2} + \ldots + x_{0} 2^{i-n}))}\ket{1}) = \\
-  \bigotimes_{i=0}^{n-1} (\ket{0} + e^{2\pi i(x_{n- i - 1}2^{-1} +x_{n- i - 2}2^{-2} + \ldots + x_{0} 2^{i-n})})\ket{1})
+  \begin{split}
+    F\ket{x} & = \frac{1}{\sqrt{2^n}} \sum_{y=0}^{2^n-1} \zeta^{xy} \ket{y} \\
+     & = \frac{1}{\sqrt{2^n}} \sum_{y_0=0}^{1}\sum_{y_2=0}^{1}...\sum_{y_{n-1}=0}^{1} \zeta^{x(\sum_{j=1}^n y_j2^j)} \ket{y_{n-1}} ...\ket{y_0} \\
+     & = \frac{1}{\sqrt{2^n}} \sum_{y_0=0}^{1}\sum_{y_1=0}^{1}...\sum_{y_{n-1}=0}^{1} \prod_{j=0}^{n-1} \zeta^{xy_j2^j} \ket{y_{n-1}} \ldots \ket{y_0}  \\
+    & = \frac{1}{\sqrt{2^n}} \bigotimes_{i=0}^{n-1}\sum_{y_i=0}^1 \zeta^{xy_i2^i} \ket{y_i} \\
+    & = \frac{1}{\sqrt{2^n}} \bigotimes_{i=0}^{n-1}\ket{0} + \zeta^{x2^i}\ket{1} \\
+    & = \frac{1}{\sqrt{2^n}} \bigotimes_{i=1}^{n-1}\ket{0} + \zeta^{\sum_{k=0}^{n-1} x_k2^{k+i}}\ket{1} \\
+    & = \frac{1}{\sqrt{2^n}} \bigotimes_{i=0}^{n-1}\ket{0} + e^{2\pi i(x_{n-1}2^{i-1} +x_{n-2}2^{i-2} + \ldots + x_{0} 2^{i-n}))}\ket{1} \\
+    & = \frac{1}{\sqrt{2^n}} \bigotimes_{i=0}^{n-1}\ket{0} + e^{2\pi i(x_{n- i - 1}2^{-1} +x_{n- i - 2}2^{-2} + \ldots + x_{0} 2^{i-n})}\ket{1} \\
+    & = \frac{1}{\sqrt{2^n}} \bigotimes_{i=0}^{n-1}\ket{0} + e^{2\pi i [ 0.x_{n-i-1}\ldots x_1x_0 ]} \ket{1}
+  \end{split}
 \end{gather*}
 %
 The last equality follows from the fact that any bit shift past $n-1-k$ times will result in an even power of $e^{2\pi i}$ which will always be equal to one.
@@ -207,5 +213,43 @@ Now from this expression, we can construct the quantum circuit implementing the 
 
 \subsection{Phase Estimation}
 
-\biblio
+The setup of the phase estimation problem is the following: one is given an unitary operator $U$ and a state $\ket{\phi}$ promised to be an eigenvector of $U$ such that
+\begin{equation}
+  U\ket{\phi} = e^{i\phi}\ket{\phi}
+\end{equation}
+%
+We wish to determine an $n$-bit estimate of $\phi$. The quantum circuit which achieves this is as below:
+%
+\begin{figure}[h]
+  \Qcircuit @C=0.6em @R=1.2em {
+  \lstick{\ket{0}} & \gate{H} & \qw & \qw & \qw & & \ldots & & \qw & \\
+  \lstick{\ket{0}} & \gate{H} & \qw & \qw & \qw & & \ldots & & \qw & \\
+  \lstick{.} \\
+  \lstick{.}  \\
+  \lstick{.}  \\
+  \lstick{\ket{0}} & \gate{H} & \qw & \ctrl{2} & \qw & &\ldots & & \qw &\\
+  \lstick{\ket{0}} & \gate{H} & \ctrl{1} & \qw & \qw  & &\ldots & & \qw &\\
+  \lstick{\ket{\phi}} & \qw & \gate{U} & \gate{U^2} & \qw & &\ldots & &
+  }
+  \caption{Phase Estimation Circuit}
+\end{figure}
+%
+We first prepare the initial quantum state as the uniform superposition:
+$$ \frac{1}{\sqrt{2^n}}\sum_{x-0}^{2^n -1} \ket{x} \otimes \ket{\phi} $$
+%
+applying the operator
+\begin{equation}
+  \sum_{x=0}^{2^n -1} \ket{x}\bra{x} \otimes U^x
+\end{equation}
+to the initial state gives way to:
+%
+$$ \sum_{x = 0}^{2^n - 1} e^{i\phi x}\ket{x} \otimes \ket{\phi} $$
+Equivalently this state can be written as
+\begin{equation}
+  \sum_{x = 0}^{2^n-1} e^{i \sum_{i=0}^n x_i\phi 2^i} \ket{x} \otimes \ket{\phi}
+\end{equation}
+
+
+Finally, applying the inverse QFT to the first $n$ registers will result
+
 \end{document}
