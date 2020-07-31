@@ -246,10 +246,14 @@ to the initial state gives way to:
 $$ \sum_{x = 0}^{2^n - 1} e^{i\phi x}\ket{x} \otimes \ket{\phi} $$
 Equivalently this state can be written as
 \begin{equation}
-  \sum_{x = 0}^{2^n-1} e^{i \sum_{i=0}^n x_i\phi 2^i} \ket{x} \otimes \ket{\phi}
+    \sum_{x = 0}^{2^n-1} e^{i \phi \sum_{i=0}^n x_i 2^i ] } \ket{x} \otimes \ket{\phi} \\
+    = \sum_{x = 0}^{2^n-1} e^{\frac{\phi}{2 \pi} [2 \pi i \sum_{i=0}^n x_i 2^i ] } \ket{x} \otimes \ket{\phi}
 \end{equation}
+Suppose that $\phi/2 \pi$ terminates after at most $n$-bits or if $\frac{\phi}{2\pi} = y/2^n$ for some $y \in \mathbb{Z}_{2^n}$.
+%
+Then $\phi = \frac{2\pi y}{2^n}$. Substituting this in the expression above and applying the inverse QFT to the first $n$ registers will result in the state $\ket{y} \otimes \phi$. Therefore, measuring on the first register will give us the exact value of $y$.
 
+(Todo: think about the general case)
 
-Finally, applying the inverse QFT to the first $n$ registers will result
 
 \end{document}
