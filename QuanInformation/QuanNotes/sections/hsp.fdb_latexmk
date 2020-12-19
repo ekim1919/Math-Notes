@@ -1,0 +1,11 @@
+# Fdb version 3
+["pdflatex"] 1596073154 "hsp.tex" "hsp.pdf" "hsp" 1596073154
+  "../quantum.tex.cls" 0 -1 0 ""
+  "/usr/local/texlive/2020/texmf-dist/web2c/texmf.cnf" 1583102494 39451 60d7debd9ef8ece44cbe965493576c2d ""
+  "/usr/local/texlive/2020/texmf-var/web2c/pdftex/pdflatex.fmt" 1586288259 2432462 fd0fa20e9a3cb5f8169fd0ba1c955158 ""
+  "/usr/local/texlive/2020/texmf.cnf" 1586288231 577 d60164b4589a341208aff7a667fbbdcb ""
+  "hsp.aux" 1595472716 8 a94a2480d3289e625eea47cd1b285758 ""
+  "hsp.tex" 1596073154 126 148e66431088d8b11d30f97c8321f4c0 ""
+  (generated)
+  "hsp.log"
+  "hsp.pdf"

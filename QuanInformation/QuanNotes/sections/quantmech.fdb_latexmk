@@ -1,0 +1,11 @@
+# Fdb version 3
+["pdflatex"] 1579395298 "quantmech.tex" "quantmech.pdf" "quantmech" 1579395298
+  "../quantum.tex.cls" 0 -1 0 ""
+  "/usr/local/texlive/2019basic/texmf-dist/web2c/texmf.cnf" 1570742662 39452 758acee3f2beaeeedff570c5f5d76d98 ""
+  "/usr/local/texlive/2019basic/texmf-var/web2c/pdftex/pdflatex.fmt" 1571522870 2708373 636b575a08d15d78eab8dd050104f1f5 ""
+  "/usr/local/texlive/2019basic/texmf.cnf" 1570846878 628 6cfff46d1fd9ae1d47a88551035aa162 ""
+  "quantmech.aux" 1577238490 8 a94a2480d3289e625eea47cd1b285758 ""
+  "quantmech.tex" 1579391230 6689 3b949c459a8a3585d8c3447cdca92708 ""
+  (generated)
+  "quantmech.log"
+  "quantmech.pdf"
