@@ -1,6 +1,0 @@
-PWD /Users/edwardkim/Work/QuanNotes/sections
-INPUT /usr/local/texlive/2019basic/texmf.cnf
-INPUT /usr/local/texlive/2019basic/texmf-dist/web2c/texmf.cnf
-INPUT /usr/local/texlive/2019basic/texmf-var/web2c/pdftex/pdflatex.fmt
-INPUT quantmech.tex
-OUTPUT quantmech.log
