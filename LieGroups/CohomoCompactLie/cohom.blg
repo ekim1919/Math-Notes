@@ -1,0 +1,49 @@
+This is BibTeX, Version 0.99d (TeX Live 2020)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: cohom.aux
+The style file: amsplain.bst
+Database file #1: biblio.bib
+Warning--missing pages in fok
+Warning--missing pages in lee
+You've used 5 entries,
+            2213 wiz_defined-function locations,
+            529 strings with 4487 characters,
+and the built_in function-call counts, 1254 in all, are:
+= -- 106
+> -- 41
+< -- 0
++ -- 17
+- -- 12
+* -- 100
+:= -- 206
+add.period$ -- 5
+call.type$ -- 5
+change.case$ -- 21
+chr.to.int$ -- 0
+cite$ -- 7
+duplicate$ -- 55
+empty$ -- 120
+format.name$ -- 12
+if$ -- 251
+int.to.chr$ -- 0
+int.to.str$ -- 5
+missing$ -- 9
+newline$ -- 25
+num.names$ -- 10
+pop$ -- 32
+preamble$ -- 1
+purify$ -- 16
+quote$ -- 0
+skip$ -- 31
+stack$ -- 0
+substring$ -- 72
+swap$ -- 7
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 20
+warning$ -- 2
+while$ -- 14
+width$ -- 6
+write$ -- 46
+(There were 2 warnings)
