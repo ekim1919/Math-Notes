@@ -1,0 +1,75 @@
+\documentclass{amsart}
+\usepackage{complexity}
+\setlength{\parindent}{0pt}
+
+\setlength{\textwidth}{\paperwidth}
+\addtolength{\textwidth}{-2in}
+\calclayout
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{xca}[theorem]{Exercise}
+
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\MaxCNF}{\mathsf{Max3CNF}}
+\newcommand{\ELin}{\mathsf{MaxE3Lin}}
+\newcommand{\MaxCSP}{\mathsf{MaxCSP}(\Psi)}
+\newcommand{\MaxCut}{\mathsf{MaxCut}}
+\newcommand{\GapMaxCSP}[2]{\mathsf{Gap_{#1,#2}}\MaxCSP}
+\newcommand{\GWConstant}{\frac{\cos^{-1}(\rho)}{\pi}}
+\newcommand{\UG}{\mathsf{UG}}
+\newcommand{\GapDeltaULC}{\mathsf{Gap}_{\delta, 1-\delta}\ULC}
+\newcommand{\GapMaxCut}{\mathsf{Gap}_{\GWConstant + \epsilon, \frac{1-\rho}{2} - \epsilon}\mathsf{MaxCut}}
+\newcommand{\ULC}{\mathsf{UniqueLC}(m)}
+\newcommand{\GapULC}{\mathsf{GapUniqueLC}(m)}
+\newcommand{\LC}{\mathsf{Gap}_\epsilon\mathsf{LC}}
+
+
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+\newtheorem*{note}{Note}
+\numberwithin{equation}{section}
+
+\theoremstyle{remark}
+\newtheorem{notation}[theorem]{Notation}
+\begin{document}
+
+\renewcommand{\phi}{\varphi}
+%\newcommand{\Max3CNF}{\mathsf{Max3CNF}}
+
+\title{Notes on PCPs and Unique Games}
+
+\author{Edward Kim}
+\email{ehkim@cs.unc.edu}
+
+\begin{abstract}
+We expound on the basic theory of approximating $\NP$-hard problems. Starting with the PCP Theorem, we introduce background for the Unique Games Conjecture (UGC) and the optimality of the Goemans-Williamson Algorithm for MAXCUT assuming the conjecture is true.
+%Finally, we make some connections to Quantum Information Theory, especially Quantum PCPs (qPCPs).
+\end{abstract}
+
+\maketitle
+\tableofcontents
+
+\input{intro}
+\input{approx}
+\input{pcp}
+\input{labelcover}
+\input{hastad}
+\input{uniquegames}
+\input{ugcmaxcut}
+%\input{sdp}
+
+%\section{Quantum Information Theory}
+%\section{Other Connections}
+
+\bibliographystyle{amsplain}
+\bibliography{biblio}
+
+\end{document}

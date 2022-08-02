@@ -1,0 +1,150 @@
+\section{The PCP Theorem}
+\subsection{Intuitions}
+This section will be centered around the seminal PCP Theorem \cite{arora1998proof}, \cite{arora1998probabilistic}, which characterized $\NP$ in a framework considered unconventional at the time. PCPs, or Probabilistically Checkable Proofs, represent a twist on the idea of $\NP$. Recall that $\NP$ roughly represents the languages which have verifiers which can check proofs of membership in polynomial time. PCPs represent an extension of this definition where the verifier can be \emph{probabilistic} and is granted \emph{random access} to the proof string $\pi$. If we allow the verifier to simply query $\pi$ by outputting a index $i$, it has access to $\pi[i]$. Since we can express an index in $\log{n}$ bits, this in theory gives the verifier access to proof strings of exponential length. To formalize these notions, we begin with definitions:
+
+\begin{definition} \label{pcpdef}
+  Given a language $L$ and $r,q: \mathbb{N} \rightarrow \mathbb{N}$, a \emph{(r(n),q(n))-$\PCP$-verifier} for $L$ consists of a polynomial-time algorithm $V$ with the following properties: \newline
+
+  \begin{itemize}
+    \item For input strings $x \in \{0,1\}^n, \; \pi \in \{0,1\}^{\leq N}$ for $N = q(n)2^{r(n)}$, $V$ makes $r(n)$ coin flips and decides $q(n)$ queries addresses $i_1, \cdots, i_{q(n)}$ of the proof $\pi$. Based on these queries, it outputs $1$ for ``accept" or $0$ for ``reject". \newline
+
+    \item (Completeness) For $x \in L$, there exists some proof $\pi$ such that $V(x,\pi,r) = 1$ for all random coin tosses $r$. In other words:
+    %
+    \begin{equation}
+      \mathbb{P}_{r}[V(x,\pi,r) = 1] = 1
+    \end{equation}
+
+    \item (Soundness) For $x \not\in L$, for all proofs $\pi$:
+    %
+    \begin{equation}
+      \mathbb{P}_{r}[V(x,\pi,r) = 1] \leq \frac{1}{2}
+    \end{equation}
+  \end{itemize}
+  Define the class $\PCP(r(n),q(n))$ as the set of languages $L$ which has a $(c\cdot r(n),d\cdot q(n))$-$\PCP$-verifier for some constants $c,d > 0$.
+\end{definition}
+
+\begin{remark}
+  Sometimes the completeness criterion is too strong for our purposes (see the comments on $\ELin$ problem). In these cases, we like to denote the class $\PCP_{\alpha, \beta }(r(n),q(n))$ as the languages $L$ which have a $(r(n),q(n))$-$\NP$-verifier such that the completeness and soundness criteria are amended as below: \newline
+
+  \begin{itemize}
+    \item (Completeness) For $x \in L$, there exists some proof $\pi$ such that $V(x,\pi,r) = 1$ for all random coin tosses $r$. In other words:
+    %
+    \begin{equation}
+      \mathbb{P}_{r}[V(x,\pi,r) = 1] \geq \beta
+    \end{equation}
+
+    \item (Soundness) For $x \not\in L$, for all proofs $\pi$:
+    %
+    \begin{equation}
+      \mathbb{P}_{r}[V(x,\pi,r) = 1] < \alpha
+    \end{equation}
+  \end{itemize}
+Here, $\beta$ is the \emph{completeness parameter} while $\alpha$ is the \emph{soundness parameter}. The class introduced in the original definition would thus be denoted as $\PCP_{\frac{1}{2},1}(r(n),q(n))$. PCP verifiers whose completeness parameter is one ($\beta = 1$) is deemed as \emph{perfectly complete}.
+\end{remark}
+
+The PCP Theorem says that $\NP$ is \emph{exactly} the class of PCPs which uses a \emph{logarithmic} number of random bits and a \emph{constant} number of queries.
+%
+\begin{theorem} \label{pcptheorem} (The $\PCP$ Theorem \cite{arora1998proof}, \cite{arora1998probabilistic})
+%
+\begin{equation}
+\NP = \PCP_{\frac{1}{2},1}(O(\log{n}), O(1))
+\end{equation}
+\end{theorem}
+
+Actually, one direction of this theorem is not too difficult to see:
+
+\begin{proposition}
+For every constants $Q \in \mathbb{N}, c > 0$, $\PCP_{\frac{1}{2}, 1}(c\cdot\log{n}, Q) \subseteq \NP$
+\end{proposition}
+
+\begin{proof}
+Begin with the observation that $\PCP_{\frac{1}{2},1}(r(n), q(n)) \subseteq \NTIME(q(n)2^{r(n)})$. This is justified by the view of an $\NTIME$ machine simulating the verifier by trying all possible coin tosses and queries to the input string $x$ and proof string $\pi$. It can then count all of the accepting paths to determine the probability of acceptance. If $q = O(1)$ and $r = O(\log{n})$, then the right side of the inclusion will be $\NTIME(2^{O(\log{n})}) = \NP$. Here we use the definition:
+%
+$ \NP = \bigcup_{c \in \mathbb{N}} \NTIME(n^c) $
+\end{proof}
+
+\begin{remark}
+  The set of queries a PCP verifier makes could be either \emph{adaptive} or \emph{non-adaptive}. Adaptive queries can be dependent on the outcome of previous queries while non-adaptive queries are independent of one another. The verifiers in these notes will all be non-adaptive for the sake of presentation. The $\PCP$ Theorem still holds when the verifier makes adaptive queries. The only change would be that the proof length would be at most $2^{r(n) + q(n)}$ rather than at most $q(n)2^{r(n)}$.
+\end{remark}
+
+
+%
+\subsection{Equivalence of PCP Theorems}
+It may be difficult to understand the importance of the PCP Theorem in its form presented in Theorem \ref{pcptheorem}. It turns out there are other equivalent forms of the PCP Theorem more palatable in the context of our goal to prove hardness-of-approximation results.
+
+\begin{theorem} \label{pcpgapsat}($\PCP$ Theorem: $\mathsf{Gap3SAT}$-hardness)
+The problem $\mathsf{Gap}_{\alpha,1}\mathsf{Max3SAT}$ is $\NP$-hard. In other words there exists a constant $\alpha  < 1$ such that, for every $\NP$ language $L$, there exists a polynomial-time reduction $f$ mapping $L$ to 3SAT formulas such that:
+
+\begin{align*}
+  x \in L & \implies \mathsf{Opt}(f(x)) = 1 \\
+  x \not\in L & \implies \mathsf{Opt}(f(x)) \leq \alpha
+\end{align*}
+\end{theorem}
+
+An immediate consequence of Theorem \ref{pcpgapsat} and Theorem \ref{GapCSPtoAlgHard} is that if there exists an $\alpha$-approximation algorithm for $\mathsf{Max3SAT}$, then $\P = \NP$. With this, we have the first steps towards an inapproximability result: if $\P \neq \NP$, there exists no efficient $\mathsf{Max3SAT}$ algorithm which can approximate better than an $\alpha$ factor. Note that we haven't actually found a concrete value for $\alpha$ yet. This will be addressed once we prove H\aa stad's 3-bit PCP for $\NP$ in a future section.
+
+
+\begin{theorem} \label{pcptheoremgapcsp}  ($\PCP$-Theorem: $\mathsf{GapMaxqCSP}$- hardness) There exists constants $q \in \mathbb{N}$ and $\alpha < 1$ where the problem $\mathsf{Gap}_{\alpha,1}\mathsf{MaxqCSP}$ is $\NP$-hard. To elaborate, for every $\NP$ language $L$, there exists a polynomial time reduction mapping an $L$ to a instance $f(x)$ of some CSP $\Psi$ over domain $\Omega=\{0,1\}$ where $\Psi$ consists of $q$-ary predicates, such that
+
+\begin{align*}
+  x \in L & \implies \mathsf{Opt}(f(x)) = 1 \\
+  x \not\in L & \implies \mathsf{Opt}(f(x)) \leq \alpha
+\end{align*}
+\end{theorem}
+
+\begin{theorem}
+  All the PCP Theorems above are equivalent to one another.
+\end{theorem}
+
+Before we embark on the proof, let us establish an equivalence between PCPs and CSPs:
+
+\begin{lemma} \label{equipcpcsp} (Equivalence between PCPs and CSPs)
+  Theorem \ref{pcptheorem} and  Theorem \ref{pcptheoremgapcsp} are equivalent.
+\end{lemma}
+
+\begin{proof}
+First, assume $\NP = \PCP_{\frac{1}{2},1}(O(\log{n}), O(1))$. We will outline a procedure to convert the verifier $V$ into an instance $\I$ for a $q$-ary CSP $\Psi$ for some constant $q$. For some input string $x \in \{0,1\}^n$ and proof string $\pi$, let $r \in \{0,1\}^{c \cdot \log{n}}$ be the coin flips made by $V$ and $V_{x,r}$ be the deterministic procedure which is executed on input $x$ and coin flip $r$ such that $V_{x,r} = 1$ iff $V$ accepts proof $\pi$ on input $x$ and coin flip $r$. We can define the domain of our constructed CSP $\Psi$ to be $\Omega=\{0,1\}$ and the predicates to be $\{V_{x,r}\}_{r}$. Now our instance $\I$ of $\Psi$ is casted as the tuples $(S, V_{x,r})$ where $S$ will be at most a $q$-sized tuple indicating which indices of the proof $\pi$ are queried when conditioned on $r$. This yields a polynomially-sized $\mathsf{qCSP}$ instance $\I$. Furthermore, since the verifier $V$ runs in polynomial time, it's execution can be simulated on all $r$ to output the instance $\I$ in polynomial-time. Thus, we have given a polynomial-time reduction from an input $x$ to its corresponding CSP instance $\I$, so Theorem \ref{pcptheoremgapcsp}. \newline
+
+Conversely, suppose we had a reduction from $\NP$ to $\mathsf{Gap}_{\alpha,1}\mathsf{MaxqCSP}$ as stated in Theorem \ref{pcptheoremgapcsp}. We devise polynomial-time reduction taking an instance $\mathsf{MaxqCSP}$ to a polynomial-time PCP verifier $V$ using logarithmic number of random bits and a constant number of queries to the supplied proof $\pi$. For an input $x \in \{0,1\}^n$, the proof will be expected to be an assignment to its respective instance $f(x)$ in the notation utilized in Theorem \ref{pcptheoremgapcsp}. Verifier $V$ makes coin flips $r \in \{0,1\}^{c\log{n}}$ to choose one constraint tuple $(S,\psi)$ where $\psi$ is some $q$-ary predicate. Only a logarithmic number of random bits are required to query any constraint in instance $f(x)$ as the polynomial-time $\NP$ reduction can only generate a polynomial number of such constraints.  The PCP only has to make $q$-queries to the proof $\pi$ to find the assignments to the variables listed in $S = (v_1,\cdots,v_q)$. By the properties listed in Theorem \ref{pcptheoremgapcsp}, the PCP verifier $V$ must have completeness $1$ and soundness $\leq \frac{1}{2}$ as claimed.
+\end{proof}
+
+\begin{lemma} (Equivalnce between $\mathsf{GapMaxqCSP}$and $\mathsf{GapMax3SAT}$ Theorem \ref{pcpgapsat} and Theorem \ref{pcptheoremgapcsp} are equivalent.
+\end{lemma}
+%
+\begin{proof}
+Since any $\mathsf{3Sat}$ instance can be seen as a particular type of $\mathsf{3CSP}$ instance, one direction is immediate. Conversely, if we assume Theorem \ref{pcptheoremgapcsp}, we aim to find some constant $\alpha'$ such that there exist a reduction from an instance of $\mathsf{Gap}_{1-\alpha,1}\mathsf{MaxqCSP}$ for $q \in \mathbb{N}$ claimed in Theorem \ref{pcptheoremgapcsp} to an instance of $\mathsf{Gap}_{1-\alpha',1}\mathsf{Max3Sat}$.
+%
+Let the CSP $\Psi$ be comprised $q$-ary predicates $\psi$. For an instance $\I$ of $\Psi$, an constraint tuple $(S,\psi)$ can be expressed as a logical AND of $2^q$ clauses where each clause is a logical OR of $q$ variables or their negations. In other words, $(S,\psi)$ is essentially a CNF of width $q$ and of size at most $2^q$. We can then construct an ``equivalent" 3CNF $\psi'_S$ as follows: add extra symbols $\Pi_{1}, \cdots, \Pi_{(q-3)2^{q}}$. It can be shown that there exists a 3CNF $\psi'_S$ of size at most $(q-2)2^{q}$ such that:
+
+\begin{enumerate}
+  \item For every $x \in \{0,1\}^q$ which causes $\psi(x) = 1$, there exists an assignment $\Pi$ such that $\psi'(x,\Pi) = 1$.
+  \item Else if $\psi(x) = 0$, then for all assignments $\Pi$, $\psi'(x,\Pi) = 0$
+\end{enumerate}
+
+Now take the total 3CNF defined by a conjection of all such $\psi'_S$:
+\[ \psi_{\I} = \bigwedge_{(S,\psi) \in \I}  \psi_S' \]
+
+The total formula $\psi_\I$ is determined by at most $mq2^q$ number of clauses and at most $n + m(q-3)2^q$ number of variables.
+%
+If an instance $\I$ has all of its constraints satisfiable by some assignment, then by proprety (1) listed above, there must exist a assignment to the variables of the $\psi_{\I}$ such that it is satisifed.
+%
+On the other hand, if for all assignments to instance $\I$ only satisfy at most an $1 - \alpha$ fraction of constraints, then fraction of clauses satisfied can be at most $1 - \alpha + \alpha(1 - \frac{1}{(q-2)2^qa}) = 1 - \frac{\alpha}{(q-2)2^q}$. This is due to the fact that for each unsatisfied $\psi_S'$, the most number of its clauses which can be satisfied by any assignment will be $(q-2)2^q - 1$. Taking $\alpha' = \frac{\alpha}{(q-2)2^q}$
+yields the required constant.
+\end{proof}
+
+\begin{remark}
+  The existence of the ``equivalent" 3CNF is outlined in Problem 7.11 of the O'Donnell textbook \cite{o2014analysis}.
+ \end{remark}
+
+\begin{remark}
+The proof of the PCP Theorem (Theorem \ref{pcptheorem}) is quite involved and out of the scope of these notes. The original proof hinged on clever algebraic techniques such as low-degree testing \cite{arora1998probabilistic}. A simpler combinatorial proof by Dinur arrived years later  \cite{dinur2007pcp}. For more information, refer to the cited publications or Chapter 22 of the Arora, Barak textbook \cite{arora2009computational}.
+\end{remark}
+
+
+%2 The PCP Theorem: An Introduction (DIMACS)
+
+%\subsection{Examples of PCPs}
+
+
+%PCPs and CSPs.
+%\subsection{``Naive" PCP for NP}

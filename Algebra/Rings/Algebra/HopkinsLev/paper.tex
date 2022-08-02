@@ -1,0 +1,306 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,textcomp,amssymb,geometry,graphicx,enumerate,bm,amsthm}
+\def\Name{Edward Kim}  % Your name
+
+%for code%
+\usepackage{listings}
+\lstset{language=python}
+
+
+\title{The Hopkins-Levitzki Theorem: A Primer on Artinian Rings}
+\author{\Name}
+
+\textheight=9in
+\textwidth=6.5in
+\topmargin=-.75in
+\oddsidemargin=0.25in
+\evensidemargin=0.25in
+\DeclareMathSizes{11}{19}{13}{9}
+%\setlength\parindent{0pt}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{corollary}{Corollary}[section]
+\newenvironment{myproof}[1][\proofname]{\proof[#1]\mbox{}\\*}{\endproof}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+ In this paper, we shall develop some theory of Artinian Rings and investigate some intriguing properties that they exhibit. The final 
+ goal of this paper is to introduce the Hopkins-Levitzki theorem for modules (or the Akizuki-Hopkins-Levitzki theorem). The theorem gives great insight into
+ the relationship between the ascending chain condition of modules and descending chain condition of modules.
+\end{abstract}
+
+
+\section{Introduction}
+The Hopkins-Levitzki Theorem states the following: \newline \newline
+For any right Artinian ring R and any right R-module $M$ the following are equivalent:
+
+\begin{enumerate}
+ \item $M$ is Artinian.
+ \item $M$ is Noetherian.
+ \item $M$ has a composition series.
+ \item $M$ is finitely generated.
+\end{enumerate}
+
+This theorem connects the property of ascending chains of Noetherian rings and descending chains of Artinian rings that it states that one implies the other for modules over an Artinian ring. It exemplifies the power of using module theory to explain fundamental properties of Artinian and Noetherian
+rings. This paper will attempt to develop the barebones theory needed to give a simple proof of the Hopkins-Levitzki theorem and showcase how using modules over rings gives us elegant proofs about the properties of Artinian rings. We shall first
+begin with some basic module theory and slowly introduce the concept of chain conditions, Artinian rings, and the semisimple property of rings and modules. Some technical proofs are simplified or omitted, but they can be found in any commutative algebra book such as Cohn's book \cite{cohn04}.   
+
+
+\section{Some Module Theory}
+
+In this section, we shall develop the minimum module theory necessary for our journey of exploring Artinian Rings. \newline
+
+Given a ring $R$, we define a \textbf{left R-module} by the following: let $M$ be an abelian group $(M,+)$ and let $\cdot:R \times M \rightarrow M$ be such that following properties hold for all $r,s \in R$ and $a,b \in M$: 
+
+\begin{gather}
+ r \cdot (a + b) = r\cdot a + r\cdot b \\
+ (r + s)\cdot a = r\cdot a + s\cdot a \\
+ (r\cdot s)\cdot a = r\cdot(s\cdot a) \\
+ 1_R\cdot a = a
+\end{gather}
+
+A \textbf{right R-module} is defined similarly with the map $\cdot:M \times R \rightarrow M$ and the corresponding axioms above with the multiplication operation being applied on the right rather than the left.\newline
+
+Using these definitons, we can define a \textbf{submodule} as a subgroup of $M$ closed under the operations of $R$. \newline
+
+Let us note that the ring $R$ is itself a left and right R-module. If we replace the abelian group $M$ above with $R$, we see that we get the original $(\cdot)$ multiplication operations of a ring. \newline
+
+Thus, we can understand the ideals of a ring by encapsulating them in terms of modules! Let R be a left R-module. If I is a submodule such that $RI \subseteq I$, the I is called a \textbf{left ideal}. Similarly, if we assume that R is a
+right R-module. Then we can define a \textbf{right ideal} as a submodule of R such that $IR \subseteq I$. A \textbf{two-sided ideal} is defined as an ideal that exhibits both properties. We also denote a module $M$ as \textbf{finitely generated} if there exists a finite subset of $M$ which generates itself. \newline
+
+
+\section{Chain Conditions}
+
+We define a chain of submodules $C_i$ in the module M to be sequences having either the forms:
+
+\begin{gather}
+  C_0 \subseteq C_1 \subseteq ... \subseteq C_n \\
+  C_0 \supseteq  C_1 \supseteq  ... \supseteq C_n 
+\end{gather}
+
+These chains are named as ascending chains and descending chains, respectively. If all ascending chains in a module can be shown to be finite, we shall call this module \textbf{Noetherian}. Similarly, if all descending chains are shown to be finite, the module is deemed \textbf{Artinian}. However, shouldn't we be talking about 
+Artinian \underline{rings} rather than modules? Later, we shall see that if a ring $R$ is Artinian, then any finitely-generated R-module is also Artianian. In fact, many of properties that a ring exhibits carries over to its corresponding modules as we will see with semisimpleness.\newline
+
+We shall now define some terms necessary to our understanding of special types of chains that may appear. We say that a module is \textbf{simple} if it is non-zero but has no non-zero proper submodules. We can think of simple modules as modules that cannot be ``stripped'' down any more. In other words, there is no smaller module contained in it.
+Now let $C_0 \subseteq C_1 \subseteq ... \subseteq C_n$ be a finite chain in the module $M$. We say that a finite chain is a \textbf{composition series} if and only if $M = \bigcup_{0 \leq i \leq n} C_i$ and $C_i/C_{i-1}$ is a simple module for every $i$. We can visualize a composition series as the ``longest'' chain in a sense. In other words, we cannot add more links to this chain since there are no more
+submodules in between these chains to ``pull out''. The number of these factors in the composition chain is called the \textbf{length}. That being said, if we can add a link to our chain by ``pulling out'' a submodule, we obtain a \textbf{refinement}. A more formal definition can be described by the following: Let $C_0 \supseteq  C_1 \supseteq  ... \supseteq C_n$ be a descending chain in a module 
+$M$. Suppose for some $1 \leq i \leq n$, $C_{i-1}/C_{i}$ is not a simple module. Then there must exist a submodule in $C_{i-1}/C_{i}$ named $C_s$ such we can add another link to our chain: $C_0 \supseteq  C_1 \supseteq ...  \supseteq C_{i-1} \supseteq C_s \supseteq C_i \supseteq ... \supseteq C_n$. This new chain is our refinement.  \newline
+
+\noindent
+Two natural question to arise from the previous definitions: 
+
+\begin{enumerate}[1.]
+ \item Can every chain in a module $M$ be extended to be a compostion series?
+ \item Will any two composition series in $M$ have the same length?
+\end{enumerate} 
+
+\noindent
+We will develop the necessary theorems to answer these questions in the following section. 
+
+\section{Composition Series}
+
+In this section, I will sketch the proof rather than giving the entire proof for some of the theorms for the sake of brevity. The importance of the theorms stems mainly from their results which will be extensively used to understand some intriguing properties Artinian rings and their modules. \newline
+
+First, we must create some tools to tackle the two questions that were presented in the previous section. Let us turn our attention to the second one. It turns out that the \textbf{Schreier refinement theorem} answers this question for us: \newline
+
+\noindent
+\begin{theorem}(Schreier Refinement Theorm) In a module $M$, any two submodules have isomorphic refinements. \end{theorem}
+
+\noindent
+\textbf{Proof Sketch:} \newline
+
+The idea is to prove that given any two finite chains in the module, we can find an isomorphism between their refinements by a permutation function. In other words, given two chains of the form:
+\begin{gather}
+ M = R_0 \supseteq R_1 \supseteq ... \supseteq R_f = 0 \\
+ M = S_0 \supseteq S_1 \supseteq ... \supseteq S_g = 0
+\end{gather}
+
+We would then show that these two chains are isomorphic in that they have the same length $f = g$ and there exists  can find some permutation mapping $\sigma: (1...f) \rightarrow (1...f)$ such that $C_{i-1}/C_i \cong D_{\sigma(i-1)}/D_{\sigma(i)}$. To prove this requires some theorms such as the Modular law \eqref{modlaw} and the Butterfly Lemma (Zassenhaus Lemma). A full proof can be found in Cohn's book \cite{cohn04} $\blacksquare$ \newline
+
+Note that this theorm esstentially states that every composition series is isomorphic and, thus, must have the same length. Also, \underline{any} chain of submodules that has no repetitions can be refined into a composition series since the theorem may be generalized to any two chains of submodules. This result is what we deem the \textbf{Jordan-H{\"o}lder Theorem}. \newline
+
+\newpage 
+\noindent
+\begin{proposition}For a module $M$ the following are equivalent \end{proposition}
+
+\begin{enumerate}[1.]
+   \item $M$ has a composition series.
+   \item All chains in $M$ with no repetitions (i.e no trivial factors) can be refined into a composition series.
+   \item $M$ is Noetherian and Artinian.
+\end{enumerate}
+
+\noindent
+\begin{myproof}
+
+\underline{1 $\rightarrow$ 2}: This is a direct result of the Jordan-H{\"o}lder Theorm. \newline
+
+\underline{2 $\rightarrow$ 3}: Since every chain can be refined into a composition series, every ascending chain must terminate since a composition series is finite by definition. So the module must be Noetherian. To same argument can be applied to any
+descending chain and thus the module must also be Artinian. \newline
+
+\underline{3 $\rightarrow$ 1}: If M is both Noetherian and Artinian then every ascending chain and descending chain must terminate and thus be finite. To ensure that a chain is a composition series we must be sure that there exists no non-simple submodules in between the links.
+So to begin constructing the composition series, take a maximal submodule of M called $D_1$. Then take the submodule of $D_1$ and name it $D_2$. Continue along this manner to get a chain of the form 
+$M = D_0 \supseteq D_1 \supseteq ... \supseteq D_f$ where every $D_{i-1}/D_{i}$ must be simple by construction. Since M is Artinian, this construction must terminate at some point. The result is a composition series. \end{myproof}
+
+Through Propostion 1, we can esstentially observe that the Noetherian and Artinian conditions imply each other and can be viewed almost as ``two sides of the same coin.'' 
+
+\section{Artinian Rings}
+
+Now we get the meat of the paper! Here we develop some of the theory behind Artinian rings which will aid our understanding of the Hopkins-Levitzki Theorem. First, let us get acquainted with some basic definitions. \newline
+
+\noindent
+\textbf{Definition:} We say that a ring R is \textbf{right Artinian} when we consider it as a right Artinian R-module over itself. A \textbf{left Artinian} ring is similarly defined as a left Artinian R-module over itself. As mentioned in Section 1, the Artinian property of rings carries over to its modules. This will allow us to work over module space which has some nice structure properties. But before we prove the connection between Artinian rings and Artinian modules, we must prove a small theorem mentioned in the last section:
+
+\noindent
+\begin{theorem} \label{modlaw} (Modular Law): Let $M$ be a module. If $F$,$G$,$H$ where $F \subseteq H$, we have the following equality: \end{theorem}
+ 
+\begin{equation}
+F + (G \cap H) = (F+G) \cap H 
+\end{equation}
+
+\noindent
+\begin{proof} To prove the forward inclusion, we see that $F \subseteq (F+G)$ and $F \subseteq H$. Similarly we have $(G \cap H) \subseteq (F+G)$ and $(G \cap H) \subseteq H$.
+So $F \subseteq (F+G) \cap H$ and $(G \cap H) \subseteq (F+G) \cap H $. From this we see that $F + (G \cap H) \subseteq (F+G) \cap H$. For the reverse inclusion, suppose we have an $r \in (F+G) \cap H$.
+Then $r$ can be expressed as a sum: $r = f + g$ where $f \in F$ and $g \in G$ since $r \in (F+G)$. However, by the hypothesis, we see that $f \in H$ and $r \in H$. Putting this together we have that $g = r - f \in H$. So $g \in (G \cap H)$. By that same token,
+$r = f + g \in F + (G \cap H)$. This gives $F + (G \cap H) \supseteq (F+G) \cap H$. Hence, the equality is proven. 
+\end{proof}
+
+We have an easy corollary that is derived from this theorem:
+
+\noindent
+\begin{corollary} If $F+G = H+G$, $F \cap G = H \cap G$, then $F=H$. \end{corollary}
+
+\begin{proof} To prove the corollary, simply replace the terms in \eqref{modlaw} and simplify the expression. \end{proof} 
+
+
+\begin{lemma} Let R be a right Artinian Ring and A be a right ideal, then R/A is an Artinian R-module.\end{lemma}
+ 
+
+\begin{proof} From the Third Isomorphism Theorem, we know that submodules of R/A correspond to the right ideals of R that contain A.
+Since R is an Artinian ring, any descending chain of right ideals should terminate. By our correspondence, this implies that any descending of submodules in R/A must terminate as well. So R/A is an Artinian R-module.\end{proof}
+
+\noindent
+\begin{lemma} \label{lemmacyclic} A cyclic right R-module $M$ is Artinian. \end{lemma}
+
+\noindent
+\begin{proof} Since $M$ is cyclic, it must be generated by a single element $m$. Consider the isomorphism $\phi: R \rightarrow M$ defined by $\phi(r) = mr$. The kernel of this map is precisely the \textbf{right annihilator} of $M$ denoted by
+$r.\text{Ann}_{R}(M) = \{r \in R : mr = 0\}$. By the First Isomorphism Theorem, there exists a canonical isomorphism  $\psi: R/(r.\text{Ann}_{R}(M)) \rightarrow M$. By the previous lemma, M must be Artinian. \end{proof}
+
+\noindent
+\begin{proposition} Let R be an Artinian Ring. Then all finitely generated R-modules are Artinian. \end{proposition}
+
+\noindent
+\begin{proof} We shall proceed by induction on the cardinality of the generating set of R-module $M$. Consider the base case where $M$ is generated only by one element.This implies that $M$ is cyclic thus, by Lemma \ref{lemmacyclic}, $M$ is Artinian and the base case is done.
+Assume that the cardinality is $i$ for some $i > 1$. Take a subset $G$ of the generating set of cardinality $i-1$. Let us call the lone element we have left out $u$. $G$ generates a submodule of M called $M'$. The quotient $M/M'$ is cyclic since it is generated by a coset $u + M'$ and thus is Artinian. Consider a descending chain in M:
+
+\begin{equation}
+ M = C_0 \supseteq C_1 ... \supseteq C_{i} \supseteq ...
+\end{equation}
+Let us prove that this descending chain terminates. Since $M'$ is a submodule the chain determined by $C_i' = C_i \cap M'$ is a chain of submodules in $M'$. By the induction hypothesis, $M'$ is Artinian and so the chain $C'$ terminates. Now also consider the chain
+$C_i^* = C_i + M'$. This corresponds to the coset elements in $M/M'$ which is also Artinian by above. So $C_i^*$ also terminates. Suppose that the chains terminate at some $r \geq i$. So $C_r \cap M' = C_i \cap M'$ and $C_r + M' = C_i + M'$. So by the corollary of the Modular Law, we see that
+$C_r = C_i$. So the chain above terminates and $M$ is Artinian. \end{proof}
+
+Now we have a connection between finitely generated R-modules and $R$ when $R$ is Artinian.\newline
+
+\section{Semisimple Rings and Modules}
+
+Let us turn our attention to a special class of rings whose modules have nice structures and representations. We shall call a module \textbf{semisimple} if it can be expressed as a direct sum of simple right submodules. A ring R is called semisimple if it is a semisimple module over itself. From the definition of semisimpleness, we can deduce some properties of semisimple rings:
+
+\noindent
+\begin{proposition} A semisimple ring R is equivalent to a direct sum of a finite number of minimal right ideals and R is Noetherian and Artinian. \end{proposition}
+
+\noindent
+\begin{proof} First, let us note that if we consider R as an R-module, simple module $C$ only has (0) as a submodule by definition. If we observe this fact from a ring perspective, we see that this simple module corresponds to a minimal right ideal as a minimal right ideal contains no other ideal except for (0). Now define $I_r = \bigoplus_i^{r} A_i$ where $A_i$ are minimal right ideals where the direct sum of all $A_i$ equal R. We then have a ascending chain of ideals: $I_1 \subset I_2 \subset I_3 \subset ...$. By our definition, the union of these ideals should span R. Since R is semisimple, there must exist a right ideal $I_r $ that contains 1 $\in R$ for some r since the direct sum must generate R. 
+Then $I_1\subset I_2 \subset I_3 \subset ... \subset I_r$ spans R and thus R is is generated by a finite number of minimal right ideals.
+Also, notice that the chain mentioned is a composition series since if we consider the ideals as simple modules, we get a chain of simple modules by the analogy in the beginning. Thus, by Proposition 1, R is Noetherian and Artinian. \end{proof}
+
+From this proposition, we might intuitively guess that modules over these semisimple rings will also be semisimple in the sense that the module will be a direct sum of simple modules. Therefore, we can now use what we know about semisimple rings to generalize to the modules over these rings!
+
+\noindent
+\begin{proposition} A finitely generated module $M$ is semisimple iff it is equivalent to a direct sum of simple submodules. \end{proposition}
+
+\noindent
+\begin{proof} We shall construct such a direct sum of simple modules F inductively. Since $M$ is finitely generated, we can find a set of simple modules $C_i$ such that the finite sum of a collection of these $C_i$'s span $M$. Start the direct sum of $F_1 = C_1$. If $C_1$ contains the generating set then we are done. Otherwise, assume that we have a direct sum of simple submodules $F_i = \bigoplus_i C_i$ such that $F_i$ does not contain the entire generating set. Suppose we wanted to add another submodule $C_{i+1}$ to this direct sum. $F_i \cap C_{i+1} \neq C_{i+1}$ since $F_i$ cannot contain $C_{i+1}$ by definition (otherwise $F_i \cap C_{i+1} = C_{i+1}$ which will not help progress the induction). However, since all of the 
+$C_i$'s are simple, $F_i \cap C_{i+1} = 0$. Thus, we can construct the new direct sum $F_{i+1} =  \bigoplus_{i+1} C_i$. If $F_{i+1}$ spans $M$, then terminate the process. Otherwise, continue until we get a direct sum that spans $M$. Such a process must terminate since
+$M$ is finitely generated.\end{proof}
+
+We must now show the powerful property that any finitely generated module over a semisimple ring is semisimple. To do this, we must first prove a lemma that tells us the behavior of any homomorphism between two simple R-modules.
+
+\noindent
+\begin{lemma} \label{lemmahomo} Any homomorphism between two simple R-modules is either an isomorphism or the zero homomorphism. \end{lemma}
+
+\noindent
+\begin{proof} Assume that the homomorphism $f: M \rightarrow N$ is the not the zero map, then image($f$) cannot be zero. However since $N$ is simple, image($f$) = $N$. Thus, kernel($f$) $\neq M$ since $f$ has a non-trivial image. But since $M$ is also simple, it must be said that kernel($f$) = 0. This implies that $f$ is an isomorphism. \end{proof}
+
+\noindent
+\begin{proposition} Any finitely generated module over a semisimple ring is semisimple. \end{proposition}
+
+\noindent
+\begin{proof} Observe that $R^n$ for some $n \geq 1$ is an R-module. Since $M$ is finitely generated, we can find a surjective homomorphism $\phi: R^n \rightarrow M$ where $n$ is the cardinality of the generating set of $M$ (This is essentially a coordinate map). However, since $R$ is semisimple, $R^n$ must also be semisimple (as a module).
+
+Using Lemma \ref{lemmahomo} we see that under the homomorphism $\phi$, the simple modules of $R^n$ must map to simple modules in $M$ or zero. Thus, we see that $M$ is also made of a direct sum of simple modules. By Proposition 4, $M$ is semisimple. \end{proof}
+
+A natural question to ask is: ``What are semisimple rings good for?'' We see that by using semisimple rings, we can easily construct composition series for modules. In fact, such a method of construction is what we used to prove Proposition 3. 
+
+\section{Hopkins-Levitzki Theorem: Radicals of Artinian Rings}
+
+The \textbf{Jacobson radical} of a ring R is the smallest ideal such that $R/A$ is a semisimple ring. We also define a module to be \textbf{nilpotent} if there exists a $r \in \mathbb{N}$ such that $N^r = 0$. It turns out that the radical of R is nilpotent through a surprising, deep lemma named after Japanese Mathematician, Tadashi Nakayama (1912-1964).
+\noindent
+\begin{theorem}(Nakayama's Lemma): If R is an Artinian ring, then the radical rad(R) is the sum of all nilpotent right ideals and is nilpotent itself. \end{theorem}
+
+\noindent
+\begin{proof} The proof is a bit too technical and lengthy for this paper, but a detailed proof can be found in Cohn's book \cite{cohn04}. \end{proof}
+
+Finally, we now have all the necessary pieces to assemble our proof of the Hopkin-Levitzki Theorem! Let us restate the theorm once again. \newline
+
+\noindent
+\begin{theorem} (Hopkins-Levitzki Theorem) \end{theorem}
+
+For any right Artinian ring R and any right R-module $M$ the following are equivalent:
+
+\noindent
+\begin{enumerate}
+ \item $M$ is Artinian.
+ \item $M$ is Noetherian.
+ \item $M$ has a composition series.
+ \item $M$ is finitely generated.
+\end{enumerate}  
+
+\noindent
+\begin{myproof}
+
+\underline{$1 \rightarrow 3$:} Let us denote $N$ = rad(R). By definition, the quotient ring $S=R/N$ is semisimple and, by Nakayama's Lemma,
+$N$ is nilpotent. Thus, $N^r=0$ for some $r \in \mathbb{N}$. Consider the following descending chain:
+\begin{equation}
+ M \supseteq MN \supseteq MN^2 ... \supseteq MN^r = 0
+\end{equation}
+Let us denote the factors $F_i = MN^{i-1}/MN^{i}$. Notice that $N \subseteq r.\text{Ann}_{R}(F_i)$. We can easily see this by the following argument: consider any element $a \in MN^{i-1}$. For $\forall n \in N, a\cdot n \in MN^{i}$. However, this implies that
+$a \cdot n + MN^{i} = MN^{i}$ which is the zero coset. Thus, $N$ annihilates $F_i$.  Since $N$ annihilates $F_i$, we can regard $F_i$ as an $S$ module. Also, $S$ is semisimple so $F_i$ is semisimple as a $S$ module by Proposition 5. Since $M$ is Artinian, we see that $F_i$ is also Artinian as a an $R$-module. 
+Since $S$ is just the quotient $R/N$, $F_i$ is also Artinian as a $S$-module. However, $S$ is semisimple, so we can easily construct a composition series for $F_i$. After getting all of the composition series for each $F_i$, we glue each composition series in the order in which the $F_i$'s appear. In this way, we get a composition series for $M$. \newline
+
+\underline{$2 \rightarrow 3$} We can easily extend the argument above for the Noetherian case for $M$. \newline
+
+\underline{$3 \rightarrow 2$} The proof for this is similar to the proof of Proposition 1.\newline
+
+\underline{$3 \rightarrow 4$} This is clear from the finite length property of any composition series.\newline
+
+\underline{$4 \rightarrow 1$} This is a result of Proposition 2. \end{myproof}
+
+\section{Conclusion}
+
+The Hopkins-Levitzki Theorem provides a powerful relationship between the ascending and descending chains in a right R-module $M$ over a right Artinian ring $R$. The benefit of working under modules is that modules tell us a wide breadth of information about the properties of the underlying ring. For example, an immediate corollary of the Hopkins-Levitzki Theorem is that any
+right Artinian ring is also right Noetherian. Now, we can start to understand some ideal chain properties of the rings by simply understanding the submodule chain properties of the modules. 
+
+\newpage
+\begin{thebibliography}{9}
+ \bibitem{cohn04}
+    Paul M. Cohn,
+    \textit{Introduction to Ring Theory},
+    Springer-Verlag, 2000.
+\end{thebibliography}
+
+
+\end{document} 

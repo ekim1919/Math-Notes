@@ -1,0 +1,336 @@
+\section{H\aa stad's 3-bit PCP}
+%Arora, Barak
+\subsection{Inapproximability Results for $\ELin$ and $\mathsf{Max3Sat}$}
+The significance of H\aa stad's PCP for $\NP$ is its role in showing tight inapproximability results for $\ELin$ and hence $\mathsf{Max3Sat}$. The theorem is first stated below:
+
+\begin{theorem} \label{hastadpcp} (H\aa stad's 3-bit PCP, \cite{haastad2001some})
+For every $\delta > 0$ and $L \in \NP$, there exists a PCP verifier for $L$ over the boolean alphabet such that for every
+\begin{itemize}
+  \item The verifier $V$ queries 3 bits of the proof $x_{q_1},x_{q_2}, x_{q_3} \in \pi$ such that verification predicate is a three variable linear equation over $\mathbb{F}_2$ depending on the queried bits $x_{q_1},x_{q_2}, x_{q_3}$.
+  \item If $x \in L$, then there exists a proof $\pi$:
+        \begin{equation}
+          \mathbb{P}[V(x,\pi, r) = 1] \geq 1 - \delta
+        \end{equation}
+  \item If $x \not\in L$, then for all proofs $\pi$:
+        \begin{equation}
+          \mathbb{P}[V(x,\pi,r) = 1] \leq \frac{1}{2} + \delta
+        \end{equation}
+\end{itemize}
+\end{theorem}
+
+On closer inspection, Theorem \ref{hastadpcp} reveals that a gap problem based on $\ELin$ is actually $\NP$-hard to decide:
+
+\begin{corollary} \label{e3linhard}
+For every $\delta >0$, the promise problem $\mathsf{Gap}_{\frac{1}{2} + \delta, 1 - \delta}\ELin$ is $\NP$-hard.
+\end{corollary}
+
+This gives our first threshold result: Corollary \ref{e3linhard} states that the simple $\frac{1}{2}$-approximation algorithm introduced in Example \ref{e3linexample} is optimal in the sense that the existence of an efficient algorithm improving on the $\frac{1}{2}$ constant factor would show that $\P = \NP$. From this result, by reducing $\ELin$ to $\mathsf{Max3Sat}$, another threshold result appears:
+
+\begin{corollary}
+For every $\delta >0$, the promise problem $\mathsf{Gap}_{\frac{7}{8}+\delta,1-\delta}\mathsf{Max3Sat}$ is $\NP$-hard.
+\end{corollary}
+%
+\begin{proof}
+It suffices to transform $\ELin$ CSP instances to $\mathsf{MaxSat}$ CSP instances. For predicates of the form $x + y + z = 1$, consider the conjunction of the clauses:
+\begin{align*}
+   x \vee y \vee z \\
+   \bar{x} \vee y \vee \bar{z} \\
+   \bar{x} \vee y \vee \bar{z} \\
+   x \vee \bar{y} \vee \bar{z}
+\end{align*}
+The case for predicates of the form $x + y + z = 0$ are handled with a similar idea. For an assignment of a $\ELin$ instance which satisfies a linear constraint, it must satisfy all four of the associated $\mathsf{MaxSat}$ constraints. In the case where an assignment does not satisfy a linear constraint, at most three of the four clauses will be satisified. Hence if an assignment satifies $\frac{1}{2} + \delta$ of the constraints, then it can satisify at most
+\[ \left( \frac{1}{2} + \delta \right)4 + \left( \frac{1}{2} - \delta \right)\frac{3}{4} = \frac{7}{8} + \frac{3\delta}{4}\]
+
+fraction of clauses. On the other hand, if at least $1 - \delta$ of the linear constaints are satisfied then at least $1 - \delta$ of the clauses must also be satisfied.
+\end{proof}
+
+The proof of Theorem \ref{hastadpcp} leverages the $\NP$-hardness of $\mathsf{Gap}_\epsilon\mathsf{LC}$ mentioned in Theorem \ref{labelcoverhard}.
+%
+H\aa stad devised a dictatorship test based on $\mathsf{E3Lin}$ predicates then composed this test with checking the validity of a $\mathsf{Gap}_\epsilon\mathsf{LC}$ proof.
+%=
+In fact, the three queries to the proof arise from a modified Blum-Luby-Rubinfeld Linearity Test. The details will be treated in the upcoming subsections.
+
+\subsection{The Long Code}
+The workhorse for H\aa stad's proof will be the use of the \emph{long code}. A long code is esstentially the truth table of a dictator function. The idea roughly revolve around the idea that dictator functions are locally-testable as linear functions (\`a la BLR Test) and have an useful error-correction property. Correct proofs will be expected to encode labels to vertices in a Label Cover instance as long codes of dictators corresponding to the indices of the labels. In other words, for a label $\ell \in \Sigma$, a corresponding index $i(\ell)$ can be computed with $\log{|\Sigma|}$ bits.
+%
+The total number of such bitstrings will be, of course, length $2^{\log{|\Sigma|}} = |\Sigma|$. We define the long code of $\ell$ as the bitstring:
+%
+\begin{equation}
+  \mathit{long}_{\ell} = (f(\ell) \mid f:\Sigma \rightarrow \{-1,1\})
+\end{equation}
+%
+If we additionally encode this bitstring into the dictator function $\chi_{i(\ell)}(x_1,\cdots,x_{|\Sigma|}) = x_{i(\ell)}$, the truth table for this function will be of total length $2^{|\Sigma|}$. This truth table will exactly be $\mathit{long}_{\ell}$. Here, the input into  $\chi_{i(\ell)}$ will be the truth tables for the individual boolean functions $f: \Sigma \rightarrow \{-1,1\}$.
+%
+This reveals that the long code requires a \emph{double-exponential} proof length. The truth table for $\chi_{i(\ell)}$ will serve as query access to the modified BLR test mentioned above.
+
+
+\subsection{Aside on Dictatorship Testing}
+The first step towards testing if an input boolean function $f:\{-1,1\}^n \rightarrow \{-1,1\}$ is a dictator arises from the Blum-Luby-Rubinfeld Test (BLR) which we restate below: \newline
+
+\begin{enumerate}
+  \item Sample $x,y \sim_R \{-1,1\}^n$
+  \item Accept iff $f(x)f(y) = f(xy)$
+\end{enumerate}
+
+\begin{theorem}
+  Suppose the BLR test accepts $f:\{-1,1\}^n \rightarrow \{-1,1\}$ with probability $1 - \epsilon$, then $f$ is $\epsilon$-close to a linear function $\chi_{S*}$ for some $S^* \subseteq [n]$.
+\end{theorem}
+%
+Certainly the dictators $\chi_i, \; i \in [n]$ are linear functions. Hence, if $f = \chi_i$ for some $i$, then the BLR test accepts with probability one. However, we have the rest of the parity functions $\chi_{S}, |S| \geq 2$ which the BLR Test cannot distinguish. We need to amend the test to ensure that parity functions of higher weight are rejected with high probability. H\aa stad proposed modifiying the vanilla BLR test to add noise to the sampled product $xy$. Although this sacrifices perfect completeness, it penalizes large parity functions: \newline
+%
+\begin{enumerate}
+  \item Sample $x,y \sim \{-1,1\}^n$
+  \item Sample $z \sim N_{1-2\epsilon}(xy)$
+  \item Accept iff $f(x)f(y)=f(z)$
+\end{enumerate}
+%
+
+\begin{lemma} (Completeness of the Noisy BLR Test)
+ If $f = \chi_{i}$ is a dictator for some $i$, then
+  \[ \mathbb{P}[\text{ Noisy BLR test accepts }] \geq 1 - \epsilon \]
+\end{lemma}
+\begin{proof}
+  Note that if $z \sim N_{1-2\epsilon}(xy)$ for some $x \in \{-1,1\}^n$, then $y$ can be expressed as below:
+  \begin{equation}
+    z_i = \begin{cases}
+             \phantom{-} x_iy_i \text{ with probability } 1- \epsilon \\
+             - x_iy_i \text{ with probability } \epsilon
+          \end{cases}
+  \end{equation}
+  By the acceptance criterion,
+  \[ f(z) = f(x)f(y) \implies z_i = x_iy_i \]
+  This occurs with probability $1- \epsilon$ by the observation above, yielding completeness as claimed.
+\end{proof}
+%
+%
+\begin{lemma} Suppose that for some constant $\nu > 0$: \label{noisyblrsoundness}
+\begin{equation*}
+  \mathbb{P}[\text{ Noisy BLR test accepts }] \geq \frac{1}{2} + \nu
+\end{equation*} then
+\begin{equation}
+  2\nu \leq \sum_{S \subseteq [n]} \hat{f}(S)^3(1-2\epsilon)^{|S|}
+\end{equation}
+\end{lemma}
+%
+\begin{proof}
+  The proof begins by noticing the accepting probability can be expressed as:
+  \[ \mathbb{P}[\text{ Noisy BLR test accepts }] = \frac{1}{2} + \frac{1}{2}\mathbb{E}_{x,y,z} \left[f(x)f(y)f(z) \right] \]
+  By our assumption, we prove that:
+  \begin{align*}
+    \frac{1}{2} + \nu & \leq \frac{1}{2} + \frac{1}{2}\mathbb{E}_{x,y,z} \left[f(x)f(y)f(z) \right] \implies \\[0.7ex]
+    2\nu & \leq \mathbb{E}_{x,y,z} \left[f(x)f(y)f(z) \right] \implies \\[0.7ex]
+    2\nu & \leq\mathbb{E}_{x,y,z} \left[f(x)f(y) \mathbb{E}_{z \sim N_{1 - 2\epsilon}(xy)} \left[f(z)\right]\right] \implies \\[0.7ex]
+    2\nu & \leq \mathbb{E}_{x}\left[ f(x)\mathbb{E}_{y}\left[ f(y)\mathcal{T}_{1-2\epsilon}f(xy)\right]\right] \\[0.7ex]
+    2\nu & \leq \mathbb{E}_{x}\left[ f(x) (f * \mathcal{T}_{1-2\epsilon}f)(x)\right] \implies\\[0.7ex]
+    2\nu & \leq \sum_{S \subseteq [n]} \widehat{f}(S)\widehat{f}(S)\widehat{\mathcal{T}_{1-2\epsilon}f}(S) \implies \\[0.7ex]
+    2\nu & \leq  \sum_{S \subseteq [n]} \widehat{f}(S)^3 (1-2\epsilon)^{|S|}
+  \end{align*}
+  as claimed.
+\end{proof}
+The operator $\mathcal{T}_{\rho}$ is the \emph{noise operator} which, given boolean function $f:\{-1,1\}^n \rightarrow \{-1,1\}$, maps $f$ to another boolean function $\mathcal{T}_\rho(f)$ with the following Fourier decomposition:
+
+\begin{equation}
+  \mathcal{T}_\rho(f) = \sum_{S \subseteq [n]} \rho^{|S|}\widehat{f}(S)\chi_S
+\end{equation}
+
+%
+\begin{corollary}
+  (Soundness of the Noisy BLR Test) There exists some $S^* \subseteq [n]$ such that
+  \begin{equation}
+    |\widehat{f}(S^*)| \geq 2\nu \quad |S^*| \leq O\left(\frac{1}{\epsilon}\log{\frac{1}{\nu}}\right)
+  \end{equation}
+\end{corollary}
+%
+\begin{proof}
+  From Theorem \ref{noisyblrsoundness}, we deduce that:
+  \begin{align*}
+      2\nu \leq  \sum_{S \subseteq [n]} \widehat{f}(S)^3 (1-2\epsilon)^{|S|} & \leq \max_{S}{\widehat{f}(S)}(1-2\epsilon)^{|S|} \sum_{S \subseteq [n]} \widehat{f}(S)^2 \\
+      & = \max_{S}{\widehat{f}(S)}(1-2\epsilon)^{|S|}
+  \end{align*}
+  By taking the maximum attained as $S^*$,
+  \[2\nu \leq \widehat{f}(S^*)(1-2\epsilon)^{|S^*|} \]
+  Both $\widehat{f}(S^*) \geq 2\nu$ and $(1-2\epsilon)^{|S^*|} \geq 2\nu$ (as $f$ is boolean). By the inequality $1 - x \leq e^{-x}$,
+
+  \[e^{-2\epsilon|S^*|} \geq 2\nu \]
+  which shows that $|S^*| \leq O\left(\frac{1}{\epsilon}\log{\frac{1}{\nu}}\right)$.
+\end{proof}
+%
+\begin{remark}
+  This theorem has a similar interpretation with the Friedgut-Kalai-Naor Theorem in the rough sense that boolean functions who have their Fourier weights concentrated in the lower degrees are similar to dictator functions. Indeed this is the crux behind the soundness property of the Noisy BLR test.
+\end{remark}
+
+\subsection{The Code Consistency Test}
+The consistency test will harness the dictatorship test formulated above to check the validity of an alleged long codes and satisfaction of the sampled edge by the labels encoded by the long codes. Formally speaking, the input will be a $\LC$ instance $((A\sqcup B,E),\Sigma_A,\Sigma_B,\{\pi_e\}_{e \in E})$ and the proof will be the long codes encoding the assignments to the vertices, $\mathfrak{A}: A \rightarrow \Sigma_A$, $\mathfrak{B}: B \rightarrow \Sigma_B$. The consistency check will aim to perform two tasks simultaneously in respect to an edge $e = (a,b)$ and its associated projection constraint $\pi_e$: Let $f_a:\{-1,1\}^{|\Sigma_A|} \rightarrow \{-1,1\}, \; f_b:\{-1,1\}^{|\Sigma_B|} \rightarrow \{-1,1\}$ be the functions claimed to be long codes for the labels assigned to vertices $a,b$: $\mathfrak{A}(a),\mathfrak{B}(b)$. Recall these will be encoded as truth table strings on the proof $\pi$.
+
+\begin{description}
+  \item[Validity Check] Check that the functions $f_a,f_b$ are indeed valid long codes for some labels $\mathfrak{A}(a),\mathfrak{B}(b)$.
+  \item[Consistency Check] Verify that the assigned labels satisfy $\pi_e$
+  \[ \pi_e(\mathfrak{A}(a)) =  \mathfrak{B}(b)\]
+\end{description}
+
+Before presenting the test, some notation is in order. Let $(x \circ \pi_e)_i = x_{\pi_e(i)}, \; \forall i \in \Sigma_A$ where $x \in \{-1,1\}^{|\Sigma_B|}$. It is worth keeping in mind that $x \circ \pi_e \in \{-1,1\}^{|\Sigma_A|}$.
+
+\begin{enumerate}
+  \item Sample an edge $e = (a,b) \in E$. Let $\pi_e$ be the associated projection constraint.
+
+  \item Sample $x \sim \{-1,1\}^{|\Sigma_B|}, \; y \sim \{-1,1\}^{|\Sigma_A|}$
+  \item Sample $z \sim N_{1 - 2\delta}((x \circ \pi_e)y)$
+  \item Accept iff $f_a(z) = f_b(x)f_a(y)$
+\end{enumerate}
+
+First, note that if the labels assigned to vertices $a,b$ satisfied $\pi_e$ and $f_a,f_b$ are valid long codes, then $f_a(x \circ \pi_e) = f_b(x )$ for all $x \in \{-1,1\}^{|\Sigma_B|}$. Second, Step 4 of the verfier can be expressed as a three variable linear equation:
+
+\begin{equation} \label{hastadpred}
+ f_a(z) f_b(x)f_a(y) = 1
+\end{equation}
+
+\begin{proposition} (Completeness)
+  If $\mathsf{Gap}_\delta\mathsf{LC}$ instance $((A\sqcup B,E),\Sigma_A,\Sigma_B,\{\pi_e\}_{e \in E})$ satisfies all constraints, then there exists code words $f_a, f_b$ such that
+  \begin{equation}
+    \mathbb{P}[ \text{ Consistency Test Accepts } ] \geq 1 - \delta
+  \end{equation}
+\end{proposition}
+\begin{proof}
+  Suppose the assignment satisfies all constaints of the $\LC$ instance above. Set $f_a(x_1,\cdots, x_{\Sigma_A}) = x_{\mathfrak{A}(a)}, \; f_b(x_1,\cdots, x_{\Sigma_B}) = x_{\mathfrak{B}(b)}$ for some edge $e=(a,b)$. It must hold that:
+
+  \begin{align*}
+      \mathbb{P}[ \text{ Consistency Test Accepts } ] & = \mathbb{P}_{x,y,z}\left[f_a(z) = f_b(x)f_a(y) \right] \\
+      & = \mathbb{P}_{x,y, \mu}\left[ (x \circ \pi_e)_{\mathfrak{A}(a)}y_{\mathfrak{A}(a)}\mu_{\mathfrak{A}(a)} = x_{\mathfrak{B}(b)}y_{\mathfrak{A}(a)}  \right] \quad (\mu \sim N_{1 - 2\delta}(1^{|\Sigma_A|})) \\
+      & = \mathbb{P}_{x,\mu} \left[(x \circ \pi_e)_{\mathfrak{A}(a)}\mu_{\mathfrak{A}(a)} = x_{\mathfrak{B}(b)} \right] \\
+      & =  \mathbb{P}_{x,\mu} \left[x_{\pi_e(\mathfrak{A}(a))}\mu_{\mathfrak{A}(a)} = x_{\mathfrak{B}(b)} \right]\\
+      & =  \mathbb{P}_{x,\mu} \left[x_{\mathfrak{B}(b)}\mu_{\mathfrak{A}(a)} = x_{\mathfrak{B}(b)} \right] \\
+      & = 1 - \delta
+  \end{align*}
+\end{proof}
+%
+%
+
+\subsection{Folded Functions}
+A technical detail requires that functions queried $f_a,f_b$ be \emph{folded} in the sense that:
+%
+\begin{definition}
+A boolean function $f:\{-1,1\}^n \rightarrow \{-1,1\}$ is said to be folded if for every $x \in \{-1,1\}$, $f(-x) = -f(x)$.
+\end{definition}
+
+These functions are also said to be \emph{odd}. Direct calculation shows that \emph{folded} functions have their Fourier weights concentrated on subsets of odd cardinality. In particular, for boolean function $f$ folded: $\widehat{f}(\emptyset) = 0$. Why would we need this property?
+%
+One issue that arises with the predicates shown in Equation \ref{hastadpred} is when all functions are simply the constant function $f_a = f_b = 1$. This passes the Noisy BLR test with probability one. This can be avoided by restricting the functions to be folded. Of course, dictator functions are folded.
+%
+Furthermore, we do not need to increase the number of queries to enforce this requirement: for any two pair of queries $(x,-x)$ and a queried function $f$, if the test queries $f(x)$, the value $f(-x)$ can be subsequently computed as $-f(x)$.
+%
+Similarly, if $f(-x)$ is queried, then $f(x)$ is computed as $-f(-x)$.
+%
+Hence, we lose no generality by assuming the functions we query are folded.
+
+\subsection{Soundness and Decoding a Labeling}
+
+\begin{proposition}
+  Suppose that for a $\LC$ instance, the consistency test above accepts with at least $\frac{1}{2} + \delta$,  then we wish to prove there exists a labeling which satisfies at least $\delta$ of the projection constraints.
+\end{proposition}
+%
+Note that the soundness criterion intuitively implies the use of a method to extract out a labeling from a high enough acceptance probability. This is the ``local-correctability" property of linear functions coming into play. We first prove the following lemma:
+
+\begin{definition}
+  For $S \subseteq \Sigma_A$ and $\pi:\Sigma_A \rightarrow \Sigma_B$, define $\pi_2(S) = \{j \in \Sigma_B \mid |\pi^{-1}(j) \cap S| \text{ is odd}\}$
+\end{definition}
+
+\begin{lemma} \label{soundnessbound}
+  Assume the test accepts with at least $\frac{1}{2} + \delta$ probability, then for at least $\delta$ fraction of the edges $(a,b)$, the associated codes $f_a:\{-1,1\}^{|\Sigma_A|} \rightarrow \{-1,1\}, \; f_b:\{-1,1\}^{|\Sigma_B|} \rightarrow \{-1,1\}$ satisfy the following inequality:
+  %
+  \begin{equation}
+  \sum_{S \subseteq [n]} \widehat{f_a}(S)^2\widehat{f_b}(\pi_2(S))(1-2\delta)^{|S|} \geq \delta
+  \end{equation}
+\end{lemma}
+%
+\begin{proof}
+  The proof is remarkably similar to that of Lemma \ref{noisyblrsoundness}. From our assumption, it is immediate that:
+  \begin{equation}
+    \frac{1}{2} + \frac{1}{2}\mathbb{E}_{(u,v),x,y,\mu}\left[f_b(x)f_a(y)f_a((x \circ \pi)y\mu) \right] \geq \frac{1}{2} + \delta  \quad (\mu \sim N_{1 - 2\delta}(1^{|\Sigma_A|}))
+  \end{equation}
+  which implies that:
+  \begin{equation}
+    \mathbb{E}_{(u,v),x,y,\mu}\left[f_b(x)f_a(y)f_a((x \circ \pi)y\mu) \right] \geq 2\delta
+  \end{equation}
+  By an averaging argument, there must exist at least $\delta$ fraction of the edges which satisfy:
+  \begin{equation}
+      \mathbb{E}_{x,y,\mu}\left[f_b(x)f_a(y)f_a((x \circ \pi)y\mu) \right] \geq \delta
+  \end{equation}
+  Hence, through a Fourier-analytic argument:
+  \begin{align*}
+    \mathbb{E}_{x,y,\mu}\left[f_b(x)f_a(y)f_a((x \circ \pi)y\mu) \right] & \geq \delta \implies \\[0.7ex]
+    \mathbb{E}_{x,y}\left[f_b(x)f_a(y) \mathbb{E}_{\mu} \left[f_a((x \circ \pi)y\mu) \right] \right] & \geq \delta \implies \\[0.7ex]
+    \mathbb{E}_{x,y}\left[f_b(x)f_a(y) \mathcal{T}_{1-2\delta}(f_a)(x \circ \pi)y) \right] & \geq \delta \implies \\[0.7ex]
+    \mathbb{E}_{x}\left[ f_b(x)(f * \mathcal{T}_{1 - 2\delta}(f_a))(x \circ \pi) \right] & \geq \delta \implies \\
+    \sum_{S} \widehat{f_b}(S) \widehat{f_a}(\pi^{-1}(S))^2(1 - 2\delta)^{|S|} & \geq \delta  \implies \\
+    \sum_{S} \widehat{f_b}(\pi(S))\widehat{f_a}(S)^2 (1 - 2\delta)^{|S|} & \geq \delta \implies \\
+    \sum_{S} \widehat{f_b}(\pi_2(S))\widehat{f_a}(S)^2 (1 - 2\delta)^{|S|} & \geq \delta
+    \end{align*}
+    The last implication follows from the observation that:
+    \[ \chi_S(x \circ \pi) = \prod_{i \in S} x_{\pi(i)} = \prod_{i \in \pi(S)} x_i = \prod_{i \in \pi_2(S)} x_i = \chi_{\pi_2(S)}(x) \]
+\end{proof}
+%
+We can now finish the soundness proof by decoding the labeling from our supplied proof string $\pi$. The actual procedure is not complicated:
+
+\begin{enumerate}
+    \item For each $a \in A$, do the following steps:
+    \item Sample $S \sim (\widehat{f}_a(S))^2$
+    \item Set $\mathfrak{A}(a) \xleftarrow{R} S$ \quad (\text{uniformly sample from } $S$)
+\end{enumerate}
+
+Do the same for each $b \in B$ except sample the subset $T \sim \widehat{f}_b^2(T)$ from the Fourier spectrum of $f_b$:
+
+\begin{enumerate}
+    \item For each $b \in A$, do the following steps:
+    \item Sample $T \sim (\widehat{f}_b(T))^2$
+    \item Set $\mathfrak{B}(b) \xleftarrow{R} T$ \quad (\text{uniformly sample from } $T$)
+\end{enumerate}
+
+
+ Since $f_a,f_b$ are assumed to be folded (odd) functions, both $\widehat{f_a}(\emptyset) = \widehat{f_b}(\emptyset) = 0$, so we will never sample the empty set in any of the procedures above. Remarkably, the procedure above claims that finding a labeling which satisfies an edge with  sufficiently high probability amounts to just sample from the Fourier spectrums of the functions $f_a,f_b$! We now aim to show the inequality:
+
+\begin{lemma} \label{firststepsoundness}
+  \begin{equation}
+      \mathbb{P}_{(a,b) \in E}[ \text{(a,b) is satisfied}] \geq \sum_{S} \sum_{T \subseteq \pi(S)} \widehat{f}_a(S)^2\widehat{f}_b(T)^2 \cdot \frac{1}{|S|}
+  \end{equation}
+\end{lemma}
+\begin{proof}
+  Here is one way to get a label which satisfies a chosen edge $(a,b)$. The first procedure samples a subset from the Fourier spectrum of $f_a$. The second procedure then samples from the Fourier spectrum of $f_b$ and receives a subset $T \subseteq \pi(S)$. The second procedure then uniformly samples from $T$ to receive some label $t \in T$. Since $T$ is contained in the image of $S$ under $\pi$, there must exist at least one element in $s \in S$ such that $\pi(s) = t$, showing that this event occurs with probability at least $\frac{1}{|S|}$
+\end{proof}
+
+\begin{proposition} (Soundness)
+    For the labeling scheme constructed above, the probability:
+    \begin{equation}
+      \mathbb{P}_{(a,b) \in E}[ (a,b) \text{ is satisfied}] \geq 4\delta^4
+    \end{equation}
+\end{proposition}
+%
+\begin{proof}
+  By Lemma \ref{firststepsoundness}:
+  \begin{align*}
+    \mathbb{P}_{(a,b) \in E}[ \text{(a,b) is satisfied}] & \geq \sum_{S} \sum_{T \subseteq \pi(S)} \widehat{f}_a(S)^2\widehat{f}_b(T)^2 \cdot \frac{1}{|S|} \\
+    & \geq \sum_{S} \widehat{f}_a(S)^2\widehat{f}_b(\pi_2(S))^2  \frac{1}{|S|} \\
+    & =  \sum_{S} \left(\widehat{f}_a(S)\widehat{f}_b(\pi_2(S))  \frac{1}{\sqrt{|S|}}\right)^2 \cdot \left(\sum_{S}\widehat{f}(S)^2 \right) \\
+    & \geq \left(\sum_{S} \widehat{f}_a(S)^2\widehat{f}_b(\pi_2(S))  \frac{1}{\sqrt{|S|}} \right)^2 \quad (\text{Cauchy-Schwarz}) \\
+    & \geq 4\delta\left(\sum_{S} \widehat{f}_a(S)^2\widehat{f}_b(\pi_2(S))  (1 - 2\delta)^{|S|} \right)^2
+  \end{align*}
+  The last inequality holds since $\frac{1}{\sqrt{x}} \geq 2\sqrt{\delta}(1-2\delta)^x$ for all $x, \delta > 0$. By virtue of our bound derived in Lemma \ref{soundnessbound}, we find that for at least an $\delta$ of the edges,
+  $\sum_{S} \widehat{f}_a(S)^2\widehat{f}_b(\pi_2(S))  (1 - 2\delta)^{|S|} \geq \delta$. Hence:
+
+  \begin{equation}
+          \mathbb{P}_{(a,b) \in E}[ (a,b) \text{ is satisfied}] \geq 4\delta\cdot\delta^3 = 4\delta^4
+  \end{equation}
+\end{proof}
+
+By Theorem \ref{labelcoverhard}, we know that $\mathsf{Gap}_{4\delta^4}\mathsf{LC}$ is $\NP$-hard for every $\delta \in [0,\frac{1}{2}]$. Since $\delta
+\geq 4\delta^4$ for $\delta \in [0,\frac{1}{2}]$. The argument for the completeness of this PCP verifier still holds if we set our $\delta$ to be $\delta' = 4\delta^4$. This demonstrates that we gave a PCP system for the $\NP$-hard $\mathsf{Gap}_{\delta'}\mathsf{LC}$:
+
+\begin{proposition}
+  Suppose for an input $\mathsf{Gap}_{\delta}\mathsf{LC}$ instance say $\mathcal{I}$ and associated proof string $\pi$  causes the test to pass with at least $\frac{1}{2} + \delta$:
+
+  \begin{equation}
+    \mathbb{P}[\text{Consistency Test Passes}] \geq \frac{1}{2} + \delta
+  \end{equation}
+  then there exists a assignment for $\I$ such that it satisfies at least $\delta' = 4\delta^4$ fraction of edges in $\I$.
+\end{proposition}
+This gives a PCP system for $\NP$ as desired.
+%This verifier still uses only a logarithmic number bits to address sample the edge $e = (a,b)$ and the truth tables of $f_a,f_b$.

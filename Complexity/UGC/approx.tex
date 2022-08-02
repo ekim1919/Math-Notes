@@ -1,0 +1,173 @@
+\section{Approximation Algorithms and CSPs}
+%3.2 Limits of Approximation – Introduction (TIFR)
+%AB - Chapter 11
+%Explain intuition.
+\subsection{Definitions and Examples}
+The theory of approximating $\NP$-hard problems roots itself in the following question: ``Is it possible to efficiently approximate $\NP$-complete problem to some arbitrary degree of accuracy?" Since the Cook-Levin Theorem demonstrated that the $\SAT$ decision problem is $\NP$-complete, the question could be rephrased as ``Can we find an efficient algorithhm for $\SAT$ which, given an input formula, outputs an assignment which satisfies a $1-\delta$ fraction of the clauses for any constant $\delta >  0$?" Towards this end, let us first introduce a few motivating examples which will find utility in our forthcoming analysis. \newline
+
+Consider $\mathsf{Max3CNF}$, the problem of, given a 3CNF formula $\phi$ as input, outputting an assignment which maximizes the number of clauses satisfied in $\phi$. For any assignment $x$ to the variables, say as an $n$-bit input string while viewing $\phi:\{0,1\}^n \rightarrow \{0,1\}$ as a boolean function, there is some $0 \leq \rho_{\phi,x} \leq 1$ representing the fraction of clauses satisfied in $\phi$. Take $\mathsf{Opt}(\phi)$ to be the maximum value over all such assignments:
+
+\[ \mathsf{Opt}(\phi) = \max_{x \in \{0,1\}^n}\rho_{\phi,x} \]
+
+A polynomial-time algorithm which solves $\MaxCNF$ is one which takes a 3CNF $\phi$ as input and outputs $\Opt(\phi)$. Naturally, $\mathsf{Max3CNF}$ is $\NP$-hard since its corresponding decision problem $\mathsf{3CNF}$ is $\NP$-complete ($\phi$ is satisfiable iff $\mathsf{Opt}(\phi) = 1$).
+%
+However, we can ask if there exists an algorithm $A$ which outputs an assignment which satisfies at least some $\beta\cdot\mathsf{Opt}(\phi)$ fraction of the clauses of $\phi$ for some $\beta \leq 1$. To formalize this: \newline
+%
+\begin{definition} \label{Opt3SATDef}
+For $\beta \leq 1$, a polynomial-time algorithm $A$ is deemed as a $\beta$-approximation algorithm for $\mathsf{Max3CNF}$ if $A(\phi)$ outputs an assignment which satisifies at least $\beta\cdot\mathsf{Opt}(\phi)$ fraction of $\phi$'s clauses for every 3CNF instance $\phi$. More specifically, the algorithm $A$ outputs some value such that:
+\begin{equation}
+  \beta\cdot\mathsf{Opt}(\phi) \leq A(\phi) \leq \mathsf{Opt}(\phi)
+\end{equation}
+If $\mathsf{Opt}(\phi) = 1$, then $\phi$ is said to be \emph{satisfiable}.
+\end{definition}
+
+A canonical example of a simple approximation algorithm for $\mathsf{Max3CNF}$ is the following scheme: for every variable in $\phi$ choose with uniform probability an assignment from $\{0,1\}$. The probability of any given clause being satisfied by such a random assignment is $\frac{7}{8}$. Thus
+%
+\[ \mathbb{E}_{x \in \{0,1\}^n}[\text{\# satisfied clauses of $\phi(x)$}] = \frac{7m}{8} \]
+%
+where $m$ is the number of satisfiable clauses of $\phi$, showing that there must exist an assignment which satisfies at least $\frac{7}{8}$ of $\phi$'s clauses. We can derandomize this algorithm to output such an assignment. This gives us a $\frac{7}{8}$-approximation algorithm for $\mathsf{Max3CNF}$. Here's another example:
+%
+\begin{example} \label{e3linexample}
+  Let $\mathsf{MaxE3Lin}$ define the problem of the following form: let $\xi$ be defined as a system of linear equations over the field $\mathbb{F}_2$ where every equation contains \emph{exactly} $3$ variables from a set of $n$ variables $x_1,\cdots,x_n$. Find an assignment to the variables which maximizes the number of satisified linear equations in $\xi$. An example is the following system over variables $x_1,x_2,x_3,x_4$:
+  %
+  \begin{equation*}
+    \begin{alignedat}{3}
+      x_1 & +{} &  x_2 & +{} & x_3 & = 0 \\
+      x_1 & +{} &  x_2 & +{} &  x_4 & = 1 \\
+      x_1 & +{} & x_3 & +{} & x_4 & = 1
+\end{alignedat}
+\end{equation*}
+\end{example}
+%
+The $\mathsf{E3Lin}$ expression represents a linear system of $\mathsf{E}$xactly $\mathsf{3}$ variables. We can extend the notation treated above for $\mathsf{Max3CNF}$ to this situation. In other words, if $\rho_{\xi,x}$ is the fraction of satisfied linear constraints of $\xi$ under assignment $x \in \mathbb{F}_2^n$.
+%
+\[\mathsf{Opt}(\xi) =\max_{x \in \{0,1\}^n}\rho_{\xi,x}\]
+%
+A comment regarding this problem: if the given $\mathsf{E3Lin}$ instance has a guaranteed solution i.e $\mathsf{Opt}(\phi) = 1$, then Gaussian Elimination will always output an assignment which satisfies all linear constaints in polynomial-time. It is more interesting to consider instances where no such solution satisfing all of the constraints exists over $\mathbb{F}_2^n$. In these cases, $\mathsf{Opt}(\xi) = 1 - \epsilon$ for some $0 < \epsilon \leq 1$. This problem also has a fairly simple $\frac{1}{2}$-approximation algorithm: set all $x_1 = \cdots = x_n  = 0$ or $x_1 = \cdots = x_n  = 1$ depending on which satisfies the most constraints. This scheme must satisfy at least $\frac{1}{2}$ of the constraints for any instance $\xi$. \newline
+
+\begin{example} \label{maxcutexample}
+The problem $\MaxCut$ will be casted as follows: given an undirected graph $G=(V,E)$, find the largest cut of $G$. There is a straightforward LP formulation for this problem:
+
+\begin{align}
+  &  \max \sum_{(u,v) \in E} e_{u,v} \\
+  & e_{u,v} \leq
+  \min \begin{cases}
+      x_1 + x_2 \\
+      2 - (x_1 + x_2)
+  \end{cases} \\
+  & e_{u,v} \in [0,1] \\
+  & x_v \in [0,1]
+\end{align}
+%
+where the $e_{u,v}$ variables represent the edges $e \in E$ of the input graph and the $x_v$ represent the vertex variables $v \in V$. This will actually be a relaxation from its respective integer program in which the variables can take the integer values:
+
+\begin{align}
+  e_{u,v} = \begin{cases}
+              1 \text{ if } e_{u,v} \in \mathcal{C} \\
+              0 \text{ otherwise }
+            \end{cases}
+  x_v = \begin{cases}
+              0 \text{ if } v \text{ is in partition } S \\
+              1 \text{ otherwise }
+        \end{cases}
+\end{align}
+
+where $\mathcal{C} \subseteq E$ is the subset of edges constituting the cut and $(S,\bar{S})$ is the partition defining the cut. Naturally, a solution to the integer program will also be a solution to the LP above, which implies that
+
+\[ \mathsf{Opt}_{LP} \geq \MaxCut(G)\]
+
+There actually exists an Semi-definite Programming (SDP) relaxation for $\MaxCut$ called the \emph{Goemans-Williamson algorithm} which will be treated in Section \ref{goemans}.
+
+\end{example}
+
+\subsection{Constraint Satisfaction Problems}
+
+ Generally speaking, it's useful to concretize these problems into an unified framework. The examples presented in the last section have some common interpretation shared between them: they could all be seen as manifestations of Constaint Satisfaction Problems (CSP):
+%
+\begin{definition}
+  Let $\Omega$ be a finite set deemed as the \emph{domain}. A constraint satisfaction problem (CSP) $\Psi$ over domain $\Omega$ is a finite set of predicates $\psi:\Omega^r \rightarrow \{0,1\}$ where $r$ is the \emph{arity} of predicate $\psi$. The predicates can be of different arities. The \emph{arity} of the CSP $\Psi$ would be the maximum of all the arities of the predicates in $\Psi$. \newline
+
+  \noindent An \emph{instance} $\mathcal{I}$ over CSP $\Psi$ is a set of tuples $(S,\psi)$ where if $r$ is the arity of predicate $\psi$, $S = (v_1,\cdots,v_r)$ is some ordered tuple of variables taken from finite set $V$ consisting of variables contained in CSP $\Psi$. These tuples are called the \emph{constraints} of $\mathcal{I}$. In addition, we add the condition that every variable show up in at least one constraint. Variables which do not appear in any of the constraints can simply be removed. \newline
+
+  \noindent Now given some instance $\mathcal{I}$, an \emph{assignment} $F:V \rightarrow \Omega$ is simply some  map between the variables and the domain. We say that $F$ satisfies a constaint $(S,\psi)$ if $\psi(F(S)) = 1$. For tuple $S = (v_1, \cdots, v_r)$, we define $F(S) = (F(v_1), \cdots, F(v_r))$. Consider the fraction of constraints of satisfied by $F$ in $\mathcal{I}$:
+  %
+  \begin{equation}
+  \mathsf{Val}_{\I}(F) = \mathbb{E}_{(S, \psi) \sim \I}[\psi(F(S))]
+  \end{equation}
+  By taking the maximum fraction over all such assignments:
+  %
+  \begin{equation}
+  \mathsf{Opt}(\I) = \max_{F: V \rightarrow \Omega} \mathsf{Val}_{\I}(F)
+  \end{equation}
+\end{definition}
+
+  %
+  \begin{example} \hfill{}
+    \begin{itemize}
+      \item For $\MaxCNF$, the domain would be $\Omega=\{0,1\}$ and the CSP $\Psi$ would be composed of the single predicate $\vee_{3}:\{0,1\}^3 \rightarrow \{0,1\}$. This predicate is just the logical OR of the three input variables. Any 3CNF $\phi$ can have its clauses be expressed as constraints $(S,\vee_{3})$ where $S$ would be the variables inputted into $\vee_{3}$. Hence, an assignment $F$ would be an assignment into the variables found in 3CNF $\phi$, showing that $\mathsf{Opt}(\phi)$ aligns with the definition given in the last section. \newline
+
+      \item For $\ELin$, the domain would be $\Omega = \mathbb{F}_2$ and  $\Psi$ consist of predicates of the form $(x_1,\cdots,x_3) = x_1 + x_2 + x_3$ and $(x_1,\cdots,x_3) = x_1 + x_2 + x_3 + 1$ representing both types of linear constraints found in a system of three-variable equations over $\mathbb{F}_2$. An instance $\xi$ would consist of constraints $(S,\psi)$ where $S$ would be a three variable tuple containing the variables appearing in the linear constraint $\psi$. \newline
+
+      \item For $\mathsf{MaxCut}$, the domain can be defined as $\Omega = \{-1,1\}$ with $\Psi$ set to the simple predicate $\neq:\{-1,1\}^2 \rightarrow \{0,1\}$. This simply tests if the inputted values are not equal. The variable set $V$ of an instance $\I$ would be indexed by the vertices contained in a graph $G=(V,E)$. There is one constraint tuple, $((v_i,v_j), \neq)$ for every edge $(v_i,v_j) \in E$. Thus, an assignment $F:V \rightarrow \{-1,1\}$ would assign the vertices into two partitions such that a constraint is satisifed iff the corresponding edge is contained in $\mathcal{C}$. \newline
+
+      \item The CSP for $\mathsf{Max3Color}$, the maximization counterpart for the $\NP$-complete decision problem, $\mathsf{3Color}$, is similarly defined to that of $\mathsf{MaxCut}$ except our domain would be $\Omega = \{0,1,2\}$. This signifies the three possible colors to color any vertex $v \in V$ in an input graph $G = (V,E)$.
+    \end{itemize}
+  \end{example}
+
+  As implied in the examples above, there is a generic method to formulate a maximization problem in respect to a given CSP $\Psi$:
+  %
+  \begin{definition}
+    For a given CSP $\Psi$, formulate $\mathsf{MaxCSP}(\Psi)$ as the problem: given an instance $\I$, output an assignment $F$ which satisfies the largest number of constraints in $\I$.
+  \end{definition}
+
+Note that Definition \ref{Opt3SATDef} for a $\beta$-approximation algorithm extends to this maximization problem in the natural way.
+
+\subsection{Gap Problems}
+
+The $\NP$-hardness theory frequently relies on Karp reductions from decision problems to decision problems. In light of this, we can tailor this paradigm to optimization problems in the form of so-called \emph{gap problems}.
+
+\begin{definition} \label{promiseDef}
+  A \emph{promise problem} is defined as a tuple $(\mathsf{YES}, \mathsf{NO})$ where $\mathsf{YES},\mathsf{NO} \subseteq \Sigma^*$ in respect to some alphabet $\Sigma$. Furthermore, we require that $\mathsf{YES} \cap \mathsf{NO} = \emptyset$ but not necessarily that $\mathsf{YES} \cup \mathsf{NO} = \Sigma^*$.
+\end{definition}
+
+\begin{definition} \label{gapDef}
+  Given a $\MaxCSP$ problem, we define $\GapMaxCSP{\alpha}{\beta}$ for $\alpha < \beta$ as the promise problem: given an instance $\I$:
+  \begin{align}
+      \I \in \mathsf{YES} & \iff \mathsf{Opt}(\I) \geq \beta \\
+        \I \in \mathsf{NO} & \iff \mathsf{Opt}(\I) < \alpha
+  \end{align}
+  Furthermore, an algorithm $A$ decides $\MaxCSP$ if for input instance $\I$ it accepts iff $\I \in \mathsf{Yes}$ and rejects iff $\I \in \mathsf{No}$. If $\I \not\in \mathsf{Yes} \cup \mathsf{No}$, we do not care what the algorithm outputs.
+\end{definition}
+
+In particular, we deem a $\GapMaxCSP{\alpha}{\beta}$ problem as $\NP$-hard if for every language $L \in \NP$, there exists a polynomial-time reduction $f$ taking input strings $x \in \{0,1\}^*$ to CSP $\Psi$ instances such that:
+\begin{align*}
+  x \in L \implies \mathsf{Opt}(f(x)) & \geq \beta \\
+  x \not\in L \implies \mathsf{Opt}(f(x))&  < \alpha
+\end{align*}
+
+The $\NP$-hardness of approximation algorithms reduces to that of gap problems as shown in the below observation:
+
+\begin{theorem} \label{GapCSPtoAlgHard}
+Suppose $\GapMaxCSP{\alpha}{\beta}$ is $\NP$-hard for CSP $\Psi$, then approximating $\MaxCSP$ to at least an $\frac{\alpha}{\beta}$ factor is $\NP$-hard.
+\end{theorem}
+%
+\begin{proof}
+Suppose there exists an algorithm $A$ which can $\frac{\alpha}{\beta}$-approximate $\MaxCSP$. For an instance $\I$ such that $\mathsf{Opt}(\I) \geq \beta$:
+
+\begin{gather*}
+A(\I) \geq  \frac{\alpha}{\beta} \cdot \mathsf{Opt}(\I) = \frac{\alpha}{\beta} \cdot \beta =  \alpha \\
+\end{gather*}
+
+Else if $\mathsf{Opt}(\I) < \alpha$
+\begin{gather*}
+A(\I) \leq \mathsf{Opt}(\I) < \alpha
+\end{gather*}
+by Definition \ref{Opt3SATDef} adapted to $\MaxCSP$ instances. Hence, the algorithm can decide  $\GapMaxCSP{\alpha}{\beta}$ by checking its outputted value in respect to $\alpha$.
+\end{proof}
+%
+This in particular demonstrates that showing the hardness of approximating a particular problem is equivalent to showing the hardness of its corresponding gap problem.
+
+%It was shown early on that traditional Karp reductions were unlikely to produce the gaps required in Definition \ref{gapDef} in reducing $\SAT$ to such a promise problem.
+
+
+%Traditional Karp reductions don't work

@@ -1,0 +1,63 @@
+\section{Unique Games}
+\subsection{Definitions}
+The PCP Theorem culminated in a proof of the $\NP$-hardness of Label Cover by H\aa stad. Although these results gave proofs of the $\NP$-hardness of $\mathsf{Gap}_{\frac{7}{8} + \epsilon, 1- \epsilon}$-$\mathsf{Max3SAT}$ and $\mathsf{Gap}_{\frac{1}{2} + \epsilon, 1- \epsilon}$-$\mathsf{MaxE3Lin}$, similar hardness proofs for other canonical problems such as $\mathsf{MaxCut}$ didn't seem to follow from these ideas. In his seminal paper, Khot proposed a relaxation of the Label Cover Problem \cite{khot2002power}. The instances of this relaxed version are called \emph{Unique Games}:
+
+\begin{definition}
+  A \emph{Unique Label Cover Problem} with $m$ labels (UniqueLC($m$)) instance $\mathcal{U}$ is defined by a bipartite graph $(A \sqcup B,E)$ where $|A| = |B| = n$ for some $n \in \mathbb{N}$, finite alphabet $\Sigma_A = \Sigma_B = \Sigma$ such that $|\Sigma| = m$, and a set of \emph{permutations} $\pi_e:[m] \rightarrow [m]$ for every edge $e \in E$. Define an \emph{assignment} as consisting of a map $\sigma: A \sqcup B \rightarrow [m]$. An edge $e = (a,b) \in E$ is said to be satisfied by this assignment if the assignment is compatible with projection $\pi_e$:
+
+  \begin{equation}
+    \pi_e(\sigma(a)) = \sigma(b)
+  \end{equation}
+
+  The value of this game will be
+
+  \begin{equation} \label{optvalLC}
+    \mathsf{Opt}(\mathcal{G}) = \max_{\sigma} \mathbb{E}_{e \sim E}[e \text{ satisfied}]
+  \end{equation}
+  In other words, the value will be the largest fraction of edges satisfied by any assignment to the vertices. The corresponding gap problem for Label Cover, $\mathsf{Gap}_{\alpha,\beta}\mathsf{UniqueLC}(m)$, is defined as the promise problem:
+  %
+  \begin{align*}
+      \mathsf{YES} & = \{\mathcal{U} \mid \mathsf{Opt}(\mathcal{U}) \geq \beta\} \\
+      \mathsf{NO} & = \{\mathcal{U} \mid \mathsf{Opt}(\mathcal{U}) < \alpha \}
+  \end{align*}
+
+  In the case of perfect completeness, we abbreviate $\mathsf{Gap}_{\alpha,1}\mathsf{UniqueLC}(m)$ as simply $\mathsf{Gap}_{\alpha}\mathsf{UniqueLC}(m)$.
+\end{definition}
+
+In addition, Khot formulated the \emph{Unique Games Conjecture} and utilized it to prove several inapproxability results assuming the conjecture is true.
+
+\begin{conjecture} (Unique Games Conjecture \cite{khot2002power})
+  For any constant $\delta > 0$, there exists sufficiently large $m \in \mathbb{N}$ such that $\mathsf{Gap}_{\delta,1-\delta}\mathsf{UniqueLC}(m)$ is $\NP$-hard.
+\end{conjecture}
+
+\begin{remark}
+  The $1-\delta$ constant is crucial to the validity of the conjecture. For an instance of $\mathsf{UniqueLC}(m)$ for any $m$ with a \emph{guaranteed} solution, there exists a polynomial-time algorithm finding an assignment which satisfies all projection constraints: First, start with a vertex and set it to a label. If the vertex is an endpoint of an edge $e$, follow $e$ to the other side and find a label which satisfies as many neighbors as possible. Repeat in a breadth-first search fashion. In virtue of the projection maps being permutations, this amounts to searching for the guaranteed solution in time $O(mn^2)$.
+\end{remark}
+
+\begin{example}
+  The $\mathsf{MaxCut}$ problem for an input graph $G = (V,E)$ can be cast as a $\mathsf{UniqueLC}(|V|)$ instance. The two partitions of the bipartite graph $A,B$ will be indexed by the vertices $V$. Draw an edge between two vertices $v_1,v_2$ if $(v_1,v_2) \in E$. Set the alphabet to be $\Sigma =\{-1,1\}$ and the projection maps to be the ``swap" map $-1 \mapsto 1, 1 \mapsto -1$.
+\end{example}
+
+\begin{example}
+  $\mathsf{MaxE2LinModp}$ for prime $p$ denotes the problem of finding an assignment which maximizes the number of satisfied linear constraints consisting of exactly two variables over field $\mathbb{F}_p$. An example of an instance of this problem over variables $x_1,x_2,x_3,x_4$ is shown below:
+
+  \begin{equation*}
+    \begin{alignedat}{3}
+      x_1 & +{} & x_3 & = 3 \\
+      x_2 & +{}  & x_4 & = 2 \\
+      x_1 & +{} & x_4 & = 1
+    \end{alignedat}
+  \end{equation*}
+
+  An instance of this problem can also be translated as an instance of $\mathsf{UniqueLC}(p)$.
+\end{example}
+
+\begin{definition}
+  A promise problem $P$ is said to be \emph{$\UG$-hard} if there is some constant $\delta > 0$ such that for all $m \in \mathbb{N}$, there exists a polynomial-time reduction $f$ from $\GapDeltaULC$ to $P$, in the sense that for a $\GapDeltaULC$ instance $\mathcal{U}$:
+  \begin{align*}
+    \mathsf{Opt}(\mathcal{U})  \geq 1 - \delta & \implies f(\mathcal{U}) \in \mathsf{Yes} \\
+    \mathsf{Opt}(\mathcal{U})  < \delta & \implies f(\mathcal{U}) \in \mathsf{No}
+  \end{align*}
+\end{definition}
+
+%\subsection{Is the Unique Games Conjecture True?}

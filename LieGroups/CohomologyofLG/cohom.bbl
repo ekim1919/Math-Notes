@@ -1,0 +1,31 @@
+\providecommand{\bysame}{\leavevmode\hbox to3em{\hrulefill}\thinspace}
+\providecommand{\MR}{\relax\ifhmode\unskip\space\fi MR }
+% \MRhref is called by the amsart/book/proc definition of \MR.
+\providecommand{\MRhref}[2]{%
+  \href{http://www.ams.org/mathscinet-getitem?mr=#1}{#2}
+}
+\providecommand{\href}[2]{#2}
+\begin{thebibliography}{1}
+
+\bibitem{chevalley}
+Claude Chevalley and Samuel Eilenberg, \emph{Cohomology theory of lie groups
+  and lie algebras}, Transactions of the American Mathematical society
+  \textbf{63} (1948), no.~1, 85--124.
+
+\bibitem{fok}
+Chi-Kwong Fok, \emph{Cohomology and k-theory of compact lie groups},
+  Unpublished, available at http://pi. math. cornell. edu/ckfok/Cohomology Lie
+  groups. pdf (2010).
+
+\bibitem{lee}
+M~Lee~John, \emph{Introduction to smooth manifolds}, Graduate Texts in
+  Mathematics \textbf{218} (2003).
+
+\bibitem{reeder}
+Mark Reeder, \emph{On the cohomology of compact lie groups}, Enseignement
+  Math{\'e}matique \textbf{41} (1995), 181--200.
+
+\bibitem{zhang}
+Yang Zhang, \emph{Review of the cohomology of compact lie groups}.
+
+\end{thebibliography}
